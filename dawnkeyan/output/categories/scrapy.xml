@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>晚起的虫子 (关于文章 scrapy)</title><link>https://dawnkeyan.github.io</link><description></description><atom:link href="https://dawnkeyan.github.io/categories/scrapy.xml" rel="self" type="application/rss+xml"></atom:link><language>zh_cn</language><copyright>Contents © 2018 &lt;a href="mailto:dawnkeyan@126.com"&gt;dawnkeyan&lt;/a&gt; </copyright><lastBuildDate>Thu, 25 Oct 2018 01:57:40 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>from OpenSSL._util import lib as pyOpenSSLlib ImportError: No module named _util</title><link>https://dawnkeyan.github.io/posts/from-openssl_util-import-lib-as-pyopenssllib-importerror-no-module-named-_util/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;ul class="simple"&gt;
+&lt;li&gt;mac 报错   from OpenSSL._util import lib as pyOpenSSLlib ImportError: No module named _util&lt;/li&gt;
+&lt;li&gt;该安装的都安装了，估计是版本的问题&lt;/li&gt;
+&lt;li&gt;因为系统python默认是2.7，所以安装3，而且默认改成3&lt;/li&gt;
+&lt;li&gt;然后重新安装 pip 和scrapy&lt;/li&gt;
+&lt;li&gt;还是不行  默认还是使用2.7&lt;/li&gt;
+&lt;li&gt;用百度  bing 谷歌搜索的方法 试了 还是不行&lt;/li&gt;
+&lt;li&gt;最后  删掉所有python  然后安装python3 重新安装pip和scrapy&lt;/li&gt;
+&lt;li&gt;然后可以了&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;scrapy爬豆瓣图书例子：&lt;a class="reference external" href="https://github.com/dawnkeyan/dawnkeyan.github.io.git"&gt;https://github.com/dawnkeyan/dawnkeyan.github.io.git&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;</description><category>python</category><category>scrapy</category><category>爬虫</category><guid>https://dawnkeyan.github.io/posts/from-openssl_util-import-lib-as-pyopenssllib-importerror-no-module-named-_util/</guid><pubDate>Thu, 25 Oct 2018 01:45:33 GMT</pubDate></item></channel></rss>
