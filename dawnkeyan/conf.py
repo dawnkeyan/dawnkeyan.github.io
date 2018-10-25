@@ -139,7 +139,7 @@ NAVIGATION_LINKS = {
         ("/archive.html", "文章归档"),
         ("/categories/", "标签"),
         ("https://github.com/dawnkeyan", "GitHub"),
-        ("http://127.0.0.1:8000/posts/you-qing-lian-jie/", "友情链接"),
+        ("https://dawnkeyan.github.io/posts/you-qing-lian-jie/", "友情链接"),
     ),
 }
 
