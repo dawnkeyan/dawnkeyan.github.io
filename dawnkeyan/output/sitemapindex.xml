@@ -22,6 +22,10 @@
   <lastmod>2018-10-25T01:34:00Z</lastmod>
  </sitemap>
  <sitemap>
+  <loc>https://dawnkeyan.github.io/categories/cat_php.xml</loc>
+  <lastmod>2018-10-25T08:11:00Z</lastmod>
+ </sitemap>
+ <sitemap>
   <loc>https://dawnkeyan.github.io/categories/cat_python.xml</loc>
   <lastmod>2018-10-25T01:57:00Z</lastmod>
  </sitemap>
@@ -36,6 +40,14 @@
  <sitemap>
   <loc>https://dawnkeyan.github.io/categories/pa-chong.xml</loc>
   <lastmod>2018-10-25T01:57:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://dawnkeyan.github.io/categories/php-fpm.xml</loc>
+  <lastmod>2018-10-25T08:11:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://dawnkeyan.github.io/categories/php.xml</loc>
+  <lastmod>2018-10-25T08:11:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://dawnkeyan.github.io/categories/python.xml</loc>
@@ -55,10 +67,10 @@
  </sitemap>
  <sitemap>
   <loc>https://dawnkeyan.github.io/rss.xml</loc>
-  <lastmod>2018-10-25T02:33:00Z</lastmod>
+  <lastmod>2018-10-25T08:11:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://dawnkeyan.github.io/sitemap.xml</loc>
-  <lastmod>2018-10-25T02:47:00Z</lastmod>
+  <lastmod>2018-10-25T08:11:00Z</lastmod>
  </sitemap>
 </sitemapindex>

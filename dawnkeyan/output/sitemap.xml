@@ -19,7 +19,7 @@
  </url>
  <url>
   <loc>https://dawnkeyan.github.io/archive.html</loc>
-  <lastmod>2018-10-25T02:47:00Z</lastmod>
+  <lastmod>2018-10-25T08:11:00Z</lastmod>
  </url>
  <url>
   <loc>https://dawnkeyan.github.io/authors/</loc>
@@ -35,7 +35,7 @@
  </url>
  <url>
   <loc>https://dawnkeyan.github.io/categories/</loc>
-  <lastmod>2018-10-25T01:52:00Z</lastmod>
+  <lastmod>2018-10-25T08:11:00Z</lastmod>
  </url>
  <url>
   <loc>https://dawnkeyan.github.io/categories/blog/</loc>
@@ -44,6 +44,10 @@
  <url>
   <loc>https://dawnkeyan.github.io/categories/cat_nikola/</loc>
   <lastmod>2018-10-25T01:34:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://dawnkeyan.github.io/categories/cat_php/</loc>
+  <lastmod>2018-10-25T08:11:00Z</lastmod>
  </url>
  <url>
   <loc>https://dawnkeyan.github.io/categories/cat_python/</loc>
@@ -60,6 +64,14 @@
  <url>
   <loc>https://dawnkeyan.github.io/categories/pa-chong/</loc>
   <lastmod>2018-10-25T01:52:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://dawnkeyan.github.io/categories/php-fpm/</loc>
+  <lastmod>2018-10-25T08:11:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://dawnkeyan.github.io/categories/php/</loc>
+  <lastmod>2018-10-25T08:11:00Z</lastmod>
  </url>
  <url>
   <loc>https://dawnkeyan.github.io/categories/python/</loc>
@@ -144,6 +156,10 @@
  <url>
   <loc>https://dawnkeyan.github.io/posts/from-openssl_util-import-lib-as-pyopenssllib-importerror-no-module-named-_util/</loc>
   <lastmod>2018-10-25T01:45:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://dawnkeyan.github.io/posts/php-fpm/</loc>
+  <lastmod>2018-10-25T08:11:00Z</lastmod>
  </url>
  <url>
   <loc>https://dawnkeyan.github.io/posts/welcome-to-nikola/</loc>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>晚起的虫子</title><link>https://dawnkeyan.github.io</link><description>工作中的点点滴滴</description><atom:link href="https://dawnkeyan.github.io/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>zh_cn</language><copyright>Contents © 2018 &lt;a href="mailto:dawnkeyan@126.com"&gt;dawnkeyan&lt;/a&gt; </copyright><lastBuildDate>Thu, 25 Oct 2018 08:11:52 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>php-fpm</title><link>https://dawnkeyan.github.io/posts/php-fpm/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;cgi 公共网关接口 是http服务器和其他机器上的程序进行通信的接口，起程序运行在网络服务器上&lt;/p&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>晚起的虫子 (关于文章 php)</title><link>https://dawnkeyan.github.io</link><description></description><atom:link href="https://dawnkeyan.github.io/categories/cat_php.xml" rel="self" type="application/rss+xml"></atom:link><language>zh_cn</language><copyright>Contents © 2018 &lt;a href="mailto:dawnkeyan@126.com"&gt;dawnkeyan&lt;/a&gt; </copyright><lastBuildDate>Thu, 25 Oct 2018 08:11:52 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>php-fpm</title><link>https://dawnkeyan.github.io/posts/php-fpm/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;cgi 公共网关接口 是http服务器和其他机器上的程序进行通信的接口，起程序运行在网络服务器上&lt;/p&gt;
 &lt;p&gt;fastcgi是常驻行的cgi，只要被激活一次，后面就不要每次都去fork一次，把cgi解释器保持在内存获得较高的效率，还支持分布式，可以放在网站服务器以外的主机上执行并且接受来自其他网站服务器的请求&lt;/p&gt;
 &lt;p&gt;cgi和fastcgi都独立与语言&lt;/p&gt;
 &lt;p&gt;php-fpm是FastCGI进程管理器&lt;/p&gt;
@@ -40,17 +40,4 @@ ondemand - 进程在有需求时才产生（当请求时，与 dynamic 相反，
 &lt;p&gt;这个是用来处理因为PHP执行时间超长而报502错误的解决。&lt;/p&gt;
 &lt;p&gt;这个时长配置可以在php.ini（max_execution_time）或php-fpm.conf中配置均可，为了不影响全局配置，可在php-fpm.conf中实现。&lt;/p&gt;
 &lt;p&gt;PHP-FPM设置的脚本最大执行时间已经够长了，但执行耗时PHP脚本时，发现Nginx报错变为504错误。这是因为我们修改的只是PHP的配置，Nginx中也有关于与上游服务器通信超时时间的配置factcgi_connect/read/send_timeout。&lt;/p&gt;
-&lt;p&gt;查看php进程数 ps aux | grep -c php-fpm&lt;/p&gt;&lt;/div&gt;</description><category>php</category><category>php-fpm</category><guid>https://dawnkeyan.github.io/posts/php-fpm/</guid><pubDate>Thu, 25 Oct 2018 07:29:46 GMT</pubDate></item><item><title>友情链接</title><link>https://dawnkeyan.github.io/posts/you-qing-lian-jie/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;ul class="simple"&gt;
-&lt;li&gt;纸鸢@红豆·绿豆 &lt;a class="reference external" href="http://www.cnblogs.com/jlj9520/"&gt;http://www.cnblogs.com/jlj9520/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;敲代码的龙龙 &lt;a class="reference external" href="https://codinglonglong.github.io/"&gt;https://codinglonglong.github.io/&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</description><guid>https://dawnkeyan.github.io/posts/you-qing-lian-jie/</guid><pubDate>Thu, 25 Oct 2018 02:01:10 GMT</pubDate></item><item><title>from OpenSSL._util import lib as pyOpenSSLlib ImportError: No module named _util</title><link>https://dawnkeyan.github.io/posts/from-openssl_util-import-lib-as-pyopenssllib-importerror-no-module-named-_util/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;ul class="simple"&gt;
-&lt;li&gt;mac 报错   from OpenSSL._util import lib as pyOpenSSLlib ImportError: No module named _util&lt;/li&gt;
-&lt;li&gt;该安装的都安装了，估计是版本的问题&lt;/li&gt;
-&lt;li&gt;因为系统python默认是2.7，所以安装3，而且默认改成3&lt;/li&gt;
-&lt;li&gt;然后重新安装 pip 和scrapy&lt;/li&gt;
-&lt;li&gt;还是不行  默认还是使用2.7&lt;/li&gt;
-&lt;li&gt;用百度  bing 谷歌搜索的方法 试了 还是不行&lt;/li&gt;
-&lt;li&gt;最后  删掉所有python  然后安装python3 重新安装pip和scrapy&lt;/li&gt;
-&lt;li&gt;然后可以了&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;scrapy爬豆瓣图书例子：&lt;a class="reference external" href="https://github.com/dawnkeyan/dawnkeyan.github.io.git"&gt;https://github.com/dawnkeyan/dawnkeyan.github.io.git&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;</description><category>python</category><category>scrapy</category><category>爬虫</category><guid>https://dawnkeyan.github.io/posts/from-openssl_util-import-lib-as-pyopenssllib-importerror-no-module-named-_util/</guid><pubDate>Thu, 25 Oct 2018 01:45:33 GMT</pubDate></item></channel></rss>
+&lt;p&gt;查看php进程数 ps aux | grep -c php-fpm&lt;/p&gt;&lt;/div&gt;</description><category>php</category><category>php-fpm</category><guid>https://dawnkeyan.github.io/posts/php-fpm/</guid><pubDate>Thu, 25 Oct 2018 07:29:46 GMT</pubDate></item></channel></rss>
