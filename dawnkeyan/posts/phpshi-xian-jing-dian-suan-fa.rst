@@ -218,6 +218,11 @@
  var_dump($arr);
 
 
+
+.. figure:: https://img1.doubanio.com/view/note/l/public/p52272377.jpg
+
+
+
 二分查找（时间复杂度log2n）:
 ::
 
