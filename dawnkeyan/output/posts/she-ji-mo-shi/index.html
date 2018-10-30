@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh_cn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>设计模式 | 晚起的虫子</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="zh_cn" href="../../rss.xml">
+<link rel="canonical" href="https://dawnkeyan.github.io/posts/she-ji-mo-shi/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="dawnkeyan">
+<link rel="prev" href="../phpshi-xian-jing-dian-suan-fa/" title="php实现经典算法" type="text/html">
+<meta property="og:site_name" content="晚起的虫子">
+<meta property="og:title" content="设计模式">
+<meta property="og:url" content="https://dawnkeyan.github.io/posts/she-ji-mo-shi/">
+<meta property="og:description" content="创建型
+
+简单工厂模式
+
+
+优点：
+操作者不用管具体实例化哪个对象，工厂类通过参数去决定实例化对象；降低耦合
+缺点：
+编译期间就定好了有哪些类，如果有新需求，需要修改工厂类
+
+
+
+
+ArchitectureFactory
+
+&lt;?php
+/**
+* Created by PhpStorm.
+* User: wky
+* Date: 2018/10/30
+* Time: 10:16
+*/
+namespa">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2018-10-30T09:13:45+08:00">
+<meta property="article:tag" content="php">
+<meta property="article:tag" content="设计模式">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">跳到主内容</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">展开导航栏</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://dawnkeyan.github.io/">
+
+                <span id="blog-title">晚起的虫子</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../../archive.html">文章归档</a>
+                </li>
+<li>
+<a href="../../categories/">标签</a>
+                </li>
+<li>
+<a href="https://github.com/dawnkeyan">GitHub</a>
+                </li>
+<li>
+<a href="https://dawnkeyan.github.io/posts/you-qing-lian-jie/">友情链接</a>
+
+                
+            </li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.rst" id="sourcelink">资源</a>
+    </li>
+
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+            
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">设计模式</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                    dawnkeyan
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2018-10-30T09:13:45+08:00" itemprop="datePublished" title="2018-10-30 09:13">2018-10-30 09:13</time></a>
+            </p>
+            
+        <p class="sourceline"><a href="index.rst" class="sourcelink">资源</a></p>
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="section" id="id1">
+<h2>创建型</h2>
+<ul class="simple">
+<li>简单工厂模式</li>
+</ul>
+<dl class="docutils">
+<dt>优点：</dt>
+<dd>操作者不用管具体实例化哪个对象，工厂类通过参数去决定实例化对象；降低耦合</dd>
+<dt>缺点：</dt>
+<dd>编译期间就定好了有哪些类，如果有新需求，需要修改工厂类</dd>
+</dl>
+<div class="figure">
+<img alt="https://img3.doubanio.com/view/note/l/public/p55239996.jpg" src="https://img3.doubanio.com/view/note/l/public/p55239996.jpg">
+</div>
+<p>ArchitectureFactory</p>
+<pre class="literal-block">
+&lt;?php
+/**
+* Created by PhpStorm.
+* User: wky
+* Date: 2018/10/30
+* Time: 10:16
+*/
+namespace Simple\Factory;
+
+/**
+* Class ArchitectureFactory 工厂类
+* @package Simple\Factory
+*/
+class ArchitectureFactory{
+
+   protected $typeList;
+
+   public function __construct()
+   {
+       //需要实例化的对象的数组
+       $this-&gt;typeList = [
+           'officeBuilding'=&gt;__NAMESPACE__.'\OfficeBuilding',//造写字楼
+           'school'=&gt;__NAMESPACE__.'\School',//造学校
+       ];
+   }
+
+   public function getExample($type){
+       if(!isset($this-&gt;typeList[$type])){
+           //todo 提示类不存在
+       }
+       return new $this-&gt;typeList[$type]();
+   }
+}
+</pre>
+<p>ArchitectureInterFace</p>
+<pre class="literal-block">
+&lt;?php
+/**
+* Created by PhpStorm.
+* User: wky
+* Date: 2018/10/30
+* Time: 10:16
+*/
+namespace Simple\Factory;
+
+/**
+* Interface ArchitectureInterFace 造写字楼和学校需要的设计图
+* @package Simple\Factory
+*/
+interface ArchitectureInterFace{
+
+   public function designChart();
+}
+</pre>
+<p>OfficeBuilding</p>
+<pre class="literal-block">
+&lt;?php
+/**
+* Created by PhpStorm.
+* User: wky
+* Date: 2018/10/30
+* Time: 10:16
+*/
+namespace Simple\Factory;
+
+/**
+* Class OfficeBuilding 造写字楼
+* @package Simple\Factory
+*/
+class OfficeBuilding implements ArchitectureInterFace{
+
+   public function designChart(){
+       return '造写字楼的图纸';
+   }
+}
+</pre>
+<p>School</p>
+<pre class="literal-block">
+&lt;?php
+/**
+* Created by PhpStorm.
+* User: wky
+* Date: 2018/10/30
+* Time: 10:22
+*/
+namespace Simple\Factory;
+
+/**
+* Class School 造学校
+* @package Simple\Factory
+*/
+class School implements ArchitectureInterFace{
+
+   public function designChart(){
+       return '造学校的图纸';
+   }
+}
+</pre>
+<p>Test</p>
+<pre class="literal-block">
+&lt;?php
+/**
+* Created by PhpStorm.
+* User: wky
+* Date: 2018/10/30
+* Time: 10:24
+*/
+namespace Simple\Factory;
+
+/**
+* Class Test
+* @package Simple\Factory
+*/
+class Test{
+
+   public function test(){
+       $architecture = ['officeBuilding', 'school'];
+       $factory = new ArchitectureFactory();
+       foreach ($architecture as $type){
+           $factory-&gt;getExample($type);
+       }
+   }
+}
+</pre>
+<ul class="simple">
+<li>工厂方法模式</li>
+</ul>
+<p>和简单工厂方法模式的区别是工厂方法实例化在子类</p>
+<ul class="simple">
+<li>抽象工厂模式</li>
+</ul>
+<p>和工厂方法模式的区别是抽象工厂一个产品一个实现类，有新需求不用改原来的代码</p>
+<ul class="simple">
+<li>静态工厂模式</li>
+<li>建造者模式</li>
+<li>多例模式</li>
+<li>单例模式</li>
+<li>对象池模式</li>
+<li>原型模式</li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h2>结构型</h2>
+<ul class="simple">
+<li>适配器模式</li>
+<li>桥梁模式</li>
+<li>组合模式</li>
+<li>数据映射模式</li>
+<li>装饰模式</li>
+<li>依赖注入模式</li>
+<li>门面模式</li>
+<li>流接口模式</li>
+<li>代理模式</li>
+<li>注册模式</li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h2>行为型</h2>
+<ul class="simple">
+<li>责任链模式</li>
+<li>命令行模式</li>
+<li>迭代器模式</li>
+<li>中介者模式</li>
+<li>备忘录模式</li>
+<li>空对象模式</li>
+<li>观察者模式</li>
+<li>规格模式</li>
+<li>状态模式</li>
+<li>策略模式</li>
+<li>模板方法模式</li>
+<li>访问者模式</li>
+</ul>
+</div>
+<div class="section" id="id4">
+<h2>其他</h2>
+<ul class="simple">
+<li>委托模式</li>
+<li>服务定位模式</li>
+<li>资源模式</li>
+</ul>
+<p>参考地址：<a class="reference external" href="https://laravelacademy.org/post/2465.html">https://laravelacademy.org/post/2465.html</a></p>
+</div>
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../categories/php/" rel="tag">php</a></li>
+            <li><a class="tag p-category" href="../../categories/she-ji-mo-shi/" rel="tag">设计模式</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="../phpshi-xian-jing-dian-suan-fa/" rel="prev" title="php实现经典算法">上一篇文章</a>
+            </li>
+        </ul></nav></aside></article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2018         <a href="mailto:dawnkeyan@126.com">dawnkeyan</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+        </footer>
+</div>
+</div>
+
+
+            <script src="../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("zh-cn");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script>
+</body>
+</html>

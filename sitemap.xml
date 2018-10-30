@@ -19,7 +19,7 @@
  </url>
  <url>
   <loc>https://dawnkeyan.github.io/archive.html</loc>
-  <lastmod>2018-10-26T03:30:00Z</lastmod>
+  <lastmod>2018-10-30T05:23:00Z</lastmod>
  </url>
  <url>
   <loc>https://dawnkeyan.github.io/authors/</loc>
@@ -35,7 +35,7 @@
  </url>
  <url>
   <loc>https://dawnkeyan.github.io/categories/</loc>
-  <lastmod>2018-10-26T03:32:00Z</lastmod>
+  <lastmod>2018-10-30T05:23:00Z</lastmod>
  </url>
  <url>
   <loc>https://dawnkeyan.github.io/categories/blog/</loc>
@@ -80,6 +80,10 @@
  <url>
   <loc>https://dawnkeyan.github.io/categories/scrapy/</loc>
   <lastmod>2018-10-26T01:53:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://dawnkeyan.github.io/categories/she-ji-mo-shi/</loc>
+  <lastmod>2018-10-30T05:23:00Z</lastmod>
  </url>
  <url>
   <loc>https://dawnkeyan.github.io/categories/suan-fa/</loc>
@@ -168,6 +172,10 @@
  <url>
   <loc>https://dawnkeyan.github.io/posts/phpshi-xian-jing-dian-suan-fa/</loc>
   <lastmod>2018-10-26T03:32:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://dawnkeyan.github.io/posts/she-ji-mo-shi/</loc>
+  <lastmod>2018-10-30T05:23:00Z</lastmod>
  </url>
  <url>
   <loc>https://dawnkeyan.github.io/posts/welcome-to-nikola/</loc>

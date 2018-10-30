@@ -10,7 +10,7 @@
 <meta name="generator" content="Nikola (getnikola.com)">
 <link rel="alternate" type="application/rss+xml" title="RSS" hreflang="zh_cn" href="rss.xml">
 <link rel="canonical" href="https://dawnkeyan.github.io/">
-<!--[if lt IE 9]><script src="assets/js/html5.js"></script><![endif]--><link rel="prefetch" href="posts/phpshi-xian-jing-dian-suan-fa/" type="text/html">
+<!--[if lt IE 9]><script src="assets/js/html5.js"></script><![endif]--><link rel="prefetch" href="posts/she-ji-mo-shi/" type="text/html">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">跳到主内容</a>
@@ -66,7 +66,219 @@
 
     
 <div class="postindex">
-    <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/phpshi-xian-jing-dian-suan-fa/" class="u-url">php实现经典算法</a></h1>
+    <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/she-ji-mo-shi/" class="u-url">设计模式</a></h1>
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                dawnkeyan
+            </span></p>
+            <p class="dateline">
+            <a href="posts/she-ji-mo-shi/" rel="bookmark">
+            <time class="published dt-published" datetime="2018-10-30T09:13:45+08:00" itemprop="datePublished" title="2018-10-30 09:13">2018-10-30 09:13</time></a>
+            </p>
+        </div>
+    </header><div class="e-content entry-content">
+    <div>
+<div class="section" id="id1">
+<h2>创建型</h2>
+<ul class="simple">
+<li>简单工厂模式</li>
+</ul>
+<dl class="docutils">
+<dt>优点：</dt>
+<dd>操作者不用管具体实例化哪个对象，工厂类通过参数去决定实例化对象；降低耦合</dd>
+<dt>缺点：</dt>
+<dd>编译期间就定好了有哪些类，如果有新需求，需要修改工厂类</dd>
+</dl>
+<div class="figure">
+<img alt="https://img3.doubanio.com/view/note/l/public/p55239996.jpg" src="https://img3.doubanio.com/view/note/l/public/p55239996.jpg">
+</div>
+<p>ArchitectureFactory</p>
+<pre class="literal-block">
+&lt;?php
+/**
+* Created by PhpStorm.
+* User: wky
+* Date: 2018/10/30
+* Time: 10:16
+*/
+namespace Simple\Factory;
+
+/**
+* Class ArchitectureFactory 工厂类
+* @package Simple\Factory
+*/
+class ArchitectureFactory{
+
+   protected $typeList;
+
+   public function __construct()
+   {
+       //需要实例化的对象的数组
+       $this-&gt;typeList = [
+           'officeBuilding'=&gt;__NAMESPACE__.'\OfficeBuilding',//造写字楼
+           'school'=&gt;__NAMESPACE__.'\School',//造学校
+       ];
+   }
+
+   public function getExample($type){
+       if(!isset($this-&gt;typeList[$type])){
+           //todo 提示类不存在
+       }
+       return new $this-&gt;typeList[$type]();
+   }
+}
+</pre>
+<p>ArchitectureInterFace</p>
+<pre class="literal-block">
+&lt;?php
+/**
+* Created by PhpStorm.
+* User: wky
+* Date: 2018/10/30
+* Time: 10:16
+*/
+namespace Simple\Factory;
+
+/**
+* Interface ArchitectureInterFace 造写字楼和学校需要的设计图
+* @package Simple\Factory
+*/
+interface ArchitectureInterFace{
+
+   public function designChart();
+}
+</pre>
+<p>OfficeBuilding</p>
+<pre class="literal-block">
+&lt;?php
+/**
+* Created by PhpStorm.
+* User: wky
+* Date: 2018/10/30
+* Time: 10:16
+*/
+namespace Simple\Factory;
+
+/**
+* Class OfficeBuilding 造写字楼
+* @package Simple\Factory
+*/
+class OfficeBuilding implements ArchitectureInterFace{
+
+   public function designChart(){
+       return '造写字楼的图纸';
+   }
+}
+</pre>
+<p>School</p>
+<pre class="literal-block">
+&lt;?php
+/**
+* Created by PhpStorm.
+* User: wky
+* Date: 2018/10/30
+* Time: 10:22
+*/
+namespace Simple\Factory;
+
+/**
+* Class School 造学校
+* @package Simple\Factory
+*/
+class School implements ArchitectureInterFace{
+
+   public function designChart(){
+       return '造学校的图纸';
+   }
+}
+</pre>
+<p>Test</p>
+<pre class="literal-block">
+&lt;?php
+/**
+* Created by PhpStorm.
+* User: wky
+* Date: 2018/10/30
+* Time: 10:24
+*/
+namespace Simple\Factory;
+
+/**
+* Class Test
+* @package Simple\Factory
+*/
+class Test{
+
+   public function test(){
+       $architecture = ['officeBuilding', 'school'];
+       $factory = new ArchitectureFactory();
+       foreach ($architecture as $type){
+           $factory-&gt;getExample($type);
+       }
+   }
+}
+</pre>
+<ul class="simple">
+<li>工厂方法模式</li>
+</ul>
+<p>和简单工厂方法模式的区别是工厂方法实例化在子类</p>
+<ul class="simple">
+<li>抽象工厂模式</li>
+</ul>
+<p>和工厂方法模式的区别是抽象工厂一个产品一个实现类，有新需求不用改原来的代码</p>
+<ul class="simple">
+<li>静态工厂模式</li>
+<li>建造者模式</li>
+<li>多例模式</li>
+<li>单例模式</li>
+<li>对象池模式</li>
+<li>原型模式</li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h2>结构型</h2>
+<ul class="simple">
+<li>适配器模式</li>
+<li>桥梁模式</li>
+<li>组合模式</li>
+<li>数据映射模式</li>
+<li>装饰模式</li>
+<li>依赖注入模式</li>
+<li>门面模式</li>
+<li>流接口模式</li>
+<li>代理模式</li>
+<li>注册模式</li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h2>行为型</h2>
+<ul class="simple">
+<li>责任链模式</li>
+<li>命令行模式</li>
+<li>迭代器模式</li>
+<li>中介者模式</li>
+<li>备忘录模式</li>
+<li>空对象模式</li>
+<li>观察者模式</li>
+<li>规格模式</li>
+<li>状态模式</li>
+<li>策略模式</li>
+<li>模板方法模式</li>
+<li>访问者模式</li>
+</ul>
+</div>
+<div class="section" id="id4">
+<h2>其他</h2>
+<ul class="simple">
+<li>委托模式</li>
+<li>服务定位模式</li>
+<li>资源模式</li>
+</ul>
+<p>参考地址：<a class="reference external" href="https://laravelacademy.org/post/2465.html">https://laravelacademy.org/post/2465.html</a></p>
+</div>
+</div>
+    </div>
+    </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/phpshi-xian-jing-dian-suan-fa/" class="u-url">php实现经典算法</a></h1>
         <div class="metadata">
             <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
                 dawnkeyan
