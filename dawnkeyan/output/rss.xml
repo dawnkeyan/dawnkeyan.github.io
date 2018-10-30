@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>晚起的虫子</title><link>https://dawnkeyan.github.io</link><description>工作中的点点滴滴</description><atom:link href="https://dawnkeyan.github.io/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>zh_cn</language><copyright>Contents © 2018 &lt;a href="mailto:dawnkeyan@126.com"&gt;dawnkeyan&lt;/a&gt; </copyright><lastBuildDate>Tue, 30 Oct 2018 07:33:02 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>设计模式</title><link>https://dawnkeyan.github.io/posts/she-ji-mo-shi/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;div class="section" id="id1"&gt;
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>晚起的虫子</title><link>https://dawnkeyan.github.io</link><description>工作中的点点滴滴</description><atom:link href="https://dawnkeyan.github.io/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>zh_cn</language><copyright>Contents © 2018 &lt;a href="mailto:dawnkeyan@126.com"&gt;dawnkeyan&lt;/a&gt; </copyright><lastBuildDate>Tue, 30 Oct 2018 14:43:33 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>设计模式</title><link>https://dawnkeyan.github.io/posts/she-ji-mo-shi/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;div class="section" id="id1"&gt;
 &lt;h2&gt;创建型&lt;/h2&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;简单工厂模式&lt;/li&gt;
@@ -149,6 +149,9 @@ class Test{
 &lt;p&gt;和工厂方法模式的区别是抽象工厂一个产品一个实现类，有新需求不用改原来的代码&lt;/p&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;静态工厂模式&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;和简单工厂的区别是静态工厂是在工厂类中的静态方法实例化对象&lt;/p&gt;
+&lt;ul class="simple"&gt;
 &lt;li&gt;建造者模式&lt;/li&gt;
 &lt;li&gt;多例模式&lt;/li&gt;
 &lt;li&gt;单例模式&lt;/li&gt;
