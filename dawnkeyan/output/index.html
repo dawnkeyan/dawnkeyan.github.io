@@ -10,7 +10,7 @@
 <meta name="generator" content="Nikola (getnikola.com)">
 <link rel="alternate" type="application/rss+xml" title="RSS" hreflang="zh_cn" href="rss.xml">
 <link rel="canonical" href="https://dawnkeyan.github.io/">
-<!--[if lt IE 9]><script src="assets/js/html5.js"></script><![endif]--><link rel="prefetch" href="posts/she-ji-mo-shi/" type="text/html">
+<!--[if lt IE 9]><script src="assets/js/html5.js"></script><![endif]--><link rel="prefetch" href="posts/phpchu-li-da-wen-jian/" type="text/html">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">跳到主内容</a>
@@ -66,7 +66,110 @@
 
     
 <div class="postindex">
-    <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/she-ji-mo-shi/" class="u-url">设计模式</a></h1>
+    <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/phpchu-li-da-wen-jian/" class="u-url">php处理大文件</a></h1>
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                dawnkeyan
+            </span></p>
+            <p class="dateline">
+            <a href="posts/phpchu-li-da-wen-jian/" rel="bookmark">
+            <time class="published dt-published" datetime="2018-11-04T16:12:59+08:00" itemprop="datePublished" title="2018-11-04 16:12">2018-11-04 16:12</time></a>
+            </p>
+        </div>
+    </header><div class="e-content entry-content">
+    <div>
+<p>普通的处理文件是要全部吧文件内容读入内存，但是有内存和时间限制，可以修改php.ini,但是还和电脑的内存大小有关系；</p>
+<pre class="literal-block">
+&lt;?php
+   ini_set('memory_limit', '-1');
+   $file = 'access.log';
+   $data = file($file);
+   $line = $data[count($data) - 1];
+   echo $line;
+?&gt;
+</pre>
+<p>还有一个方法就是使用fseek读取，通过指针操作，不用一次性全部读入内存，可以一行一行的读取。</p>
+<pre class="literal-block">
+&lt;?php
+  $fp = fopen($file, "r");
+  $line = 10;
+  $pos = -2;
+  $t = " ";
+  $data = "";
+  while ($line &gt; 0)
+  {
+      while ($t != "\n")
+      {
+          fseek($fp, $pos, SEEK_END);
+          $t = fgetc($fp);
+          $pos--;
+      }
+      $t = " ";
+      $data .= fgets($fp);
+      $line--;
+  }
+  fclose($fp);
+  echo $data
+  ?&gt;
+</pre>
+<p>或者一段一段的读取</p>
+<pre class="literal-block">
+&lt;?php
+  $fp = fopen($file, "r");
+  $num = 10;
+  $chunk = 4096;
+  $fs = sprintf("%u", filesize($file));
+  $max = (intval($fs) == PHP_INT_MAX) ? PHP_INT_MAX : filesize($file);
+  for ($len = 0; $len &lt; $max; $len += $chunk)
+  {
+      $seekSize = ($max - $len &gt; $chunk) ? $chunk : $max - $len;
+      fseek($fp, ($len + $seekSize) * -1, SEEK_END);
+      $readData = fread($fp, $seekSize) . $readData;
+      if (substr_count($readData, "\n") &gt;= $num + 1)
+      {
+          preg_match("!(.*?\n){" . ($num) . "}$!", $readData, $match);
+          $data = $match[0];
+          break;
+      }
+  }
+  fclose($fp);
+  echo $data;
+  ?&gt;
+</pre>
+<p>平时统计相关文件比如nginx的accesslog,可以使用系统命令awk或者grep或者tail等等，效率是很快的</p>
+<p>统计每小时的请求数,top100的时间点(精确到小时)</p>
+<pre class="literal-block">
+awk '{print $4}' access.log |cut -c 14-15|sort|uniq -c|sort -nr|head -n 100
+</pre>
+<p>统计蜘蛛抓取次数</p>
+<pre class="literal-block">
+grep 'Baiduspider' access.log |wc -l
+</pre>
+<p>tail</p>
+<pre class="literal-block">
+&lt;?php
+   $file = 'access.log';
+   $file = escapeshellarg($file); // 对命令行参数进行安全转义
+   $line = `tail -n 1 $file`;
+   echo $line;
+?&gt;
+</pre>
+</div>
+    </div>
+    </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/randhe-mt_rand/" class="u-url">rand和mt_rand</a></h1>
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                dawnkeyan
+            </span></p>
+            <p class="dateline">
+            <a href="posts/randhe-mt_rand/" rel="bookmark">
+            <time class="published dt-published" datetime="2018-11-04T15:18:52+08:00" itemprop="datePublished" title="2018-11-04 15:18">2018-11-04 15:18</time></a>
+            </p>
+        </div>
+    </header><div class="e-content entry-content">
+    <p>rand默认使用libc生成器，具有一些不确定和未知的弹性而慢；而mt_rand使用Mersener Twister算法生成随机数，速度比rand快4倍。</p>
+    </div>
+    </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/she-ji-mo-shi/" class="u-url">设计模式</a></h1>
         <div class="metadata">
             <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
                 dawnkeyan
@@ -90,9 +193,8 @@
 <dd>编译期间就定好了有哪些类，如果有新需求，需要修改工厂类</dd>
 </dl>
 <div class="figure">
-<img alt="https://img3.doubanio.com/view/note/l/public/p55239996.jpg" src="https://img3.doubanio.com/view/note/l/public/p55239996.jpg">
+<img alt="uml图" src="https://img3.doubanio.com/view/note/l/public/p55239996.jpg">
 </div>
-<p>ArchitectureFactory</p>
 <pre class="literal-block">
 &lt;?php
 /**
@@ -232,11 +334,24 @@ class Test{
 <p>和简单工厂的区别是静态工厂是在工厂类中的静态方法实例化对象</p>
 <ul class="simple">
 <li>建造者模式</li>
+</ul>
+<p>和抽象工厂的区别就是，建造者模式构建对象由导演类构建，而抽象工厂由工厂类构造；建造者模式更适用于复杂的对象的构建</p>
+<ul class="simple">
 <li>多例模式</li>
+</ul>
+<p>需要多个对象，比如各种数据库的链接</p>
+<ul class="simple">
 <li>单例模式</li>
+</ul>
+<p>保证整个生命周期只有一个实例对象。比如一种数据库链接、锁定文件等等</p>
+<ul class="simple">
 <li>对象池模式</li>
+</ul>
+<p>对象用完归还对象池类，而不是销毁，适用于实例化代价比较大的前景，因为对象放着也是需要消耗内存的</p>
+<ul class="simple">
 <li>原型模式</li>
 </ul>
+<p>通过类的克隆方法创建对象，而不是new,但是类的克隆方法是私有的就无法克隆了；使用场景是需要的类不是最初的类，而是运行中某一种状态下的类</p>
 </div>
 <div class="section" id="id2">
 <h2>结构型</h2>
@@ -496,7 +611,7 @@ base_sort($arr);
 var_dump($arr);
 </pre>
 <div class="figure">
-<img alt="https://img1.doubanio.com/view/note/l/public/p52272377.jpg" src="https://img1.doubanio.com/view/note/l/public/p52272377.jpg">
+<img alt="复杂度比较" src="https://img1.doubanio.com/view/note/l/public/p52272377.jpg">
 </div>
 <p>二分查找（时间复杂度log2n）:</p>
 <pre class="literal-block">

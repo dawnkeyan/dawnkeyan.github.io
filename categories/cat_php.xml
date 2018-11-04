@@ -1,5 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>晚起的虫子 (关于文章 php)</title><link>https://dawnkeyan.github.io</link><description></description><atom:link href="https://dawnkeyan.github.io/categories/cat_php.xml" rel="self" type="application/rss+xml"></atom:link><language>zh_cn</language><copyright>Contents © 2018 &lt;a href="mailto:dawnkeyan@126.com"&gt;dawnkeyan&lt;/a&gt; </copyright><lastBuildDate>Fri, 26 Oct 2018 03:46:04 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>php实现经典算法</title><link>https://dawnkeyan.github.io/posts/phpshi-xian-jing-dian-suan-fa/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;冒泡:&lt;/p&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>晚起的虫子 (关于文章 php)</title><link>https://dawnkeyan.github.io</link><description></description><atom:link href="https://dawnkeyan.github.io/categories/cat_php.xml" rel="self" type="application/rss+xml"></atom:link><language>zh_cn</language><copyright>Contents © 2018 &lt;a href="mailto:dawnkeyan@126.com"&gt;dawnkeyan&lt;/a&gt; </copyright><lastBuildDate>Sun, 04 Nov 2018 08:58:58 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>php处理大文件</title><link>https://dawnkeyan.github.io/posts/phpchu-li-da-wen-jian/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;普通的处理文件是要全部吧文件内容读入内存，但是有内存和时间限制，可以修改php.ini,但是还和电脑的内存大小有关系；&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+&amp;lt;?php
+   ini_set('memory_limit', '-1');
+   $file = 'access.log';
+   $data = file($file);
+   $line = $data[count($data) - 1];
+   echo $line;
+?&amp;gt;
+&lt;/pre&gt;
+&lt;p&gt;还有一个方法就是使用fseek读取，通过指针操作，不用一次性全部读入内存，可以一行一行的读取。&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+&amp;lt;?php
+  $fp = fopen($file, "r");
+  $line = 10;
+  $pos = -2;
+  $t = " ";
+  $data = "";
+  while ($line &amp;gt; 0)
+  {
+      while ($t != "\n")
+      {
+          fseek($fp, $pos, SEEK_END);
+          $t = fgetc($fp);
+          $pos--;
+      }
+      $t = " ";
+      $data .= fgets($fp);
+      $line--;
+  }
+  fclose($fp);
+  echo $data
+  ?&amp;gt;
+&lt;/pre&gt;
+&lt;p&gt;或者一段一段的读取&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+&amp;lt;?php
+  $fp = fopen($file, "r");
+  $num = 10;
+  $chunk = 4096;
+  $fs = sprintf("%u", filesize($file));
+  $max = (intval($fs) == PHP_INT_MAX) ? PHP_INT_MAX : filesize($file);
+  for ($len = 0; $len &amp;lt; $max; $len += $chunk)
+  {
+      $seekSize = ($max - $len &amp;gt; $chunk) ? $chunk : $max - $len;
+      fseek($fp, ($len + $seekSize) * -1, SEEK_END);
+      $readData = fread($fp, $seekSize) . $readData;
+      if (substr_count($readData, "\n") &amp;gt;= $num + 1)
+      {
+          preg_match("!(.*?\n){" . ($num) . "}$!", $readData, $match);
+          $data = $match[0];
+          break;
+      }
+  }
+  fclose($fp);
+  echo $data;
+  ?&amp;gt;
+&lt;/pre&gt;
+&lt;p&gt;平时统计相关文件比如nginx的accesslog,可以使用系统命令awk或者grep或者tail等等，效率是很快的&lt;/p&gt;
+&lt;p&gt;统计每小时的请求数,top100的时间点(精确到小时)&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+awk '{print $4}' access.log |cut -c 14-15|sort|uniq -c|sort -nr|head -n 100
+&lt;/pre&gt;
+&lt;p&gt;统计蜘蛛抓取次数&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+grep 'Baiduspider' access.log |wc -l
+&lt;/pre&gt;
+&lt;p&gt;tail&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+&amp;lt;?php
+   $file = 'access.log';
+   $file = escapeshellarg($file); // 对命令行参数进行安全转义
+   $line = `tail -n 1 $file`;
+   echo $line;
+?&amp;gt;
+&lt;/pre&gt;&lt;/div&gt;</description><category>php</category><guid>https://dawnkeyan.github.io/posts/phpchu-li-da-wen-jian/</guid><pubDate>Sun, 04 Nov 2018 08:12:59 GMT</pubDate></item><item><title>rand和mt_rand</title><link>https://dawnkeyan.github.io/posts/randhe-mt_rand/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;p&gt;rand默认使用libc生成器，具有一些不确定和未知的弹性而慢；而mt_rand使用Mersener Twister算法生成随机数，速度比rand快4倍。&lt;/p&gt;</description><category>php</category><guid>https://dawnkeyan.github.io/posts/randhe-mt_rand/</guid><pubDate>Sun, 04 Nov 2018 07:18:52 GMT</pubDate></item><item><title>php实现经典算法</title><link>https://dawnkeyan.github.io/posts/phpshi-xian-jing-dian-suan-fa/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;冒泡:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
 function bub_sort($array){
       $n = count($array);
@@ -202,7 +277,7 @@ base_sort($arr);
 var_dump($arr);
 &lt;/pre&gt;
 &lt;div class="figure"&gt;
-&lt;img alt="https://img1.doubanio.com/view/note/l/public/p52272377.jpg" src="https://img1.doubanio.com/view/note/l/public/p52272377.jpg"&gt;
+&lt;img alt="复杂度比较" src="https://img1.doubanio.com/view/note/l/public/p52272377.jpg"&gt;
 &lt;/div&gt;
 &lt;p&gt;二分查找（时间复杂度log2n）:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;

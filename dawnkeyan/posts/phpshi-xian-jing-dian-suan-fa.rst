@@ -220,7 +220,7 @@
 
 
 .. figure:: https://img1.doubanio.com/view/note/l/public/p52272377.jpg
-
+   :alt: 复杂度比较
 
 
 二分查找（时间复杂度log2n）:

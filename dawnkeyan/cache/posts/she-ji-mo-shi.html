@@ -10,9 +10,8 @@
 <dd>编译期间就定好了有哪些类，如果有新需求，需要修改工厂类</dd>
 </dl>
 <div class="figure">
-<img alt="https://img3.doubanio.com/view/note/l/public/p55239996.jpg" src="https://img3.doubanio.com/view/note/l/public/p55239996.jpg" />
+<img alt="uml图" src="https://img3.doubanio.com/view/note/l/public/p55239996.jpg" />
 </div>
-<p>ArchitectureFactory</p>
 <pre class="literal-block">
 &lt;?php
 /**
@@ -152,11 +151,24 @@ class Test{
 <p>和简单工厂的区别是静态工厂是在工厂类中的静态方法实例化对象</p>
 <ul class="simple">
 <li>建造者模式</li>
+</ul>
+<p>和抽象工厂的区别就是，建造者模式构建对象由导演类构建，而抽象工厂由工厂类构造；建造者模式更适用于复杂的对象的构建</p>
+<ul class="simple">
 <li>多例模式</li>
+</ul>
+<p>需要多个对象，比如各种数据库的链接</p>
+<ul class="simple">
 <li>单例模式</li>
+</ul>
+<p>保证整个生命周期只有一个实例对象。比如一种数据库链接、锁定文件等等</p>
+<ul class="simple">
 <li>对象池模式</li>
+</ul>
+<p>对象用完归还对象池类，而不是销毁，适用于实例化代价比较大的前景，因为对象放着也是需要消耗内存的</p>
+<ul class="simple">
 <li>原型模式</li>
 </ul>
+<p>通过类的克隆方法创建对象，而不是new,但是类的克隆方法是私有的就无法克隆了；使用场景是需要的类不是最初的类，而是运行中某一种状态下的类</p>
 </div>
 <div class="section" id="id2">
 <h1>结构型</h1>
