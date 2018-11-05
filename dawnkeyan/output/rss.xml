@@ -1,5 +1,504 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>晚起的虫子</title><link>https://dawnkeyan.github.io</link><description>工作中的点点滴滴</description><atom:link href="https://dawnkeyan.github.io/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>zh_cn</language><copyright>Contents © 2018 &lt;a href="mailto:dawnkeyan@126.com"&gt;dawnkeyan&lt;/a&gt; </copyright><lastBuildDate>Sun, 04 Nov 2018 08:58:58 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>php处理大文件</title><link>https://dawnkeyan.github.io/posts/phpchu-li-da-wen-jian/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;普通的处理文件是要全部吧文件内容读入内存，但是有内存和时间限制，可以修改php.ini,但是还和电脑的内存大小有关系；&lt;/p&gt;
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>晚起的虫子</title><link>https://dawnkeyan.github.io</link><description>工作中的点点滴滴</description><atom:link href="https://dawnkeyan.github.io/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>zh_cn</language><copyright>Contents © 2018 &lt;a href="mailto:dawnkeyan@126.com"&gt;dawnkeyan&lt;/a&gt; </copyright><lastBuildDate>Mon, 05 Nov 2018 07:15:12 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>php把数据转成csv传到solr</title><link>https://dawnkeyan.github.io/posts/phpba-shu-ju-zhuan-cheng-csvchuan-dao-solr/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;pre class="literal-block"&gt;
+$field = ['Peter','Griffin','Oslo','Norway','id'];
+$data = [
+                  ['Peter'=&amp;gt;43,'Griffin'=&amp;gt;4,'Oslo'=&amp;gt;32,'Norway'=&amp;gt;23,'id'=&amp;gt;1],//主键值必须有，比如这id等于1
+                  ['Peter'=&amp;gt;43,'Griffin'=&amp;gt;5,'Oslo'=&amp;gt;32,'Norway'=&amp;gt;23,'id'=&amp;gt;12],
+                  ['Peter'=&amp;gt;43,'Oslo'=&amp;gt;32,'Norway'=&amp;gt;23,'id'=&amp;gt;51],
+                  ['Peter'=&amp;gt;43,'Griffin'=&amp;gt;6,'Oslo'=&amp;gt;32,'Norway'=&amp;gt;23,'id'=&amp;gt;31],
+              ];
+$core = 'test_update';
+$csv_result = [$field];
+
+      //处理数据，给不存在的值赋空值，不然CSV行列不对应
+      foreach ($field as $files_value){
+          foreach ($data as $data_key=&amp;gt;$data_value){
+              $csv_result[$data_key+1][$files_value] = $data_value[$files_value];
+          }
+      }
+
+
+      $file_name = time().$core.rand().'.csv';
+
+      $file = fopen($file_name,"w") or exit("Unable to open file!");;
+
+      foreach ($csv_result as $line)
+      {
+          $line = implode(',',$line);
+          fputcsv($file,split(',',$line));
+      }
+      fclose($file);
+
+      //获取当前的路径
+      exec('pwd',$address);
+
+      //上传到solr
+      exec('curl http://127.0.0.1:8984/solr/'.$core.'/update?commit=true --data-binary @'.$address[0].'/'.$file_name.' -H \'Content-type:text/csv; charset=utf-8\'',$result);
+      //删除生成的文件
+      unlink($file_name);
+      $result = implode('',$result);
+
+      //上传成功
+      if(strpos($result,'&amp;lt;int name="status"&amp;gt;0&amp;lt;/int&amp;gt;')){
+          return ['status'=&amp;gt;true];
+      }
+      else{//上传失败
+          //存日志到mongo
+          $MongoModel = new MongoModel('集合', '', 'DB_MONGO');
+          $MongoModel-&amp;gt;add(['core'=&amp;gt;$core,'msg'=&amp;gt;$result,'field'=&amp;gt;$field,'data'=&amp;gt;$data]);
+          return ['status'=&amp;gt;false,'msg'=&amp;gt;$result];
+      }在这里书写你的文章。
+&lt;/pre&gt;</description><category>php</category><category>solr</category><category>搜索</category><guid>https://dawnkeyan.github.io/posts/phpba-shu-ju-zhuan-cheng-csvchuan-dao-solr/</guid><pubDate>Mon, 05 Nov 2018 07:10:03 GMT</pubDate></item><item><title>centos搭建PHP环境</title><link>https://dawnkeyan.github.io/posts/centosda-jian-phphuan-jing/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;版权归作者所有，任何形式转载请联系作者。
+作者：清晓（来自豆瓣）
+来源：&lt;a class="reference external" href="https://www.douban.com/note/683279363/"&gt;https://www.douban.com/note/683279363/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;操作系统: CentOS 7.4 64位&lt;/p&gt;
+&lt;p&gt;创建组和账号&lt;/p&gt;
+&lt;p&gt;groupadd 组名
+useradd -g 组名-s /bin/bash 账号
+nginx（1.14.0）&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://nginx.org/en/linux_packages.html#stable"&gt;https://nginx.org/en/linux_packages.html#stable&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;vim /etc/yum.repos.d/nginx.repo&lt;/p&gt;
+&lt;p&gt;[nginx]
+name=nginx repo
+baseurl=http://nginx.org/packages/centos/7/$basearch/
+gpgcheck=0
+enabled=1
+sudo yum install nginx&lt;/p&gt;
+&lt;p&gt;站点配置文件位置 /etc/nginx&lt;/p&gt;
+&lt;p&gt;mysql（5.6.4）&lt;/p&gt;
+&lt;p&gt;yum install mysql  mysql-devel mysql-server&lt;/p&gt;
+&lt;p&gt;但是centost 安装mysql-server 会找不到包&lt;/p&gt;
+&lt;p&gt;办法：官网下载安装mysql-server&lt;/p&gt;
+&lt;p&gt;wget &lt;a class="reference external" href="http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm"&gt;http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;rpm -ivh mysql-community-release-el7-5.noarch.rpm&lt;/p&gt;
+&lt;p&gt;yum install mysql-community-server&lt;/p&gt;
+&lt;p&gt;安装好后重启  service mysqld restart&lt;/p&gt;
+&lt;p&gt;进入mysql mysql -u root&lt;/p&gt;
+&lt;p&gt;设置root密码&lt;/p&gt;
+&lt;p&gt;set password for &lt;a class="reference external" href="mailto:'root'@'localhost"&gt;'root'@'localhost&lt;/a&gt;' =password('xxxx');&lt;/p&gt;
+&lt;p&gt;修改配置文件&lt;/p&gt;
+&lt;p&gt;vim /etc/my.cnf&lt;/p&gt;
+&lt;p&gt;进入mysql&lt;/p&gt;
+&lt;p&gt;创建中小学账号 CREATE USER 'user'@'%' IDENTIFIED BY 'password'; （%可访问IP，%表示全部可访问）&lt;/p&gt;
+&lt;p&gt;创建数据库 create database 数据库名&lt;/p&gt;
+&lt;p&gt;授权账号数据库 grant all privileges on 数据库名.* to 账号@'%' identified by '密码';&lt;/p&gt;
+&lt;p&gt;刷新系统权限表 flush privileges;&lt;/p&gt;
+&lt;p&gt;可以使用的Navicat传输数据&lt;/p&gt;
+&lt;p&gt;mongo（3.6.x）&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://docs.mongodb.com/manual/tutorial/install-mongodb-on-red-hat/index.html"&gt;https://docs.mongodb.com/manual/tutorial/install-mongodb-on-red-hat/index.html&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;vim /etc/yum.repos.d/mongodb-org-3.6.repo&lt;/p&gt;
+&lt;p&gt;[mongodb-org-3.6]
+name=MongoDB Repository
+baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/3.6/x86_64/
+gpgcheck=1
+enabled=1
+gpgkey=https://www.mongodb.org/static/pgp/server-3.6.asc
+yum install -y mongodb-org&lt;/p&gt;
+&lt;p&gt;配置文件位置/etc/mongod.conf&lt;/p&gt;
+&lt;p&gt;MongoDB默认将数据文件存储在/var/lib/mongo目录，默认日志文件在/var/log/mongodb中。如果要修改, 可以把这两个文件放在空间大的硬盘 ，但是不要修改 /etc/mongod.conf ，我试过无法重启，应该是建软链接。&lt;/p&gt;
+&lt;p&gt;然后重启mongo&lt;/p&gt;
+&lt;p&gt;生成软连接&lt;/p&gt;
+&lt;p&gt;ln -s&lt;/p&gt;
+&lt;p&gt;相关命令service mongod start|stop|restart&lt;/p&gt;
+&lt;p&gt;mongo创建账号&lt;/p&gt;
+&lt;p&gt;use admin&lt;/p&gt;
+&lt;p&gt;db.createUser(&lt;/p&gt;
+&lt;p&gt;{&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;user: "root",&lt;/p&gt;
+&lt;p&gt;pwd: "密码",&lt;/p&gt;
+&lt;p&gt;roles: [ { role: "userAdminAnyDatabase", db: "admin" } ]&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;}&lt;/p&gt;
+&lt;p&gt;);&lt;/p&gt;
+&lt;p&gt;创建普通账号&lt;/p&gt;
+&lt;p&gt;use 数据库&lt;/p&gt;
+&lt;p&gt;db.createUser(&lt;/p&gt;
+&lt;p&gt;{&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;user: "username",&lt;/p&gt;
+&lt;p&gt;pwd: "password",&lt;/p&gt;
+&lt;p&gt;roles: [ { role: "readWrite", db: "数据库名" } ]&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;}&lt;/p&gt;
+&lt;p&gt;);&lt;/p&gt;
+&lt;p&gt;修改密码db.changeUserPassword('账号','密码');&lt;/p&gt;
+&lt;p&gt;还原数据mongorestore -d db 数据库名 数据库文件&lt;/p&gt;
+&lt;p&gt;卸载yum erase $(rpm -qa | grep mongodb-org)&lt;/p&gt;
+&lt;p&gt;删除数据库文件和日志文件&lt;/p&gt;
+&lt;p&gt;PHP（5.6.36）&lt;/p&gt;
+&lt;p&gt;1.检查当前安装的PHP包&lt;/p&gt;
+&lt;p&gt;yum list installed | grep php&lt;/p&gt;
+&lt;p&gt;如果有安装的PHP包，先删除他们&lt;/p&gt;
+&lt;p&gt;yum remove php.x86_64 php-cli.x86_64 php-common.x86_64 php-gd.x86_64 php-ldap.x86_64 php-mbstring.x86_64 php-mcrypt.x86_64 php-mysql.x86_64 php-pdo.x86_64&lt;/p&gt;
+&lt;p&gt;2.加载安装包&lt;/p&gt;
+&lt;p&gt;Centos 5.X&lt;/p&gt;
+&lt;blockquote&gt;
+rpm -Uvh &lt;a class="reference external" href="http://mirror.webtatic.com/yum/el5/latest.rpm"&gt;http://mirror.webtatic.com/yum/el5/latest.rpm&lt;/a&gt;&lt;/blockquote&gt;
+&lt;p&gt;CentOs 6.x&lt;/p&gt;
+&lt;blockquote&gt;
+rpm -Uvh &lt;a class="reference external" href="http://mirror.webtatic.com/yum/el6/latest.rpm"&gt;http://mirror.webtatic.com/yum/el6/latest.rpm&lt;/a&gt;&lt;/blockquote&gt;
+&lt;p&gt;CentOs 7.X&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;rpm -Uvh &lt;a class="reference external" href="https://mirror.webtatic.com/yum/el7/epel-release.rpm"&gt;https://mirror.webtatic.com/yum/el7/epel-release.rpm&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;rpm -Uvh &lt;a class="reference external" href="https://mirror.webtatic.com/yum/el7/webtatic-release.rpm"&gt;https://mirror.webtatic.com/yum/el7/webtatic-release.rpm&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;如果想删除上面安装的包，重新安装&lt;/p&gt;
+&lt;p&gt;rpm -qa | grep webstatic&lt;/p&gt;
+&lt;p&gt;rpm -e  上面搜索到的包即可&lt;/p&gt;
+&lt;p&gt;3.运行yum install&lt;/p&gt;
+&lt;p&gt;yum install php56w.x86_64 php56w-cli.x86_64 php56w-common.x86_64 php56w-gd.x86_64 php56w-ldap.x86_64 php56w-mbstring.x86_64 php56w-mcrypt.x86_64 php56w-mysql.x86_64 php56w-pdo.x86_64&lt;/p&gt;
+&lt;p&gt;注：如果想用其他版本。把所有56改成其他的&lt;/p&gt;
+&lt;p&gt;4.安装php-fpm&lt;/p&gt;
+&lt;p&gt;yum install php56w-fpm (其他版本对应改掉56)&lt;/p&gt;
+&lt;p&gt;[&lt;a class="reference external" href="mailto:root@zhishu"&gt;root@zhishu&lt;/a&gt; /]# whereis php  （查看安装路径）&lt;/p&gt;
+&lt;p&gt;php: /usr/bin/php /usr/lib64/php /etc/php.d /etc/php.ini /usr/share/php /usr/share/man/man1/php.1.gz&lt;/p&gt;
+&lt;p&gt;5.安装&lt;/p&gt;
+&lt;p&gt;yum install php56w-bcmath&lt;/p&gt;
+&lt;p&gt;5.安装mongodb扩展&lt;/p&gt;
+&lt;p&gt;先执行命令php -m 查看是否已有&lt;/p&gt;
+&lt;p&gt;mkdir /usr/local/php-mongodb&lt;/p&gt;
+&lt;p&gt;cd usr/local/php-mongodb/&lt;/p&gt;
+&lt;p&gt;wget &lt;a class="reference external" href="http://pecl.php.net/get/mongo-1.6.12.tgz"&gt;http://pecl.php.net/get/mongo-1.6.12.tgz&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;tar xvzf mongo-1.6.12.tgz&lt;/p&gt;
+&lt;p&gt;cd mongo-1.6.12&lt;/p&gt;
+&lt;p&gt;phpize（如果没有php-devel会报错The php-devel package is required for use of this command.  安装php-devel  ：yum install php56w-devel）&lt;/p&gt;
+&lt;p&gt;./configure --with-php-config=/usr/bin/php-config&lt;/p&gt;
+&lt;p&gt;make &amp;amp;&amp;amp; make install&lt;/p&gt;
+&lt;p&gt;在php.ini文件中添加extension=mongo.so&lt;/p&gt;
+&lt;p&gt;extension=mongo.so&lt;/p&gt;
+&lt;p&gt;重启php-fpm或服务器&lt;/p&gt;
+&lt;p&gt;systemctl restart php-fpm&lt;/p&gt;
+&lt;p&gt;修改配置&lt;/p&gt;
+&lt;p&gt;vim /etc/php-fpm.d/www.conf&lt;/p&gt;
+&lt;p&gt;svn&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://tecadmin.net/install-svn-1-9-on-centos/"&gt;https://tecadmin.net/install-svn-1-9-on-centos/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;vim /etc/yum.repos.d/wandisco-svn.repo
+[WandiscoSVN]
+name=Wandisco SVN Repo
+baseurl=http://opensource.wandisco.com/centos/$releasever/svn-1.10/RPMS/$basearch/
+enabled=1
+gpgcheck=0
+yum -y install subversion&lt;/p&gt;
+&lt;p&gt;安装Java&lt;/p&gt;
+&lt;p&gt;下载安装包（也可以使用其他下载文件方式，拷过来的solr里如果已经有了就不用下载），因为认证问题，不能直接wget, 打开此页面 ，勾上Accept License Agreement，然后点击jdk-8u161-linux-x64.rpm,在下载页面获取文件下载地址，比如我本次的是http://download.oracle.com/otn-pub/java/jdk/8u161-b12/2f38c3b165be4555a1fa6e98c45e0808/jdk-8u161-linux-x64.rpm?AuthParam=1519538436_f233fa0ab4a9cba466bec47d360db37a，然后在/down目录下wget此地址。然后再重命名文件
+mv jdk-8u161-linux-x64.rpm?AuthParam=1519538436_f233fa0ab4a9cba466bec47d360db37a jdk-8u161-linux-x64.rpm
+安装
+rpm -ivh jdk-8u161-linux-x64.rpm
+配置系统环境变量，在/etc/profile里追加
+JAVA_HOME=/usr/java/jdk1.8.0_161
+JRE_HOME=$JAVA_HOME/jre
+CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib
+PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$PATH
+export PATH JAVA_HOME CLASSPATH
+生效配置，并检验结果
+source /etc/profile
+java -version
+nodejs (8.x)&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://nodejs.org/en/download/package-manager/#enterprise-linux-and-fedora"&gt;https://nodejs.org/en/download/package-manager/#enterprise-linux-and-fedora&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;curl --silent --location &lt;a class="reference external" href="https://rpm.nodesource.com/setup_8.x"&gt;https://rpm.nodesource.com/setup_8.x&lt;/a&gt; | sudo bash -
+sudo yum -y install nodejs
+git (2.x)&lt;/p&gt;
+&lt;p&gt;通过IUS安装git 最新版&lt;/p&gt;
+&lt;p&gt;1.安装ius repository&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://ius.io/GettingStarted/"&gt;https://ius.io/GettingStarted/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;yum install &lt;a class="reference external" href="https://centos7.iuscommunity.org/ius-release.rpm"&gt;https://centos7.iuscommunity.org/ius-release.rpm&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;2.安装yum-plugin-replace&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://ius.io/Usage/#installing-ius-packages"&gt;https://ius.io/Usage/#installing-ius-packages&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;yum install yum-plugin-replace&lt;/p&gt;
+&lt;p&gt;3.安装git2u 替换老的git&lt;/p&gt;
+&lt;p&gt;yum replace git --replace-with git2u&lt;/p&gt;
+&lt;p&gt;openvpn(2.4.x)&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="http://git.dev.backustech.com/apps/wiki/wikis/ubuntu16-%E5%AE%89%E8%A3%85-openvpn-2.4"&gt;http://git.dev.backustech.com/apps/wiki/wikis/ubuntu16-%E5%AE%89%E8%A3%85-openvpn-2.4&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;yum install openvpn&lt;/p&gt;
+&lt;p&gt;加高效云盘：&lt;/p&gt;
+&lt;p&gt;1.在阿里云创建云盘，然后挂载云盘&lt;/p&gt;
+&lt;p&gt;2.登录服务器执行fdisk -l 可以看到刚刚买的硬盘&lt;/p&gt;
+&lt;p&gt;3.对这块硬盘进行分区 fdisk /dev/vdb（/dev/vdb可能不一样）&lt;/p&gt;
+&lt;p&gt;4.然后执行fdisk -l 可以看到看到新的分区&lt;/p&gt;
+&lt;p&gt;5.格式化新分区（使用ext3扩展文件系统）&lt;/p&gt;
+&lt;p&gt;mkfs.ext3 /dev/vdb1&lt;/p&gt;
+&lt;p&gt;6.创建挂载目录mkdir data&lt;/p&gt;
+&lt;p&gt;7.挂载分区到目录&lt;/p&gt;
+&lt;p&gt;mount /dev/vdb1 /data&lt;/p&gt;
+&lt;p&gt;8.设置开机自动挂载 vim /etc/fstab&lt;/p&gt;
+&lt;p&gt;在文件最后加入/dev/vdb1        /data                   ext3  defaults    0 0&lt;/p&gt;
+&lt;p&gt;9.然后重启reboot（线上不要随便重启服务器，考虑实际情况可不可以重启）&lt;/p&gt;
+&lt;p&gt;10.用df就可以看到了&lt;/p&gt;
+&lt;p&gt;安装crontab&lt;/p&gt;
+&lt;p&gt;yum -y install vixie-cron&lt;/p&gt;&lt;/div&gt;</description><category>centos</category><category>php</category><guid>https://dawnkeyan.github.io/posts/centosda-jian-phphuan-jing/</guid><pubDate>Mon, 05 Nov 2018 07:07:02 GMT</pubDate></item><item><title>solr删除数据</title><link>https://dawnkeyan.github.io/posts/solrshan-chu-shu-ju/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;方法一 在solr页面选择对应的core，然后点击Document然后Document Type选择XML,然后在Document(s)框内填)&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+&amp;lt;delete&amp;gt;&amp;lt;query&amp;gt;*:*&amp;lt;/query&amp;gt;&amp;lt;/delete&amp;gt; #*:*可以改成其他条件
+&amp;lt;commit/&amp;gt;
+&lt;/pre&gt;
+&lt;p&gt;方法二 post 请求http://ip:端口/solr/core/update?wt=json，&amp;lt;query&amp;gt;id:1&amp;lt;/query&amp;gt;里的条件可以修改，post参数&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+&amp;lt;add commitWithin="1000" overwrite="true"&amp;gt;
+  &amp;lt;delete&amp;gt;
+      &amp;lt;query&amp;gt;id:1&amp;lt;/query&amp;gt;
+  &amp;lt;/delete&amp;gt;
+  &amp;lt;commit&amp;gt;&amp;lt;/commit&amp;gt;
+&amp;lt;/add&amp;gt;
+&lt;/pre&gt;&lt;/div&gt;</description><category>solr</category><category>搜索</category><guid>https://dawnkeyan.github.io/posts/solrshan-chu-shu-ju/</guid><pubDate>Mon, 05 Nov 2018 07:03:22 GMT</pubDate></item><item><title>solr导mongo数据流程</title><link>https://dawnkeyan.github.io/posts/solrdao-mongoshu-ju-liu-cheng/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;1.进入/home/solr/solr-6.6.2（solr安装路径）创建core，比如创建lab_cloud_periodical bin/solr create -c core名 -p 端口号 -force（root用户需要加）&lt;/p&gt;
+&lt;p&gt;2.导出mongodb csv 比如导出lab，-f是需要放在solr的且此集合有的字段 mongoexport --username 用户名 --password 密码 --type=csv -f _id,title -d 数据库 -c 集合 -o /home/文件名.csv&lt;/p&gt;
+&lt;p&gt;3.把数据传到solrcurl &lt;a class="reference external" href="http://ip"&gt;http://ip&lt;/a&gt;:端口号/solr/core/update?commit=true --data-binary @/home/文件名.csv -H 'Content-type:text/csv; charset=utf-8'&lt;/p&gt;
+&lt;p&gt;问题： 可能执行着会报错，那是solr会给字段定义类型，但你的某些值有不是那个类型，比如给你定义了int,然后你传的值是字符串。解决办法就是去把int改成string，位置在vim /home/solr/solr-6.6.2/server/solr/lab（写core名）/conf/managed-schema,比如这的tid(有些是默认给你设置了时间，但你传入的不是时间格式)，这是我遇到的问题，有些配置想改都可以改的。然后重新导入数据，还有就是主键可以重新设置，修改&amp;lt;uniqueKey&amp;gt;id&amp;lt;/uniqueKey&amp;gt;&lt;/p&gt;
+&lt;p&gt;4.如果需要删除数据参考：&lt;a class="reference external" href="http://blog.csdn.net/lbf5210/article/details/51207043"&gt;http://blog.csdn.net/lbf5210/article/details/51207043&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;5.查询，页面参数解释：&lt;a class="reference external" href="http://blog.csdn.net/zhufenglonglove/article/details/51518846"&gt;http://blog.csdn.net/zhufenglonglove/article/details/51518846&lt;/a&gt; 浏览器进入http://ip:端口号/solr&lt;/p&gt;
+&lt;p&gt;6.目前能弄的mongo实时更新是一个core记录整个库，一个集合一个core不知道咋弄。&lt;/p&gt;&lt;/div&gt;</description><category>mongo</category><category>solr</category><category>搜索</category><guid>https://dawnkeyan.github.io/posts/solrdao-mongoshu-ju-liu-cheng/</guid><pubDate>Mon, 05 Nov 2018 07:01:05 GMT</pubDate></item><item><title>centos 安装solr</title><link>https://dawnkeyan.github.io/posts/centos-an-zhuang-solr/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;1.安装jdk&lt;/p&gt;
+&lt;p&gt;下载安装包（也可以使用其他下载文件方式），因为认证问题，不能直接wget, 打开此页面 ，在Java SE Development Kit 8u161勾上Accept License Agreement，然后点击jdk-8u161-linux-x64.rpm,在下载页面获取文件下载地址，比如我本次的是http://download.oracle.com/otn-pub/java/jdk/8u161-b12/2f38c3b165be4555a1fa6e98c45e0808/jdk-8u161-linux-x64.rpm?AuthParam=1519538436_f233fa0ab4a9cba466bec47d360db37a，然后在/down目录下wget此地址。然后再重命名文件
+mv jdk-8u161-linux-x64.rpm?AuthParam=1519538436_f233fa0ab4a9cba466bec47d360db37a jdk-8u161-linux-x64.rpm&lt;/p&gt;
+&lt;p&gt;安装
+rpm -ivh jdk-8u161-linux-x64.rpm&lt;/p&gt;
+&lt;p&gt;配置系统环境变量，在/etc/profile里追加&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+JAVA_HOME=/usr/java/jdk1.8.0_161
+JRE_HOME=$JAVA_HOME/jre
+CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib
+PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$PATH
+export PATH JAVA_HOME CLASSPATH
+&lt;/pre&gt;
+&lt;p&gt;生效配置，并检验结果&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+source /etc/profile
+java -version
+&lt;/pre&gt;
+&lt;p&gt;2.安装solr&lt;/p&gt;
+&lt;p&gt;安装前检测rng-tools及lsof是否正确安装(安装成功输入命令后显示版本号)&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+rpm -qa |grep rng-tools
+rpm -qa |grep lsof
+&lt;/pre&gt;
+&lt;p&gt;若未安装，设备能够联网的情况下，可使用如下命令安装，否则自行下载安装包安装&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+yum install rng-tools
+yum install lsof
+&lt;/pre&gt;
+&lt;p&gt;配置rng-tools&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+echo 'EXTRAOPTIONS="--rng-device /dev/urandom"' &amp;gt;/etc/sysconfig/rngd
+service rngd start
+chkconfig rngd on
+&lt;/pre&gt;
+&lt;p&gt;在down目录下创建solr,下载solr安装包,下载apache-tomcat安装包（如果找不到页面，则在浏览器打开https://tomcat.apache.org/download-80.cgi查看有的版本号，然后修改版本号），然后使用tar -zxvf命令解压两个文件&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+#下载solr安装包
+wget http://mirror.bit.edu.cn/apache/lucene/solr/6.6.2/solr-6.6.2.tgz
+#下载apache-tomcat安装包（如果找不到页面，则在浏览器打开https://tomcat.apache.org/download-80.cgi查看有的版&amp;gt;本号，然后修改版本号）
+wget http://mirror.bit.edu.cn/apache/tomcat/tomcat-8/v8.0.50/bin/apache-tomcat-8.0.50.tar.gz
+&lt;/pre&gt;
+&lt;p&gt;3.配置solr&lt;/p&gt;
+&lt;p&gt;使用tar -zxvf命令解压刚刚下载的solr安装包和下载apache-tomcat安装包&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+tar -zxvf solr-6.6.2.tgz
+tar -zxvf apache-tomcat-8.0.50.tar.gz
+&lt;/pre&gt;
+&lt;p&gt;在solr-6.6.2目录下拷贝dataimporthandler的jar包&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+cp dist/solr-dataimporthandler-* server/solr-webapp/webapp/WEB-INF/lib/
+&lt;/pre&gt;
+&lt;p&gt;在/down/solr目录下载mysql-connector-java-5.1.45安装包&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+wget https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.45.tar.gz
+&lt;/pre&gt;
+&lt;p&gt;解压mysql-connector-java-5.1.45.tar.gz&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+tar -zxvf mysql-connector-java-5.1.45.tar.gz
+&lt;/pre&gt;
+&lt;p&gt;拷贝mysql-connector-java&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+cp mysql-connector-java-5.1.45/mysql-connector-java-5.1.45-bin.jar solr-6.6.2/server/solr-webapp/webapp/WEB-INF/lib/
+&lt;/pre&gt;
+&lt;p&gt;在/down/solr目录下载ikanalyzer安装包&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+wget https://github.com/zxiaofan/ik-analyzer-solr6/releases/download/6.6.0/ikanalyzer-6.6.0.jar
+&lt;/pre&gt;
+&lt;p&gt;解压ikanalyzer&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+jar -xvf ikanalyzer-6.6.0.jar
+&lt;/pre&gt;
+&lt;p&gt;拷贝ikanalyzer&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+cp ikanalyzer-6.6.* solr-6.6.2/server/solr-webapp/webapp/WEB-INF/lib/
+&lt;/pre&gt;
+&lt;p&gt;在/down/solr目录下载pinyin4j&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+wget https://github.com/zxiaofan/ik-analyzer-solr6/releases/download/6.6.0/pinyin4j_IKconfig.zip
+&lt;/pre&gt;
+&lt;p&gt;复制文件&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+unzip pinyin4j_IKconfig.zip -d pinyin4j
+cp pinyin4j/pinyin*.jar solr-6.6.2/server/solr-webapp/webapp/WEB-INF/lib/
+mkdir solr-6.6.2/server/solr-webapp/webapp/WEB-INF/classes
+cp pinyin4j/ext.dic solr-6.6.2/server/solr-webapp/webapp/WEB-INF/classes/
+cp pinyin4j/IKAnalyzer.cfg.xml solr-6.6.2/server/solr-webapp/webapp/WEB-INF/classes/
+cp pinyin4j/stopword.dic solr-6.6.2/server/solr-webapp/webapp/WEB-INF/classes/
+&lt;/pre&gt;
+&lt;p&gt;修改配置solr-6.6.2/server/solr-webapp/webapp/WEB-INF/classes/IKAnalyzer.cfg.xml加入新的内容&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+&amp;lt;!--词典动态更新时间间隔[首次延时,时间间隔]（格式：正整数，单位：分钟）--&amp;gt;
+&amp;lt;entry key="dic_updateMin"&amp;gt;1,1&amp;lt;/entry&amp;gt;
+
+&amp;lt;!--禁用内置主词典main2012.dic（默认false）--&amp;gt;
+&amp;lt;!--&amp;lt;entry key="dicInner_disable"&amp;gt;true&amp;lt;/entry&amp;gt; --&amp;gt;
+&lt;/pre&gt;
+&lt;p&gt;修改时区，修改solr-6.6.2/bin/solr.in.sh中的SOLR_TIMEZONE="UTC+8"&lt;/p&gt;
+&lt;p&gt;4.创建core并配置&lt;/p&gt;
+&lt;p&gt;进入solr-6.6.2目录，执行创建名称为goods的core,如果无法确定实例端口，加上-p 端口号，如果在root用户下启动solr存在风险，要么换个账号，要么加上 -force&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+bin/solr create -c goods -p 8983 -force
+&lt;/pre&gt;
+&lt;p&gt;修改配置：修改server/solr/goods/conf目录下的solrconfig.xml,data-config.xml,managed-schema的文件，没有就新建&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+#solrconfig.xml添加内容（在&amp;lt;/config&amp;gt;之前）
+&amp;lt;requestHandler name="/dataimport" class="org.apache.solr.handler.dataimport.DataImportHandler"&amp;gt;
+  &amp;lt;lst name="defaults"&amp;gt;
+      &amp;lt;str name="config"&amp;gt;data-config.xml&amp;lt;/str&amp;gt;
+  &amp;lt;/lst&amp;gt;
+&amp;lt;/requestHandler&amp;gt;
+
+#data-config.xml添加内容
+&amp;lt;?xml version="1.0" encoding="UTF-8"?&amp;gt;
+&amp;lt;dataConfig&amp;gt;
+  &amp;lt;dataSource
+      name="dbSource"
+      type="JdbcDataSource"
+      driver="com.mysql.jdbc.Driver"
+      url="jdbc:mysql://数据库地址:端口号/数据库名称"
+      batchSize="-1"
+      user="用户名"
+      password="密码"
+      readOnly="true"
+      autoCommit="true"
+      netTimeoutForStreamingResults="0"
+      /&amp;gt;
+  &amp;lt;document&amp;gt;
+      &amp;lt;entity name="goods" dataSource="dbSource" onError="skip" pk="id" query="select id,address-detail,create_time from lab_model_address"
+          deltaImportQuery="select id,address-detail,create_time from lab_model_address where id = '${dih.delta.id}'"
+          deltaQuery="select id,address-detail,create_time from lab_model_address where create_time &amp;gt; unix_timestamp('${dataimporter.last_index_time}')"&amp;gt;
+          &amp;lt;field column="id" name="id" /&amp;gt;
+          &amp;lt;field column="address-detail" name="address-detail" /&amp;gt;
+          &amp;lt;field column="create_time" name="create_time" /&amp;gt;
+      &amp;lt;/entity&amp;gt;
+  &amp;lt;/document&amp;gt;
+&amp;lt;/dataConfig&amp;gt;
+
+#managed-schema添加内容（在&amp;lt;field name="id" ... /&amp;gt;之后）
+&amp;lt;field name="address-detail" type="text_ik" indexed="true" stored="true"/&amp;gt;
+  &amp;lt;fieldType name="text_pinyin" class="solr.TextField" positionIncrementGap="0"&amp;gt;
+      &amp;lt;analyzer type="index"&amp;gt;
+          &amp;lt;tokenizer class="org.wltea.analyzer.lucene.IKTokenizerFactory"/&amp;gt;
+          &amp;lt;filter class="solr.SynonymGraphFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true" /&amp;gt;
+          &amp;lt;filter class="com.shentong.search.analyzers.PinyinTransformTokenFilterFactory" minTermLenght="2" /&amp;gt;
+          &amp;lt;filter class="com.shentong.search.analyzers.PinyinNGramTokenFilterFactory" minGram="1" maxGram="20" /&amp;gt;
+      &amp;lt;/analyzer&amp;gt;
+      &amp;lt;analyzer type="query"&amp;gt;
+          &amp;lt;tokenizer class="org.wltea.analyzer.lucene.IKTokenizerFactory"/&amp;gt;
+          &amp;lt;filter class="solr.SynonymGraphFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true" /&amp;gt;
+          &amp;lt;filter class="solr.LowerCaseFilterFactory" /&amp;gt;
+      &amp;lt;/analyzer&amp;gt;
+  &amp;lt;/fieldType&amp;gt;
+  &amp;lt;fieldType name="text_ik" class="solr.TextField"&amp;gt;
+      &amp;lt;analyzer type="index" useSmart="false" isMaxWordLength="false" &amp;gt;
+          &amp;lt;tokenizer class="org.wltea.analyzer.lucene.IKTokenizerFactory"/&amp;gt;
+          &amp;lt;filter class="solr.SynonymGraphFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/&amp;gt;
+      &amp;lt;/analyzer&amp;gt;
+      &amp;lt;analyzer type="query" useSmart="true" isMaxWordLength="true" &amp;gt;
+          &amp;lt;tokenizer class="org.wltea.analyzer.lucene.IKTokenizerFactory"/&amp;gt;
+          &amp;lt;filter class="solr.SynonymGraphFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/&amp;gt;
+      &amp;lt;/analyzer&amp;gt;
+  &amp;lt;/fieldType&amp;gt;
+  &amp;lt;field name="title_ik" type="text_ik" indexed="true" required="true" stored="true"/&amp;gt;
+  &amp;lt;copyField source="address-detail" dest="title_ik"/&amp;gt;
+  &amp;lt;field name="create_time" type="int" indexed="true" stored="true"/&amp;gt;
+  &amp;lt;field name="pinyin" type="text_pinyin" indexed="true" stored="true"/&amp;gt;
+  &amp;lt;copyField source="address-detail" dest="pinyin"/&amp;gt;
+&lt;/pre&gt;
+&lt;p&gt;5.启动，停止,重启solr&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+bin/solr stop -all
+bin/solr start -force
+bin/solr stop -all; bin/solr start -force
+&lt;/pre&gt;
+&lt;p&gt;6.导入数据&lt;/p&gt;
+&lt;p&gt;浏览器中访问http://IP:8983/, 查看CoreAdmin中是否存在创建的core:goods
+Core Selector选择新建的core（如goods），选择Dataimport，Command选择full-import，Start, Rows选择合理值，点击Excute执行数据导入&lt;/p&gt;
+&lt;p&gt;7.验证数据是否导入:接上一步中选择Query，直接点击Execute Query查看结果&lt;/p&gt;
+&lt;p&gt;8.验证分词是否可用:接上一步中选择Analysis，输入值，类型选择text_ik，查看分词结果（需要分词的数据类型在managed-schema中field的type为text_ik类型。&lt;/p&gt;
+&lt;p&gt;9.添加批处理任务(apache-solr-dataimporthandler-.jar可以在 我的GitHub下载 )&lt;/p&gt;
+&lt;p&gt;将apache-solr-dataimporthandler-.jar放到solr-6.6.2/server/solr-webapp/webapp/WEB-INF/lib/
+在solr-6.6.2/server/solr-webapp/webapp/WEB-INF/web.xml中的&amp;lt;/web-app&amp;gt;之前加入下面代码&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+&amp;lt;listener&amp;gt;
+ &amp;lt;listener-class&amp;gt;org.apache.solr.handler.dataimport.scheduler.ApplicationListener&amp;lt;/listener-class&amp;gt;
+&amp;lt;/listener&amp;gt;
+
+在solr-6.6.2/server/solr/conf中新建dataimport.properties，文件夹不存在时新建
+#################################################
+#                                               #
+#       dataimport scheduler properties         #
+#                                               #
+#################################################
+
+#  to sync or not to sync
+#  1 - active; anything else - inactive
+syncEnabled=1
+
+#  which cores to schedule
+#  in a multi-core environment you can decide which cores you want syncronized
+#  leave empty or comment it out if using single-core deployment
+syncCores=goods,goods-test
+
+#  solr server name or IP address
+#  [defaults to localhost if empty]
+server=localhost
+
+#  solr server port
+#  [defaults to 80 if empty]
+port=8983
+
+#  application name/context
+#  [defaults to current ServletContextListener's context (app) name]
+webapp=solr
+
+#  URL params [mandatory]
+#  remainder of URL
+#增量
+params=/dataimport?command=delta-import&amp;amp;clean=false&amp;amp;commit=true&amp;amp;optimize=false&amp;amp;wt=json&amp;amp;indent=true&amp;amp;entity=goods&amp;amp;verbose=false&amp;amp;debug=false
+
+#  schedule interval
+#  number of minutes between two runs
+#  [defaults to 30 if empty]
+interval=20
+
+#  重做索引的时间间隔，单位分钟，默认7200，即1天;
+#  为空,为0,或者注释掉:表示永不重做索引
+reBuildIndexInterval=7200
+
+#  重做索引的参数
+reBuildIndexParams=/dataimport?command=full-import&amp;amp;clean=true&amp;amp;commit=true&amp;amp;optimize=true&amp;amp;wt=json&amp;amp;indent=true&amp;amp;entity=goods&amp;amp;verbose=false&amp;amp;debug=false
+
+#  重做索引时间间隔的计时开始时间，第一次真正执行的时间=reBuildIndexBeginTime+reBuildIndexInterval*60*1000；
+#  两种格式：2012-04-11 03:10:00 或者  03:10:00，后一种会自动补全日期部分为服务启动时的日期
+reBuildIndexBeginTime=09:00:00
+&lt;/pre&gt;
+&lt;p&gt;10.重启solr&lt;/p&gt;&lt;/div&gt;</description><category>solr</category><category>搜索</category><guid>https://dawnkeyan.github.io/posts/centos-an-zhuang-solr/</guid><pubDate>Mon, 05 Nov 2018 06:45:40 GMT</pubDate></item><item><title>git操作</title><link>https://dawnkeyan.github.io/posts/gitcao-zuo/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;复制&lt;/p&gt;
+&lt;p&gt;git checkout master&lt;/p&gt;
+&lt;p&gt;git pull&lt;/p&gt;
+&lt;p&gt;git checkout -b 新分支名&lt;/p&gt;
+&lt;p&gt;git push origin 新分支名&lt;/p&gt;
+&lt;dl class="docutils"&gt;
+&lt;dt&gt;删除分支&lt;/dt&gt;
+&lt;dd&gt;git push origin --delete 20180829&lt;/dd&gt;
+&lt;dt&gt;push后回退&lt;/dt&gt;
+&lt;dd&gt;&lt;p class="first"&gt;git revert 版本号
+git push origin 分支名&lt;/p&gt;
+&lt;p class="last"&gt;合并某分支到当前分支：git merge &amp;lt;name&amp;gt; 在这里书写你的文章。&lt;/p&gt;
+&lt;/dd&gt;
+&lt;/dl&gt;&lt;/div&gt;</description><category>git</category><guid>https://dawnkeyan.github.io/posts/gitcao-zuo/</guid><pubDate>Mon, 05 Nov 2018 06:30:35 GMT</pubDate></item><item><title>ssl</title><link>https://dawnkeyan.github.io/posts/ssl/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;http传输是明文的，可以拦截进行修改等等的操作，及其不安全。ssl对http进行包裹，让别人不容易拦截偷窥，组合成https&lt;/p&gt;
+&lt;p&gt;在进行数据传输前，进行相关的验证生成相应的密钥，验证后面的相互请求是否可靠。&lt;/p&gt;
+&lt;p&gt;密钥使用的算法有对称加密和非对称加密，对称加密更快，非对称加密更复杂且更慢&lt;/p&gt;
+&lt;p&gt;https因为在http上做了一层ssl操作，所以要慢一点。&lt;/p&gt;&lt;/div&gt;</description><category>http</category><category>ssl</category><guid>https://dawnkeyan.github.io/posts/ssl/</guid><pubDate>Sun, 04 Nov 2018 12:48:32 GMT</pubDate></item><item><title>php处理大文件</title><link>https://dawnkeyan.github.io/posts/phpchu-li-da-wen-jian/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;普通的处理文件是要全部吧文件内容读入内存，但是有内存和时间限制，可以修改php.ini,但是还和电脑的内存大小有关系；&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
 &amp;lt;?php
    ini_set('memory_limit', '-1');
@@ -286,335 +785,4 @@ class Test{
 &lt;li&gt;资源模式&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;参考地址：&lt;a class="reference external" href="https://laravelacademy.org/post/2465.html"&gt;https://laravelacademy.org/post/2465.html&lt;/a&gt;&lt;/p&gt;
-&lt;/div&gt;&lt;/div&gt;</description><category>php</category><category>设计模式</category><guid>https://dawnkeyan.github.io/posts/she-ji-mo-shi/</guid><pubDate>Tue, 30 Oct 2018 01:13:45 GMT</pubDate></item><item><title>php实现经典算法</title><link>https://dawnkeyan.github.io/posts/phpshi-xian-jing-dian-suan-fa/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;冒泡:&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-function bub_sort($array){
-      $n = count($array);
-            for($i=0; $i&amp;lt;$n; $i++){
-                    for($j=$i+1; $j&amp;lt;$n; $j++){
-                            if($array[$i]&amp;gt;$array[$j]){
-                                    $temp = $array[$i];
-                                    $array[$i] = $array[$j];
-                                    $array[$j] = $temp;
-                            }
-                    }
-            }
-            var_dump($array);
-    }
-    bub_sort([3,2,1,5,7,3]);
-&lt;/pre&gt;
-&lt;p&gt;直接插入排序:&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-function ins_sort($array){
-             $len = count($array);
-             for($i=1;$i&amp;lt;$len;$i++){
-                     $temp = $array[$i];
-                     for($j=$i-1;$j&amp;gt;=0;$j--){
-                             if($temp&amp;lt;$array[$j]){
-                                     $array[$j+1] = $array[$j];
-                                     $array[$j] = $temp;
-                             }
-                             else{
-                                     break;
-                             }
-                     }
-             }
-             var_dump($array);
-     }
-
-     ins_sort([3,1,2,5,7,10,9,8]);
-&lt;/pre&gt;
-&lt;p&gt;直接选择排序:&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-function sel_sort($array){
-             $len = count($array);
-             for($i=0;$i&amp;lt;$len-1;$i++){
-                     $p = $i;
-                     for($j=$i+1;$j&amp;lt;$len;$j++){
-                             if($array[$j]&amp;gt;$array[$p]){
-                                     $p = $j;
-                             }
-                     }
-                     $temp = $array[$p];
-                     $array[$p] = $array[$i];
-                     $array[$i] = $temp;
-             }
-             var_dump($array);
-     }
-
-     sel_sort([2,1,3,4,6,9,5,7,1]);
-&lt;/pre&gt;
-&lt;p&gt;堆排序:&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-function swap(&amp;amp;$array,$a,$b){
-        $temp = $array[$a];
-        $array[$a] = $array[$b];
-        $array[$b] = $temp;
-}
-
-function buildMaxHeap(&amp;amp;$array,$len){
-        for($i=intval($len/2)-1;$i&amp;gt;=0;$i--){
-                $l = $i*2 + 1;
-                $max = $l;
-                if($len&amp;gt;$l){
-                        $r = $l+1;
-                        if($len&amp;gt;$r){
-                                if($array[$r]&amp;gt;$array[$l]){
-                                        $max = $r;
-                                }
-                        }
-                        if($array[$max]&amp;gt;$array[$i]){
-                                swap($array,$max,$i);
-                        }
-                }
-        }
-}
-
-$array = [3,2,4,5,7,1,8];
-$len = count($array);
-buildMaxHeap($array, $len);
-for($i=$len-1;$i&amp;gt;0;$i--){
-        swap($array,$i,0);
-        $len--;
-        buildMaxHeap($array,$len);
-}
-
-var_dump($array);
-&lt;/pre&gt;
-&lt;p&gt;快速排序:&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-function quick_sort($array){
-              $len = count($array);
-              if($len&amp;lt;2){
-                      return $array;
-              }
-              $right = $left = [];
-              for($i=1;$i&amp;lt;$len;$i++){
-                      if($array[$i]&amp;lt;$array[0]){
-                              $left[] = $array[$i];
-                      }
-                      else{
-                              $right[] = $array[$i];
-                      }
-              }
-              $left = quick_sort($left);
-              $right = quick_sort($right);
-              return array_merge($left,[$array[0]],$right);
-      }
-
-      var_dump(quick_sort([2,1,2,3,6,5,7]));
-&lt;/pre&gt;
-&lt;p&gt;归并排序:&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-$array = [5,4,3,8,8,1,6];
-    function merge_sort(&amp;amp;$array){
-            $len = count($array);
-            if($len&amp;lt;=1){
-                    return $array;
-            }
-            $middle = intval($len/2);
-            $left = array_slice($array,0,$middle);
-            $right = array_slice($array,$middle);
-            merge_sort($left);
-            merge_sort($right);
-            $array = merge($right,$left);
-    }
-
-    function merge($right,$left){
-            $merge = [];
-            while(count($right) &amp;amp;&amp;amp; count($left)){
-                    if($right[0]&amp;gt;$left[0]){
-                            $merge[] = array_shift($right);
-                    }
-                    else{
-                            $merge[] = array_shift($left);
-                    }
-            }
-            return array_merge($merge,$right,$left);
-    }
-
-    merge_sort($array);
-    var_dump($array);
-&lt;/pre&gt;
-&lt;p&gt;基数排序：把每位数分开，高位不存在的补零。从低位开始比较，比到高位完成排序:&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-  function base_sort(&amp;amp;$arr){//前提是数组都是正整数，且不为空
-
-    $bit = 1;
-
-    $len = count($arr);
-
-    for($i=0; $i&amp;lt;$len; $i++){
-
-       $strlen = strlen($arr[$i]);
-
-       $bit = $strlen&amp;gt;$bit ? $strlen : $bit;
-
-    }
-
-    for($i=0; $i&amp;lt;$bit-1; $i++){
-
-       $base = [];
-
-       $divisor = pow(10,$i);
-
-       for($j=0; $j&amp;lt;$len; $j++){
-
-           $remain = $arr[$j]/$divisor%10;
-
-           $base[$remain][] = $arr[$j];
-
-       }
-
-       $arr = [];
-
-       for($k=0; $k&amp;lt;=9; $k++){
-
-          if(isset($base[$k])){
-
-              $arr = array_merge($arr,$base[$k]);
-
-          }
-
-       }
-
-    }
-
-}
-
-$arr = [100,1,125,19999,9,808,28];
-
-base_sort($arr);
-
-var_dump($arr);
-&lt;/pre&gt;
-&lt;div class="figure"&gt;
-&lt;img alt="复杂度比较" src="https://img1.doubanio.com/view/note/l/public/p52272377.jpg"&gt;
-&lt;/div&gt;
-&lt;p&gt;二分查找（时间复杂度log2n）:&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-function bin_sch($array,$start,$end,$value){
-            if($start &amp;gt; $end){
-                    var_dump('没有找到');
-            }
-            $mid =  intval(($start + $end) / 2);
-            if($array[$mid] == $value){
-                    var_dump($mid);
-            }
-            elseif($array[$mid] &amp;gt; $value){
-                    bin_sch($array,$start,$mid-1,$value);
-            }
-            else{
-                    bin_sch($array,$mid+1,$end,$value);
-            }
-    }
-
-    bin_sch([1,2,3,4,6,8],0,5,6);
-&lt;/pre&gt;
-&lt;p&gt;顺序查找:&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-seq_sch([3,2,5,6,1],5,6);
-    function seq_sch($array,$n,$value){
-            for($i=0; $i&amp;lt;$n; $i++){
-                    if($array[$i] == $value){
-                            var_dump($i);exit;
-                    }
-            }
-            var_dump('没有找到');
-    }
-&lt;/pre&gt;
-&lt;p&gt;二维数组排序:&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-function two_array_sort($array,$key,$sort=SORT_ASC,$sort_type=SORT_NUMERIC){
-            if(!is_array($array)){
-                    return false;
-            }
-            $array_key = [];
-            foreach($array as $value){
-                    if(!is_array($value)){
-                            return false;
-                    }
-                    $array_key[] = $value[$key];
-            }
-            array_multisort($array_key,$sort,$sort_type,$array);
-            var_dump($array);
-    }
-
-    two_array_sort([['a'=&amp;gt;8,'b'=&amp;gt;2],['a'=&amp;gt;9,'b'=&amp;gt;2],['a'=&amp;gt;5,'b'=&amp;gt;2],['a'=&amp;gt;8,'b'=&amp;gt;2],['a'=&amp;gt;1,'b'=&amp;gt;2]], 'a');
-&lt;/pre&gt;
-&lt;p&gt;抢红包:&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-function qhb($num,$money){
-              if($money&amp;lt;$num*0.01){
-                      return false;//保证每个人能有一分钱
-              }
-              for($i=1;$i&amp;lt;=$num;$i++){
-                      if($i==$num){
-                              $hb = $money;
-                      }
-                      else{
-                              $max = round($money-($num-$i)*0.01, 2);//保证每个人能有一分钱
-                              $max = round($max/($num-$i), 2);//让每个红包差距不是太大
-                              $hb = mt_rand(0.01*100,$max*100)/100;
-                              $money -= $hb;
-                      }
-                      var_dump([$i,$hb]);
-              }
-      }
-
-      qhb(5,5);
-&lt;/pre&gt;&lt;/div&gt;</description><category>php</category><category>算法</category><guid>https://dawnkeyan.github.io/posts/phpshi-xian-jing-dian-suan-fa/</guid><pubDate>Fri, 26 Oct 2018 02:29:53 GMT</pubDate></item><item><title>php-fpm</title><link>https://dawnkeyan.github.io/posts/php-fpm/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;cgi 公共网关接口 是http服务器和其他机器上的程序进行通信的接口，起程序运行在网络服务器上&lt;/p&gt;
-&lt;p&gt;fastcgi是常驻行的cgi，只要被激活一次，后面就不要每次都去fork一次，把cgi解释器保持在内存获得较高的效率，还支持分布式，可以放在网站服务器以外的主机上执行并且接受来自其他网站服务器的请求&lt;/p&gt;
-&lt;p&gt;cgi和fastcgi都独立与语言&lt;/p&gt;
-&lt;p&gt;php-fpm是FastCGI进程管理器&lt;/p&gt;
-&lt;p&gt;优点：fastcgi独立与服务器，提供了一个比api更安全的环境,sapi把程序的代码和核心web服务器链接在一起，这样一个错误的api会影响其他的应用程序和核心服务器，恶意的挨批应用程序会截取另外的应用程序和核心服务器的密钥，不依赖web服务器&lt;/p&gt;
-&lt;p&gt;缺点：因为是多进程的，所以比cgi多线程消耗内存（线程之间可共享），&lt;/p&gt;
-&lt;p&gt;原理：&lt;/p&gt;
-&lt;p&gt;1.Web服务器启动时，载入FastCGI进程管理器；&lt;/p&gt;
-&lt;p&gt;2.FastCGI进程管理器初始化，启动多个CGI解释器进程(PHP-CGI)并等待来自Web服务器的连接；&lt;/p&gt;
-&lt;p&gt;3.当客户端请求到达Web服务器时，FastCGI进程管理器选择并连接到一个CGI解释器，Web服务器将CGI环境变量和标准输入发送到FastCGI子进程PHP-CGI。&lt;/p&gt;
-&lt;p&gt;4.FastCGI子进程完成处理后将标准输出和错误信息从同一连接返回给Web服务器。当FastCGI子进程关闭连接时，请求便告知处理完成。FastCGI子进程接着等待并处理来自FastCGI进程管理器(运行在Web服务器中)的下一个连接。而在CGI模式中，PHP-CGI在此便退出了。&lt;/p&gt;
-&lt;p&gt;在上述情况中，可以想象CGI通常有多慢，每一个Web请求PHP都必须重新解析php.ini、重新载入全部扩展，并重初始化全部数据结构。而使用FastCGI，所有这些都只在进程启动时发生一次。另外，数据库持久连接可以工作。&lt;/p&gt;
-&lt;p&gt;PHP-CGI是PHP自带的FastCGI管理器。&lt;/p&gt;
-&lt;p&gt;PHP-CGI的不足：&lt;/p&gt;
-&lt;p&gt;1.php-cgi变更php.ini配置后需重启php-cgi才能让新的php-ini生效，不可以平滑重启。&lt;/p&gt;
-&lt;p&gt;2.直接杀死php-cgi进程，php就不能运行了(PHP-FPM和Spawn-FCGI就没有这个问题，守护进程会平滑重新生成新的子进程)。&lt;/p&gt;
-&lt;blockquote&gt;
-PHP-FPM的使用非常方便，配置都是在PHP-FPM.ini的文件内，而启动、重启都可以从php/sbin/PHP-FPM中进行。更方便的是修改php.ini后可以直接使用PHP-FPM reload进行加载，无需杀掉进程就可以完成php.ini的修改加载&lt;/blockquote&gt;
-&lt;p&gt;结果显示使用PHP-FPM可以使php有不小的性能提升。PHP-FPM控制的进程cpu回收的速度比较慢,内存分配的很均匀。&lt;/p&gt;
-&lt;p&gt;Nginx+PHP配置&lt;/p&gt;
-&lt;p&gt;1、进程数优化&lt;/p&gt;
-&lt;p&gt;pm = dynamic&lt;/p&gt;
-&lt;p&gt;pm.max_children = 300 最大进程数&lt;/p&gt;
-&lt;p&gt;pm.start_servers = 20 启动时的进程数&lt;/p&gt;
-&lt;p&gt;pm.min_spare_servers = 5 最小空闲进程数，少于这个会启动新的等待服务&lt;/p&gt;
-&lt;p&gt;pm.max_spare_servers = 35 最大空闲进程数 超过这个数会杀掉一部分&lt;/p&gt;
-&lt;p&gt;注：
-dynamic - 表示子进程的数量在下面配置的基础上动态设置，还有static和ondemand选项
-static - 子进程的数量是固定的（pm.max_children）
-ondemand - 进程在有需求时才产生（当请求时，与 dynamic 相反，pm.start_servers 在服务启动时即启动max_children&lt;/p&gt;
-&lt;p&gt;2、最大请求数优化&lt;/p&gt;
-&lt;p&gt;pm.max_requests = 10240&lt;/p&gt;
-&lt;p&gt;NOTE:&lt;/p&gt;
-&lt;p&gt;这个用来处理因为PHP解析器或引用的第三方库时，造成的内存泄露问题。
-一个进程处理的请求数超过这个，就不接受新的请求&lt;/p&gt;
-&lt;p&gt;3、最长执行时间优化（php.ini）&lt;/p&gt;
-&lt;p&gt;request_terminate_timeout = 20&lt;/p&gt;
-&lt;p&gt;NOTE:&lt;/p&gt;
-&lt;p&gt;这个是用来处理因为PHP执行时间超长而报502错误的解决。&lt;/p&gt;
-&lt;p&gt;这个时长配置可以在php.ini（max_execution_time）或php-fpm.conf中配置均可，为了不影响全局配置，可在php-fpm.conf中实现。&lt;/p&gt;
-&lt;p&gt;PHP-FPM设置的脚本最大执行时间已经够长了，但执行耗时PHP脚本时，发现Nginx报错变为504错误。这是因为我们修改的只是PHP的配置，Nginx中也有关于与上游服务器通信超时时间的配置factcgi_connect/read/send_timeout。&lt;/p&gt;
-&lt;p&gt;查看php进程数 ps aux | grep -c php-fpm&lt;/p&gt;&lt;/div&gt;</description><category>php</category><category>php-fpm</category><guid>https://dawnkeyan.github.io/posts/php-fpm/</guid><pubDate>Thu, 25 Oct 2018 07:29:46 GMT</pubDate></item><item><title>友情链接</title><link>https://dawnkeyan.github.io/posts/you-qing-lian-jie/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;ul class="simple"&gt;
-&lt;li&gt;纸鸢@红豆·绿豆 &lt;a class="reference external" href="http://www.cnblogs.com/jlj9520/"&gt;http://www.cnblogs.com/jlj9520/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;敲代码的龙龙 &lt;a class="reference external" href="https://codinglonglong.github.io/"&gt;https://codinglonglong.github.io/&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</description><guid>https://dawnkeyan.github.io/posts/you-qing-lian-jie/</guid><pubDate>Thu, 25 Oct 2018 02:01:10 GMT</pubDate></item><item><title>from OpenSSL._util import lib as pyOpenSSLlib ImportError: No module named _util</title><link>https://dawnkeyan.github.io/posts/from-openssl_util-import-lib-as-pyopenssllib-importerror-no-module-named-_util/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;ul class="simple"&gt;
-&lt;li&gt;mac 报错   from OpenSSL._util import lib as pyOpenSSLlib ImportError: No module named _util&lt;/li&gt;
-&lt;li&gt;该安装的都安装了，估计是版本的问题&lt;/li&gt;
-&lt;li&gt;因为系统python默认是2.7，所以安装3，而且默认改成3&lt;/li&gt;
-&lt;li&gt;然后重新安装 pip 和scrapy&lt;/li&gt;
-&lt;li&gt;还是不行  默认还是使用2.7&lt;/li&gt;
-&lt;li&gt;用百度  bing 谷歌搜索的方法 试了 还是不行&lt;/li&gt;
-&lt;li&gt;最后  删掉所有python  然后安装python3 重新安装pip和scrapy&lt;/li&gt;
-&lt;li&gt;然后可以了&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;scrapy爬豆瓣图书例子：&lt;a class="reference external" href="https://github.com/dawnkeyan/dawnkeyan.github.io.git"&gt;https://github.com/dawnkeyan/dawnkeyan.github.io.git&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;</description><category>python</category><category>scrapy</category><category>爬虫</category><guid>https://dawnkeyan.github.io/posts/from-openssl_util-import-lib-as-pyopenssllib-importerror-no-module-named-_util/</guid><pubDate>Thu, 25 Oct 2018 01:45:33 GMT</pubDate></item></channel></rss>
+&lt;/div&gt;&lt;/div&gt;</description><category>php</category><category>设计模式</category><guid>https://dawnkeyan.github.io/posts/she-ji-mo-shi/</guid><pubDate>Tue, 30 Oct 2018 01:13:45 GMT</pubDate></item></channel></rss>

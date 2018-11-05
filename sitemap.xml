@@ -7,7 +7,7 @@
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <url>
   <loc>https://dawnkeyan.github.io/</loc>
-  <lastmod>2018-11-03T03:35:00Z</lastmod>
+  <lastmod>2018-11-05T07:13:00Z</lastmod>
  </url>
  <url>
   <loc>https://dawnkeyan.github.io/2012/</loc>
@@ -19,7 +19,7 @@
  </url>
  <url>
   <loc>https://dawnkeyan.github.io/archive.html</loc>
-  <lastmod>2018-11-04T08:58:00Z</lastmod>
+  <lastmod>2018-11-05T07:13:00Z</lastmod>
  </url>
  <url>
   <loc>https://dawnkeyan.github.io/authors/</loc>
@@ -35,11 +35,27 @@
  </url>
  <url>
   <loc>https://dawnkeyan.github.io/categories/</loc>
-  <lastmod>2018-11-03T03:35:00Z</lastmod>
+  <lastmod>2018-11-05T07:15:00Z</lastmod>
  </url>
  <url>
   <loc>https://dawnkeyan.github.io/categories/blog/</loc>
   <lastmod>2018-11-03T03:35:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://dawnkeyan.github.io/categories/cat_git/</loc>
+  <lastmod>2018-11-05T07:13:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://dawnkeyan.github.io/categories/cat_http/</loc>
+  <lastmod>2018-11-05T07:13:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://dawnkeyan.github.io/categories/cat_linux/</loc>
+  <lastmod>2018-11-05T07:15:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://dawnkeyan.github.io/categories/cat_linuxphp/</loc>
+  <lastmod>2018-11-05T07:13:00Z</lastmod>
  </url>
  <url>
   <loc>https://dawnkeyan.github.io/categories/cat_nikola/</loc>
@@ -54,8 +70,28 @@
   <lastmod>2018-11-03T03:35:00Z</lastmod>
  </url>
  <url>
+  <loc>https://dawnkeyan.github.io/categories/cat_sou-suo/</loc>
+  <lastmod>2018-11-05T07:13:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://dawnkeyan.github.io/categories/centos/</loc>
+  <lastmod>2018-11-05T07:13:00Z</lastmod>
+ </url>
+ <url>
   <loc>https://dawnkeyan.github.io/categories/demo/</loc>
   <lastmod>2018-11-03T03:35:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://dawnkeyan.github.io/categories/git/</loc>
+  <lastmod>2018-11-05T07:13:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://dawnkeyan.github.io/categories/http/</loc>
+  <lastmod>2018-11-05T07:13:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://dawnkeyan.github.io/categories/mongo/</loc>
+  <lastmod>2018-11-05T07:13:00Z</lastmod>
  </url>
  <url>
   <loc>https://dawnkeyan.github.io/categories/nikola/</loc>
@@ -86,6 +122,18 @@
   <lastmod>2018-11-03T03:35:00Z</lastmod>
  </url>
  <url>
+  <loc>https://dawnkeyan.github.io/categories/solr/</loc>
+  <lastmod>2018-11-05T07:13:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://dawnkeyan.github.io/categories/sou-suo/</loc>
+  <lastmod>2018-11-05T07:13:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://dawnkeyan.github.io/categories/ssl/</loc>
+  <lastmod>2018-11-05T07:13:00Z</lastmod>
+ </url>
+ <url>
   <loc>https://dawnkeyan.github.io/categories/suan-fa/</loc>
   <lastmod>2018-11-03T03:35:00Z</lastmod>
  </url>
@@ -96,6 +144,10 @@
  <url>
   <loc>https://dawnkeyan.github.io/galleries/demo/</loc>
   <lastmod>2018-11-03T03:35:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://dawnkeyan.github.io/index-1.html</loc>
+  <lastmod>2018-11-05T07:13:00Z</lastmod>
  </url>
  <url>
   <loc>https://dawnkeyan.github.io/listings/</loc>
@@ -162,12 +214,28 @@
   <lastmod>2018-11-03T03:35:00Z</lastmod>
  </url>
  <url>
+  <loc>https://dawnkeyan.github.io/posts/centos-an-zhuang-solr/</loc>
+  <lastmod>2018-11-05T07:13:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://dawnkeyan.github.io/posts/centosda-jian-phphuan-jing/</loc>
+  <lastmod>2018-11-05T07:13:00Z</lastmod>
+ </url>
+ <url>
   <loc>https://dawnkeyan.github.io/posts/from-openssl_util-import-lib-as-pyopenssllib-importerror-no-module-named-_util/</loc>
   <lastmod>2018-11-03T03:35:00Z</lastmod>
  </url>
  <url>
+  <loc>https://dawnkeyan.github.io/posts/gitcao-zuo/</loc>
+  <lastmod>2018-11-05T07:13:00Z</lastmod>
+ </url>
+ <url>
   <loc>https://dawnkeyan.github.io/posts/php-fpm/</loc>
   <lastmod>2018-11-03T03:35:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://dawnkeyan.github.io/posts/phpba-shu-ju-zhuan-cheng-csvchuan-dao-solr/</loc>
+  <lastmod>2018-11-05T07:13:00Z</lastmod>
  </url>
  <url>
   <loc>https://dawnkeyan.github.io/posts/phpchu-li-da-wen-jian/</loc>
@@ -184,6 +252,18 @@
  <url>
   <loc>https://dawnkeyan.github.io/posts/she-ji-mo-shi/</loc>
   <lastmod>2018-11-03T03:35:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://dawnkeyan.github.io/posts/solrdao-mongoshu-ju-liu-cheng/</loc>
+  <lastmod>2018-11-05T07:13:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://dawnkeyan.github.io/posts/solrshan-chu-shu-ju/</loc>
+  <lastmod>2018-11-05T07:13:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://dawnkeyan.github.io/posts/ssl/</loc>
+  <lastmod>2018-11-05T07:13:00Z</lastmod>
  </url>
  <url>
   <loc>https://dawnkeyan.github.io/posts/welcome-to-nikola/</loc>
