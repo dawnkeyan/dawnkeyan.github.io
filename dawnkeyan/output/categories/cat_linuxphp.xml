@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>晚起的虫子 (关于文章 linux,php)</title><link>https://dawnkeyan.github.io</link><description></description><atom:link href="https://dawnkeyan.github.io/categories/cat_linuxphp.xml" rel="self" type="application/rss+xml"></atom:link><language>zh_cn</language><copyright>Contents © 2018 &lt;a href="mailto:dawnkeyan@126.com"&gt;dawnkeyan&lt;/a&gt; </copyright><lastBuildDate>Mon, 05 Nov 2018 07:13:58 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>centos搭建PHP环境</title><link>https://dawnkeyan.github.io/posts/centosda-jian-phphuan-jing/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;版权归作者所有，任何形式转载请联系作者。
+作者：清晓（来自豆瓣）
+来源：&lt;a class="reference external" href="https://www.douban.com/note/683279363/"&gt;https://www.douban.com/note/683279363/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;操作系统: CentOS 7.4 64位&lt;/p&gt;
+&lt;p&gt;创建组和账号&lt;/p&gt;
+&lt;p&gt;groupadd 组名
+useradd -g 组名-s /bin/bash 账号
+nginx（1.14.0）&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://nginx.org/en/linux_packages.html#stable"&gt;https://nginx.org/en/linux_packages.html#stable&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;vim /etc/yum.repos.d/nginx.repo&lt;/p&gt;
+&lt;p&gt;[nginx]
+name=nginx repo
+baseurl=http://nginx.org/packages/centos/7/$basearch/
+gpgcheck=0
+enabled=1
+sudo yum install nginx&lt;/p&gt;
+&lt;p&gt;站点配置文件位置 /etc/nginx&lt;/p&gt;
+&lt;p&gt;mysql（5.6.4）&lt;/p&gt;
+&lt;p&gt;yum install mysql  mysql-devel mysql-server&lt;/p&gt;
+&lt;p&gt;但是centost 安装mysql-server 会找不到包&lt;/p&gt;
+&lt;p&gt;办法：官网下载安装mysql-server&lt;/p&gt;
+&lt;p&gt;wget &lt;a class="reference external" href="http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm"&gt;http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;rpm -ivh mysql-community-release-el7-5.noarch.rpm&lt;/p&gt;
+&lt;p&gt;yum install mysql-community-server&lt;/p&gt;
+&lt;p&gt;安装好后重启  service mysqld restart&lt;/p&gt;
+&lt;p&gt;进入mysql mysql -u root&lt;/p&gt;
+&lt;p&gt;设置root密码&lt;/p&gt;
+&lt;p&gt;set password for &lt;a class="reference external" href="mailto:'root'@'localhost"&gt;'root'@'localhost&lt;/a&gt;' =password('xxxx');&lt;/p&gt;
+&lt;p&gt;修改配置文件&lt;/p&gt;
+&lt;p&gt;vim /etc/my.cnf&lt;/p&gt;
+&lt;p&gt;进入mysql&lt;/p&gt;
+&lt;p&gt;创建中小学账号 CREATE USER 'user'@'%' IDENTIFIED BY 'password'; （%可访问IP，%表示全部可访问）&lt;/p&gt;
+&lt;p&gt;创建数据库 create database 数据库名&lt;/p&gt;
+&lt;p&gt;授权账号数据库 grant all privileges on 数据库名.* to 账号@'%' identified by '密码';&lt;/p&gt;
+&lt;p&gt;刷新系统权限表 flush privileges;&lt;/p&gt;
+&lt;p&gt;可以使用的Navicat传输数据&lt;/p&gt;
+&lt;p&gt;mongo（3.6.x）&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://docs.mongodb.com/manual/tutorial/install-mongodb-on-red-hat/index.html"&gt;https://docs.mongodb.com/manual/tutorial/install-mongodb-on-red-hat/index.html&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;vim /etc/yum.repos.d/mongodb-org-3.6.repo&lt;/p&gt;
+&lt;p&gt;[mongodb-org-3.6]
+name=MongoDB Repository
+baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/3.6/x86_64/
+gpgcheck=1
+enabled=1
+gpgkey=https://www.mongodb.org/static/pgp/server-3.6.asc
+yum install -y mongodb-org&lt;/p&gt;
+&lt;p&gt;配置文件位置/etc/mongod.conf&lt;/p&gt;
+&lt;p&gt;MongoDB默认将数据文件存储在/var/lib/mongo目录，默认日志文件在/var/log/mongodb中。如果要修改, 可以把这两个文件放在空间大的硬盘 ，但是不要修改 /etc/mongod.conf ，我试过无法重启，应该是建软链接。&lt;/p&gt;
+&lt;p&gt;然后重启mongo&lt;/p&gt;
+&lt;p&gt;生成软连接&lt;/p&gt;
+&lt;p&gt;ln -s&lt;/p&gt;
+&lt;p&gt;相关命令service mongod start|stop|restart&lt;/p&gt;
+&lt;p&gt;mongo创建账号&lt;/p&gt;
+&lt;p&gt;use admin&lt;/p&gt;
+&lt;p&gt;db.createUser(&lt;/p&gt;
+&lt;p&gt;{&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;user: "root",&lt;/p&gt;
+&lt;p&gt;pwd: "密码",&lt;/p&gt;
+&lt;p&gt;roles: [ { role: "userAdminAnyDatabase", db: "admin" } ]&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;}&lt;/p&gt;
+&lt;p&gt;);&lt;/p&gt;
+&lt;p&gt;创建普通账号&lt;/p&gt;
+&lt;p&gt;use 数据库&lt;/p&gt;
+&lt;p&gt;db.createUser(&lt;/p&gt;
+&lt;p&gt;{&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;user: "username",&lt;/p&gt;
+&lt;p&gt;pwd: "password",&lt;/p&gt;
+&lt;p&gt;roles: [ { role: "readWrite", db: "数据库名" } ]&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;}&lt;/p&gt;
+&lt;p&gt;);&lt;/p&gt;
+&lt;p&gt;修改密码db.changeUserPassword('账号','密码');&lt;/p&gt;
+&lt;p&gt;还原数据mongorestore -d db 数据库名 数据库文件&lt;/p&gt;
+&lt;p&gt;卸载yum erase $(rpm -qa | grep mongodb-org)&lt;/p&gt;
+&lt;p&gt;删除数据库文件和日志文件&lt;/p&gt;
+&lt;p&gt;PHP（5.6.36）&lt;/p&gt;
+&lt;p&gt;1.检查当前安装的PHP包&lt;/p&gt;
+&lt;p&gt;yum list installed | grep php&lt;/p&gt;
+&lt;p&gt;如果有安装的PHP包，先删除他们&lt;/p&gt;
+&lt;p&gt;yum remove php.x86_64 php-cli.x86_64 php-common.x86_64 php-gd.x86_64 php-ldap.x86_64 php-mbstring.x86_64 php-mcrypt.x86_64 php-mysql.x86_64 php-pdo.x86_64&lt;/p&gt;
+&lt;p&gt;2.加载安装包&lt;/p&gt;
+&lt;p&gt;Centos 5.X&lt;/p&gt;
+&lt;blockquote&gt;
+rpm -Uvh &lt;a class="reference external" href="http://mirror.webtatic.com/yum/el5/latest.rpm"&gt;http://mirror.webtatic.com/yum/el5/latest.rpm&lt;/a&gt;&lt;/blockquote&gt;
+&lt;p&gt;CentOs 6.x&lt;/p&gt;
+&lt;blockquote&gt;
+rpm -Uvh &lt;a class="reference external" href="http://mirror.webtatic.com/yum/el6/latest.rpm"&gt;http://mirror.webtatic.com/yum/el6/latest.rpm&lt;/a&gt;&lt;/blockquote&gt;
+&lt;p&gt;CentOs 7.X&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;rpm -Uvh &lt;a class="reference external" href="https://mirror.webtatic.com/yum/el7/epel-release.rpm"&gt;https://mirror.webtatic.com/yum/el7/epel-release.rpm&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;rpm -Uvh &lt;a class="reference external" href="https://mirror.webtatic.com/yum/el7/webtatic-release.rpm"&gt;https://mirror.webtatic.com/yum/el7/webtatic-release.rpm&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;如果想删除上面安装的包，重新安装&lt;/p&gt;
+&lt;p&gt;rpm -qa | grep webstatic&lt;/p&gt;
+&lt;p&gt;rpm -e  上面搜索到的包即可&lt;/p&gt;
+&lt;p&gt;3.运行yum install&lt;/p&gt;
+&lt;p&gt;yum install php56w.x86_64 php56w-cli.x86_64 php56w-common.x86_64 php56w-gd.x86_64 php56w-ldap.x86_64 php56w-mbstring.x86_64 php56w-mcrypt.x86_64 php56w-mysql.x86_64 php56w-pdo.x86_64&lt;/p&gt;
+&lt;p&gt;注：如果想用其他版本。把所有56改成其他的&lt;/p&gt;
+&lt;p&gt;4.安装php-fpm&lt;/p&gt;
+&lt;p&gt;yum install php56w-fpm (其他版本对应改掉56)&lt;/p&gt;
+&lt;p&gt;[&lt;a class="reference external" href="mailto:root@zhishu"&gt;root@zhishu&lt;/a&gt; /]# whereis php  （查看安装路径）&lt;/p&gt;
+&lt;p&gt;php: /usr/bin/php /usr/lib64/php /etc/php.d /etc/php.ini /usr/share/php /usr/share/man/man1/php.1.gz&lt;/p&gt;
+&lt;p&gt;5.安装&lt;/p&gt;
+&lt;p&gt;yum install php56w-bcmath&lt;/p&gt;
+&lt;p&gt;5.安装mongodb扩展&lt;/p&gt;
+&lt;p&gt;先执行命令php -m 查看是否已有&lt;/p&gt;
+&lt;p&gt;mkdir /usr/local/php-mongodb&lt;/p&gt;
+&lt;p&gt;cd usr/local/php-mongodb/&lt;/p&gt;
+&lt;p&gt;wget &lt;a class="reference external" href="http://pecl.php.net/get/mongo-1.6.12.tgz"&gt;http://pecl.php.net/get/mongo-1.6.12.tgz&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;tar xvzf mongo-1.6.12.tgz&lt;/p&gt;
+&lt;p&gt;cd mongo-1.6.12&lt;/p&gt;
+&lt;p&gt;phpize（如果没有php-devel会报错The php-devel package is required for use of this command.  安装php-devel  ：yum install php56w-devel）&lt;/p&gt;
+&lt;p&gt;./configure --with-php-config=/usr/bin/php-config&lt;/p&gt;
+&lt;p&gt;make &amp;amp;&amp;amp; make install&lt;/p&gt;
+&lt;p&gt;在php.ini文件中添加extension=mongo.so&lt;/p&gt;
+&lt;p&gt;extension=mongo.so&lt;/p&gt;
+&lt;p&gt;重启php-fpm或服务器&lt;/p&gt;
+&lt;p&gt;systemctl restart php-fpm&lt;/p&gt;
+&lt;p&gt;修改配置&lt;/p&gt;
+&lt;p&gt;vim /etc/php-fpm.d/www.conf&lt;/p&gt;
+&lt;p&gt;svn&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://tecadmin.net/install-svn-1-9-on-centos/"&gt;https://tecadmin.net/install-svn-1-9-on-centos/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;vim /etc/yum.repos.d/wandisco-svn.repo
+[WandiscoSVN]
+name=Wandisco SVN Repo
+baseurl=http://opensource.wandisco.com/centos/$releasever/svn-1.10/RPMS/$basearch/
+enabled=1
+gpgcheck=0
+yum -y install subversion&lt;/p&gt;
+&lt;p&gt;安装Java&lt;/p&gt;
+&lt;p&gt;下载安装包（也可以使用其他下载文件方式，拷过来的solr里如果已经有了就不用下载），因为认证问题，不能直接wget, 打开此页面 ，勾上Accept License Agreement，然后点击jdk-8u161-linux-x64.rpm,在下载页面获取文件下载地址，比如我本次的是http://download.oracle.com/otn-pub/java/jdk/8u161-b12/2f38c3b165be4555a1fa6e98c45e0808/jdk-8u161-linux-x64.rpm?AuthParam=1519538436_f233fa0ab4a9cba466bec47d360db37a，然后在/down目录下wget此地址。然后再重命名文件
+mv jdk-8u161-linux-x64.rpm?AuthParam=1519538436_f233fa0ab4a9cba466bec47d360db37a jdk-8u161-linux-x64.rpm
+安装
+rpm -ivh jdk-8u161-linux-x64.rpm
+配置系统环境变量，在/etc/profile里追加
+JAVA_HOME=/usr/java/jdk1.8.0_161
+JRE_HOME=$JAVA_HOME/jre
+CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib
+PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$PATH
+export PATH JAVA_HOME CLASSPATH
+生效配置，并检验结果
+source /etc/profile
+java -version
+nodejs (8.x)&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://nodejs.org/en/download/package-manager/#enterprise-linux-and-fedora"&gt;https://nodejs.org/en/download/package-manager/#enterprise-linux-and-fedora&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;curl --silent --location &lt;a class="reference external" href="https://rpm.nodesource.com/setup_8.x"&gt;https://rpm.nodesource.com/setup_8.x&lt;/a&gt; | sudo bash -
+sudo yum -y install nodejs
+git (2.x)&lt;/p&gt;
+&lt;p&gt;通过IUS安装git 最新版&lt;/p&gt;
+&lt;p&gt;1.安装ius repository&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://ius.io/GettingStarted/"&gt;https://ius.io/GettingStarted/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;yum install &lt;a class="reference external" href="https://centos7.iuscommunity.org/ius-release.rpm"&gt;https://centos7.iuscommunity.org/ius-release.rpm&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;2.安装yum-plugin-replace&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://ius.io/Usage/#installing-ius-packages"&gt;https://ius.io/Usage/#installing-ius-packages&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;yum install yum-plugin-replace&lt;/p&gt;
+&lt;p&gt;3.安装git2u 替换老的git&lt;/p&gt;
+&lt;p&gt;yum replace git --replace-with git2u&lt;/p&gt;
+&lt;p&gt;openvpn(2.4.x)&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="http://git.dev.backustech.com/apps/wiki/wikis/ubuntu16-%E5%AE%89%E8%A3%85-openvpn-2.4"&gt;http://git.dev.backustech.com/apps/wiki/wikis/ubuntu16-%E5%AE%89%E8%A3%85-openvpn-2.4&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;yum install openvpn&lt;/p&gt;
+&lt;p&gt;加高效云盘：&lt;/p&gt;
+&lt;p&gt;1.在阿里云创建云盘，然后挂载云盘&lt;/p&gt;
+&lt;p&gt;2.登录服务器执行fdisk -l 可以看到刚刚买的硬盘&lt;/p&gt;
+&lt;p&gt;3.对这块硬盘进行分区 fdisk /dev/vdb（/dev/vdb可能不一样）&lt;/p&gt;
+&lt;p&gt;4.然后执行fdisk -l 可以看到看到新的分区&lt;/p&gt;
+&lt;p&gt;5.格式化新分区（使用ext3扩展文件系统）&lt;/p&gt;
+&lt;p&gt;mkfs.ext3 /dev/vdb1&lt;/p&gt;
+&lt;p&gt;6.创建挂载目录mkdir data&lt;/p&gt;
+&lt;p&gt;7.挂载分区到目录&lt;/p&gt;
+&lt;p&gt;mount /dev/vdb1 /data&lt;/p&gt;
+&lt;p&gt;8.设置开机自动挂载 vim /etc/fstab&lt;/p&gt;
+&lt;p&gt;在文件最后加入/dev/vdb1        /data                   ext3  defaults    0 0&lt;/p&gt;
+&lt;p&gt;9.然后重启reboot（线上不要随便重启服务器，考虑实际情况可不可以重启）&lt;/p&gt;
+&lt;p&gt;10.用df就可以看到了&lt;/p&gt;
+&lt;p&gt;安装crontab&lt;/p&gt;
+&lt;p&gt;yum -y install vixie-cron&lt;/p&gt;&lt;/div&gt;</description><category>centos</category><category>php</category><guid>https://dawnkeyan.github.io/posts/centosda-jian-phphuan-jing/</guid><pubDate>Mon, 05 Nov 2018 07:07:02 GMT</pubDate></item></channel></rss>

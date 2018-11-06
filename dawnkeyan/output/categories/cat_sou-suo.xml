@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>晚起的虫子 (关于文章 搜索)</title><link>https://dawnkeyan.github.io</link><description></description><atom:link href="https://dawnkeyan.github.io/categories/cat_sou-suo.xml" rel="self" type="application/rss+xml"></atom:link><language>zh_cn</language><copyright>Contents © 2018 &lt;a href="mailto:dawnkeyan@126.com"&gt;dawnkeyan&lt;/a&gt; </copyright><lastBuildDate>Mon, 05 Nov 2018 07:13:58 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>php把数据转成csv传到solr</title><link>https://dawnkeyan.github.io/posts/phpba-shu-ju-zhuan-cheng-csvchuan-dao-solr/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;pre class="literal-block"&gt;
+$field = ['Peter','Griffin','Oslo','Norway','id'];
+$data = [
+                  ['Peter'=&amp;gt;43,'Griffin'=&amp;gt;4,'Oslo'=&amp;gt;32,'Norway'=&amp;gt;23,'id'=&amp;gt;1],//主键值必须有，比如这id等于1
+                  ['Peter'=&amp;gt;43,'Griffin'=&amp;gt;5,'Oslo'=&amp;gt;32,'Norway'=&amp;gt;23,'id'=&amp;gt;12],
+                  ['Peter'=&amp;gt;43,'Oslo'=&amp;gt;32,'Norway'=&amp;gt;23,'id'=&amp;gt;51],
+                  ['Peter'=&amp;gt;43,'Griffin'=&amp;gt;6,'Oslo'=&amp;gt;32,'Norway'=&amp;gt;23,'id'=&amp;gt;31],
+              ];
+$core = 'test_update';
+$csv_result = [$field];
+
+      //处理数据，给不存在的值赋空值，不然CSV行列不对应
+      foreach ($field as $files_value){
+          foreach ($data as $data_key=&amp;gt;$data_value){
+              $csv_result[$data_key+1][$files_value] = $data_value[$files_value];
+          }
+      }
+
+
+      $file_name = time().$core.rand().'.csv';
+
+      $file = fopen($file_name,"w") or exit("Unable to open file!");;
+
+      foreach ($csv_result as $line)
+      {
+          $line = implode(',',$line);
+          fputcsv($file,split(',',$line));
+      }
+      fclose($file);
+
+      //获取当前的路径
+      exec('pwd',$address);
+
+      //上传到solr
+      exec('curl http://127.0.0.1:8984/solr/'.$core.'/update?commit=true --data-binary @'.$address[0].'/'.$file_name.' -H \'Content-type:text/csv; charset=utf-8\'',$result);
+      //删除生成的文件
+      unlink($file_name);
+      $result = implode('',$result);
+
+      //上传成功
+      if(strpos($result,'&amp;lt;int name="status"&amp;gt;0&amp;lt;/int&amp;gt;')){
+          return ['status'=&amp;gt;true];
+      }
+      else{//上传失败
+          //存日志到mongo
+          $MongoModel = new MongoModel('集合', '', 'DB_MONGO');
+          $MongoModel-&amp;gt;add(['core'=&amp;gt;$core,'msg'=&amp;gt;$result,'field'=&amp;gt;$field,'data'=&amp;gt;$data]);
+          return ['status'=&amp;gt;false,'msg'=&amp;gt;$result];
+      }在这里书写你的文章。
+&lt;/pre&gt;</description><category>php</category><category>solr</category><category>搜索</category><guid>https://dawnkeyan.github.io/posts/phpba-shu-ju-zhuan-cheng-csvchuan-dao-solr/</guid><pubDate>Mon, 05 Nov 2018 07:10:03 GMT</pubDate></item><item><title>solr删除数据</title><link>https://dawnkeyan.github.io/posts/solrshan-chu-shu-ju/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;方法一 在solr页面选择对应的core，然后点击Document然后Document Type选择XML,然后在Document(s)框内填)&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+&amp;lt;delete&amp;gt;&amp;lt;query&amp;gt;*:*&amp;lt;/query&amp;gt;&amp;lt;/delete&amp;gt; #*:*可以改成其他条件
+&amp;lt;commit/&amp;gt;
+&lt;/pre&gt;
+&lt;p&gt;方法二 post 请求http://ip:端口/solr/core/update?wt=json，&amp;lt;query&amp;gt;id:1&amp;lt;/query&amp;gt;里的条件可以修改，post参数&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+&amp;lt;add commitWithin="1000" overwrite="true"&amp;gt;
+  &amp;lt;delete&amp;gt;
+      &amp;lt;query&amp;gt;id:1&amp;lt;/query&amp;gt;
+  &amp;lt;/delete&amp;gt;
+  &amp;lt;commit&amp;gt;&amp;lt;/commit&amp;gt;
+&amp;lt;/add&amp;gt;
+&lt;/pre&gt;&lt;/div&gt;</description><category>solr</category><category>搜索</category><guid>https://dawnkeyan.github.io/posts/solrshan-chu-shu-ju/</guid><pubDate>Mon, 05 Nov 2018 07:03:22 GMT</pubDate></item><item><title>solr导mongo数据流程</title><link>https://dawnkeyan.github.io/posts/solrdao-mongoshu-ju-liu-cheng/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;1.进入/home/solr/solr-6.6.2（solr安装路径）创建core，比如创建lab_cloud_periodical bin/solr create -c core名 -p 端口号 -force（root用户需要加）&lt;/p&gt;
+&lt;p&gt;2.导出mongodb csv 比如导出lab，-f是需要放在solr的且此集合有的字段 mongoexport --username 用户名 --password 密码 --type=csv -f _id,title -d 数据库 -c 集合 -o /home/文件名.csv&lt;/p&gt;
+&lt;p&gt;3.把数据传到solrcurl &lt;a class="reference external" href="http://ip"&gt;http://ip&lt;/a&gt;:端口号/solr/core/update?commit=true --data-binary @/home/文件名.csv -H 'Content-type:text/csv; charset=utf-8'&lt;/p&gt;
+&lt;p&gt;问题： 可能执行着会报错，那是solr会给字段定义类型，但你的某些值有不是那个类型，比如给你定义了int,然后你传的值是字符串。解决办法就是去把int改成string，位置在vim /home/solr/solr-6.6.2/server/solr/lab（写core名）/conf/managed-schema,比如这的tid(有些是默认给你设置了时间，但你传入的不是时间格式)，这是我遇到的问题，有些配置想改都可以改的。然后重新导入数据，还有就是主键可以重新设置，修改&amp;lt;uniqueKey&amp;gt;id&amp;lt;/uniqueKey&amp;gt;&lt;/p&gt;
+&lt;p&gt;4.如果需要删除数据参考：&lt;a class="reference external" href="http://blog.csdn.net/lbf5210/article/details/51207043"&gt;http://blog.csdn.net/lbf5210/article/details/51207043&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;5.查询，页面参数解释：&lt;a class="reference external" href="http://blog.csdn.net/zhufenglonglove/article/details/51518846"&gt;http://blog.csdn.net/zhufenglonglove/article/details/51518846&lt;/a&gt; 浏览器进入http://ip:端口号/solr&lt;/p&gt;
+&lt;p&gt;6.目前能弄的mongo实时更新是一个core记录整个库，一个集合一个core不知道咋弄。&lt;/p&gt;&lt;/div&gt;</description><category>mongo</category><category>solr</category><category>搜索</category><guid>https://dawnkeyan.github.io/posts/solrdao-mongoshu-ju-liu-cheng/</guid><pubDate>Mon, 05 Nov 2018 07:01:05 GMT</pubDate></item><item><title>centos 安装solr</title><link>https://dawnkeyan.github.io/posts/centos-an-zhuang-solr/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;1.安装jdk&lt;/p&gt;
+&lt;p&gt;下载安装包（也可以使用其他下载文件方式），因为认证问题，不能直接wget, 打开此页面 ，在Java SE Development Kit 8u161勾上Accept License Agreement，然后点击jdk-8u161-linux-x64.rpm,在下载页面获取文件下载地址，比如我本次的是http://download.oracle.com/otn-pub/java/jdk/8u161-b12/2f38c3b165be4555a1fa6e98c45e0808/jdk-8u161-linux-x64.rpm?AuthParam=1519538436_f233fa0ab4a9cba466bec47d360db37a，然后在/down目录下wget此地址。然后再重命名文件
+mv jdk-8u161-linux-x64.rpm?AuthParam=1519538436_f233fa0ab4a9cba466bec47d360db37a jdk-8u161-linux-x64.rpm&lt;/p&gt;
+&lt;p&gt;安装
+rpm -ivh jdk-8u161-linux-x64.rpm&lt;/p&gt;
+&lt;p&gt;配置系统环境变量，在/etc/profile里追加&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+JAVA_HOME=/usr/java/jdk1.8.0_161
+JRE_HOME=$JAVA_HOME/jre
+CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib
+PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$PATH
+export PATH JAVA_HOME CLASSPATH
+&lt;/pre&gt;
+&lt;p&gt;生效配置，并检验结果&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+source /etc/profile
+java -version
+&lt;/pre&gt;
+&lt;p&gt;2.安装solr&lt;/p&gt;
+&lt;p&gt;安装前检测rng-tools及lsof是否正确安装(安装成功输入命令后显示版本号)&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+rpm -qa |grep rng-tools
+rpm -qa |grep lsof
+&lt;/pre&gt;
+&lt;p&gt;若未安装，设备能够联网的情况下，可使用如下命令安装，否则自行下载安装包安装&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+yum install rng-tools
+yum install lsof
+&lt;/pre&gt;
+&lt;p&gt;配置rng-tools&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+echo 'EXTRAOPTIONS="--rng-device /dev/urandom"' &amp;gt;/etc/sysconfig/rngd
+service rngd start
+chkconfig rngd on
+&lt;/pre&gt;
+&lt;p&gt;在down目录下创建solr,下载solr安装包,下载apache-tomcat安装包（如果找不到页面，则在浏览器打开https://tomcat.apache.org/download-80.cgi查看有的版本号，然后修改版本号），然后使用tar -zxvf命令解压两个文件&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+#下载solr安装包
+wget http://mirror.bit.edu.cn/apache/lucene/solr/6.6.2/solr-6.6.2.tgz
+#下载apache-tomcat安装包（如果找不到页面，则在浏览器打开https://tomcat.apache.org/download-80.cgi查看有的版&amp;gt;本号，然后修改版本号）
+wget http://mirror.bit.edu.cn/apache/tomcat/tomcat-8/v8.0.50/bin/apache-tomcat-8.0.50.tar.gz
+&lt;/pre&gt;
+&lt;p&gt;3.配置solr&lt;/p&gt;
+&lt;p&gt;使用tar -zxvf命令解压刚刚下载的solr安装包和下载apache-tomcat安装包&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+tar -zxvf solr-6.6.2.tgz
+tar -zxvf apache-tomcat-8.0.50.tar.gz
+&lt;/pre&gt;
+&lt;p&gt;在solr-6.6.2目录下拷贝dataimporthandler的jar包&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+cp dist/solr-dataimporthandler-* server/solr-webapp/webapp/WEB-INF/lib/
+&lt;/pre&gt;
+&lt;p&gt;在/down/solr目录下载mysql-connector-java-5.1.45安装包&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+wget https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.45.tar.gz
+&lt;/pre&gt;
+&lt;p&gt;解压mysql-connector-java-5.1.45.tar.gz&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+tar -zxvf mysql-connector-java-5.1.45.tar.gz
+&lt;/pre&gt;
+&lt;p&gt;拷贝mysql-connector-java&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+cp mysql-connector-java-5.1.45/mysql-connector-java-5.1.45-bin.jar solr-6.6.2/server/solr-webapp/webapp/WEB-INF/lib/
+&lt;/pre&gt;
+&lt;p&gt;在/down/solr目录下载ikanalyzer安装包&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+wget https://github.com/zxiaofan/ik-analyzer-solr6/releases/download/6.6.0/ikanalyzer-6.6.0.jar
+&lt;/pre&gt;
+&lt;p&gt;解压ikanalyzer&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+jar -xvf ikanalyzer-6.6.0.jar
+&lt;/pre&gt;
+&lt;p&gt;拷贝ikanalyzer&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+cp ikanalyzer-6.6.* solr-6.6.2/server/solr-webapp/webapp/WEB-INF/lib/
+&lt;/pre&gt;
+&lt;p&gt;在/down/solr目录下载pinyin4j&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+wget https://github.com/zxiaofan/ik-analyzer-solr6/releases/download/6.6.0/pinyin4j_IKconfig.zip
+&lt;/pre&gt;
+&lt;p&gt;复制文件&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+unzip pinyin4j_IKconfig.zip -d pinyin4j
+cp pinyin4j/pinyin*.jar solr-6.6.2/server/solr-webapp/webapp/WEB-INF/lib/
+mkdir solr-6.6.2/server/solr-webapp/webapp/WEB-INF/classes
+cp pinyin4j/ext.dic solr-6.6.2/server/solr-webapp/webapp/WEB-INF/classes/
+cp pinyin4j/IKAnalyzer.cfg.xml solr-6.6.2/server/solr-webapp/webapp/WEB-INF/classes/
+cp pinyin4j/stopword.dic solr-6.6.2/server/solr-webapp/webapp/WEB-INF/classes/
+&lt;/pre&gt;
+&lt;p&gt;修改配置solr-6.6.2/server/solr-webapp/webapp/WEB-INF/classes/IKAnalyzer.cfg.xml加入新的内容&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+&amp;lt;!--词典动态更新时间间隔[首次延时,时间间隔]（格式：正整数，单位：分钟）--&amp;gt;
+&amp;lt;entry key="dic_updateMin"&amp;gt;1,1&amp;lt;/entry&amp;gt;
+
+&amp;lt;!--禁用内置主词典main2012.dic（默认false）--&amp;gt;
+&amp;lt;!--&amp;lt;entry key="dicInner_disable"&amp;gt;true&amp;lt;/entry&amp;gt; --&amp;gt;
+&lt;/pre&gt;
+&lt;p&gt;修改时区，修改solr-6.6.2/bin/solr.in.sh中的SOLR_TIMEZONE="UTC+8"&lt;/p&gt;
+&lt;p&gt;4.创建core并配置&lt;/p&gt;
+&lt;p&gt;进入solr-6.6.2目录，执行创建名称为goods的core,如果无法确定实例端口，加上-p 端口号，如果在root用户下启动solr存在风险，要么换个账号，要么加上 -force&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+bin/solr create -c goods -p 8983 -force
+&lt;/pre&gt;
+&lt;p&gt;修改配置：修改server/solr/goods/conf目录下的solrconfig.xml,data-config.xml,managed-schema的文件，没有就新建&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+#solrconfig.xml添加内容（在&amp;lt;/config&amp;gt;之前）
+&amp;lt;requestHandler name="/dataimport" class="org.apache.solr.handler.dataimport.DataImportHandler"&amp;gt;
+  &amp;lt;lst name="defaults"&amp;gt;
+      &amp;lt;str name="config"&amp;gt;data-config.xml&amp;lt;/str&amp;gt;
+  &amp;lt;/lst&amp;gt;
+&amp;lt;/requestHandler&amp;gt;
+
+#data-config.xml添加内容
+&amp;lt;?xml version="1.0" encoding="UTF-8"?&amp;gt;
+&amp;lt;dataConfig&amp;gt;
+  &amp;lt;dataSource
+      name="dbSource"
+      type="JdbcDataSource"
+      driver="com.mysql.jdbc.Driver"
+      url="jdbc:mysql://数据库地址:端口号/数据库名称"
+      batchSize="-1"
+      user="用户名"
+      password="密码"
+      readOnly="true"
+      autoCommit="true"
+      netTimeoutForStreamingResults="0"
+      /&amp;gt;
+  &amp;lt;document&amp;gt;
+      &amp;lt;entity name="goods" dataSource="dbSource" onError="skip" pk="id" query="select id,address-detail,create_time from lab_model_address"
+          deltaImportQuery="select id,address-detail,create_time from lab_model_address where id = '${dih.delta.id}'"
+          deltaQuery="select id,address-detail,create_time from lab_model_address where create_time &amp;gt; unix_timestamp('${dataimporter.last_index_time}')"&amp;gt;
+          &amp;lt;field column="id" name="id" /&amp;gt;
+          &amp;lt;field column="address-detail" name="address-detail" /&amp;gt;
+          &amp;lt;field column="create_time" name="create_time" /&amp;gt;
+      &amp;lt;/entity&amp;gt;
+  &amp;lt;/document&amp;gt;
+&amp;lt;/dataConfig&amp;gt;
+
+#managed-schema添加内容（在&amp;lt;field name="id" ... /&amp;gt;之后）
+&amp;lt;field name="address-detail" type="text_ik" indexed="true" stored="true"/&amp;gt;
+  &amp;lt;fieldType name="text_pinyin" class="solr.TextField" positionIncrementGap="0"&amp;gt;
+      &amp;lt;analyzer type="index"&amp;gt;
+          &amp;lt;tokenizer class="org.wltea.analyzer.lucene.IKTokenizerFactory"/&amp;gt;
+          &amp;lt;filter class="solr.SynonymGraphFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true" /&amp;gt;
+          &amp;lt;filter class="com.shentong.search.analyzers.PinyinTransformTokenFilterFactory" minTermLenght="2" /&amp;gt;
+          &amp;lt;filter class="com.shentong.search.analyzers.PinyinNGramTokenFilterFactory" minGram="1" maxGram="20" /&amp;gt;
+      &amp;lt;/analyzer&amp;gt;
+      &amp;lt;analyzer type="query"&amp;gt;
+          &amp;lt;tokenizer class="org.wltea.analyzer.lucene.IKTokenizerFactory"/&amp;gt;
+          &amp;lt;filter class="solr.SynonymGraphFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true" /&amp;gt;
+          &amp;lt;filter class="solr.LowerCaseFilterFactory" /&amp;gt;
+      &amp;lt;/analyzer&amp;gt;
+  &amp;lt;/fieldType&amp;gt;
+  &amp;lt;fieldType name="text_ik" class="solr.TextField"&amp;gt;
+      &amp;lt;analyzer type="index" useSmart="false" isMaxWordLength="false" &amp;gt;
+          &amp;lt;tokenizer class="org.wltea.analyzer.lucene.IKTokenizerFactory"/&amp;gt;
+          &amp;lt;filter class="solr.SynonymGraphFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/&amp;gt;
+      &amp;lt;/analyzer&amp;gt;
+      &amp;lt;analyzer type="query" useSmart="true" isMaxWordLength="true" &amp;gt;
+          &amp;lt;tokenizer class="org.wltea.analyzer.lucene.IKTokenizerFactory"/&amp;gt;
+          &amp;lt;filter class="solr.SynonymGraphFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/&amp;gt;
+      &amp;lt;/analyzer&amp;gt;
+  &amp;lt;/fieldType&amp;gt;
+  &amp;lt;field name="title_ik" type="text_ik" indexed="true" required="true" stored="true"/&amp;gt;
+  &amp;lt;copyField source="address-detail" dest="title_ik"/&amp;gt;
+  &amp;lt;field name="create_time" type="int" indexed="true" stored="true"/&amp;gt;
+  &amp;lt;field name="pinyin" type="text_pinyin" indexed="true" stored="true"/&amp;gt;
+  &amp;lt;copyField source="address-detail" dest="pinyin"/&amp;gt;
+&lt;/pre&gt;
+&lt;p&gt;5.启动，停止,重启solr&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+bin/solr stop -all
+bin/solr start -force
+bin/solr stop -all; bin/solr start -force
+&lt;/pre&gt;
+&lt;p&gt;6.导入数据&lt;/p&gt;
+&lt;p&gt;浏览器中访问http://IP:8983/, 查看CoreAdmin中是否存在创建的core:goods
+Core Selector选择新建的core（如goods），选择Dataimport，Command选择full-import，Start, Rows选择合理值，点击Excute执行数据导入&lt;/p&gt;
+&lt;p&gt;7.验证数据是否导入:接上一步中选择Query，直接点击Execute Query查看结果&lt;/p&gt;
+&lt;p&gt;8.验证分词是否可用:接上一步中选择Analysis，输入值，类型选择text_ik，查看分词结果（需要分词的数据类型在managed-schema中field的type为text_ik类型。&lt;/p&gt;
+&lt;p&gt;9.添加批处理任务(apache-solr-dataimporthandler-.jar可以在 我的GitHub下载 )&lt;/p&gt;
+&lt;p&gt;将apache-solr-dataimporthandler-.jar放到solr-6.6.2/server/solr-webapp/webapp/WEB-INF/lib/
+在solr-6.6.2/server/solr-webapp/webapp/WEB-INF/web.xml中的&amp;lt;/web-app&amp;gt;之前加入下面代码&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+&amp;lt;listener&amp;gt;
+ &amp;lt;listener-class&amp;gt;org.apache.solr.handler.dataimport.scheduler.ApplicationListener&amp;lt;/listener-class&amp;gt;
+&amp;lt;/listener&amp;gt;
+
+在solr-6.6.2/server/solr/conf中新建dataimport.properties，文件夹不存在时新建
+#################################################
+#                                               #
+#       dataimport scheduler properties         #
+#                                               #
+#################################################
+
+#  to sync or not to sync
+#  1 - active; anything else - inactive
+syncEnabled=1
+
+#  which cores to schedule
+#  in a multi-core environment you can decide which cores you want syncronized
+#  leave empty or comment it out if using single-core deployment
+syncCores=goods,goods-test
+
+#  solr server name or IP address
+#  [defaults to localhost if empty]
+server=localhost
+
+#  solr server port
+#  [defaults to 80 if empty]
+port=8983
+
+#  application name/context
+#  [defaults to current ServletContextListener's context (app) name]
+webapp=solr
+
+#  URL params [mandatory]
+#  remainder of URL
+#增量
+params=/dataimport?command=delta-import&amp;amp;clean=false&amp;amp;commit=true&amp;amp;optimize=false&amp;amp;wt=json&amp;amp;indent=true&amp;amp;entity=goods&amp;amp;verbose=false&amp;amp;debug=false
+
+#  schedule interval
+#  number of minutes between two runs
+#  [defaults to 30 if empty]
+interval=20
+
+#  重做索引的时间间隔，单位分钟，默认7200，即1天;
+#  为空,为0,或者注释掉:表示永不重做索引
+reBuildIndexInterval=7200
+
+#  重做索引的参数
+reBuildIndexParams=/dataimport?command=full-import&amp;amp;clean=true&amp;amp;commit=true&amp;amp;optimize=true&amp;amp;wt=json&amp;amp;indent=true&amp;amp;entity=goods&amp;amp;verbose=false&amp;amp;debug=false
+
+#  重做索引时间间隔的计时开始时间，第一次真正执行的时间=reBuildIndexBeginTime+reBuildIndexInterval*60*1000；
+#  两种格式：2012-04-11 03:10:00 或者  03:10:00，后一种会自动补全日期部分为服务启动时的日期
+reBuildIndexBeginTime=09:00:00
+&lt;/pre&gt;
+&lt;p&gt;10.重启solr&lt;/p&gt;&lt;/div&gt;</description><category>solr</category><category>搜索</category><guid>https://dawnkeyan.github.io/posts/centos-an-zhuang-solr/</guid><pubDate>Mon, 05 Nov 2018 06:45:40 GMT</pubDate></item></channel></rss>

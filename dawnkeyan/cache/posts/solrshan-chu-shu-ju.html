@@ -1,0 +1,14 @@
+<p>方法一 在solr页面选择对应的core，然后点击Document然后Document Type选择XML,然后在Document(s)框内填)</p>
+<pre class="literal-block">
+&lt;delete&gt;&lt;query&gt;*:*&lt;/query&gt;&lt;/delete&gt; #*:*可以改成其他条件
+&lt;commit/&gt;
+</pre>
+<p>方法二 post 请求http://ip:端口/solr/core/update?wt=json，&lt;query&gt;id:1&lt;/query&gt;里的条件可以修改，post参数</p>
+<pre class="literal-block">
+&lt;add commitWithin=&quot;1000&quot; overwrite=&quot;true&quot;&gt;
+  &lt;delete&gt;
+      &lt;query&gt;id:1&lt;/query&gt;
+  &lt;/delete&gt;
+  &lt;commit&gt;&lt;/commit&gt;
+&lt;/add&gt;
+</pre>

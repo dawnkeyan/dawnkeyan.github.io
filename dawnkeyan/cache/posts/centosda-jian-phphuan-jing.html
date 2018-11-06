@@ -1,0 +1,179 @@
+<p>版权归作者所有，任何形式转载请联系作者。
+作者：清晓（来自豆瓣）
+来源：<a class="reference external" href="https://www.douban.com/note/683279363/">https://www.douban.com/note/683279363/</a></p>
+<p>操作系统: CentOS 7.4 64位</p>
+<p>创建组和账号</p>
+<p>groupadd 组名
+useradd -g 组名-s /bin/bash 账号
+nginx（1.14.0）</p>
+<p><a class="reference external" href="https://nginx.org/en/linux_packages.html#stable">https://nginx.org/en/linux_packages.html#stable</a></p>
+<p>vim /etc/yum.repos.d/nginx.repo</p>
+<p>[nginx]
+name=nginx repo
+baseurl=http://nginx.org/packages/centos/7/$basearch/
+gpgcheck=0
+enabled=1
+sudo yum install nginx</p>
+<p>站点配置文件位置 /etc/nginx</p>
+<p>mysql（5.6.4）</p>
+<p>yum install mysql  mysql-devel mysql-server</p>
+<p>但是centost 安装mysql-server 会找不到包</p>
+<p>办法：官网下载安装mysql-server</p>
+<p>wget <a class="reference external" href="http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm">http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm</a></p>
+<p>rpm -ivh mysql-community-release-el7-5.noarch.rpm</p>
+<p>yum install mysql-community-server</p>
+<p>安装好后重启  service mysqld restart</p>
+<p>进入mysql mysql -u root</p>
+<p>设置root密码</p>
+<p>set password for <a class="reference external" href="mailto:'root'&#64;'localhost">'root'&#64;'localhost</a>' =password('xxxx');</p>
+<p>修改配置文件</p>
+<p>vim /etc/my.cnf</p>
+<p>进入mysql</p>
+<p>创建中小学账号 CREATE USER 'user'&#64;'%' IDENTIFIED BY 'password'; （%可访问IP，%表示全部可访问）</p>
+<p>创建数据库 create database 数据库名</p>
+<p>授权账号数据库 grant all privileges on 数据库名.* to 账号&#64;'%' identified by '密码';</p>
+<p>刷新系统权限表 flush privileges;</p>
+<p>可以使用的Navicat传输数据</p>
+<p>mongo（3.6.x）</p>
+<p><a class="reference external" href="https://docs.mongodb.com/manual/tutorial/install-mongodb-on-red-hat/index.html">https://docs.mongodb.com/manual/tutorial/install-mongodb-on-red-hat/index.html</a></p>
+<p>vim /etc/yum.repos.d/mongodb-org-3.6.repo</p>
+<p>[mongodb-org-3.6]
+name=MongoDB Repository
+baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/3.6/x86_64/
+gpgcheck=1
+enabled=1
+gpgkey=https://www.mongodb.org/static/pgp/server-3.6.asc
+yum install -y mongodb-org</p>
+<p>配置文件位置/etc/mongod.conf</p>
+<p>MongoDB默认将数据文件存储在/var/lib/mongo目录，默认日志文件在/var/log/mongodb中。如果要修改, 可以把这两个文件放在空间大的硬盘 ，但是不要修改 /etc/mongod.conf ，我试过无法重启，应该是建软链接。</p>
+<p>然后重启mongo</p>
+<p>生成软连接</p>
+<p>ln -s</p>
+<p>相关命令service mongod start|stop|restart</p>
+<p>mongo创建账号</p>
+<p>use admin</p>
+<p>db.createUser(</p>
+<p>{</p>
+<blockquote>
+<p>user: &quot;root&quot;,</p>
+<p>pwd: &quot;密码&quot;,</p>
+<p>roles: [ { role: &quot;userAdminAnyDatabase&quot;, db: &quot;admin&quot; } ]</p>
+</blockquote>
+<p>}</p>
+<p>);</p>
+<p>创建普通账号</p>
+<p>use 数据库</p>
+<p>db.createUser(</p>
+<p>{</p>
+<blockquote>
+<p>user: &quot;username&quot;,</p>
+<p>pwd: &quot;password&quot;,</p>
+<p>roles: [ { role: &quot;readWrite&quot;, db: &quot;数据库名&quot; } ]</p>
+</blockquote>
+<p>}</p>
+<p>);</p>
+<p>修改密码db.changeUserPassword('账号','密码');</p>
+<p>还原数据mongorestore -d db 数据库名 数据库文件</p>
+<p>卸载yum erase $(rpm -qa | grep mongodb-org)</p>
+<p>删除数据库文件和日志文件</p>
+<p>PHP（5.6.36）</p>
+<p>1.检查当前安装的PHP包</p>
+<p>yum list installed | grep php</p>
+<p>如果有安装的PHP包，先删除他们</p>
+<p>yum remove php.x86_64 php-cli.x86_64 php-common.x86_64 php-gd.x86_64 php-ldap.x86_64 php-mbstring.x86_64 php-mcrypt.x86_64 php-mysql.x86_64 php-pdo.x86_64</p>
+<p>2.加载安装包</p>
+<p>Centos 5.X</p>
+<blockquote>
+rpm -Uvh <a class="reference external" href="http://mirror.webtatic.com/yum/el5/latest.rpm">http://mirror.webtatic.com/yum/el5/latest.rpm</a></blockquote>
+<p>CentOs 6.x</p>
+<blockquote>
+rpm -Uvh <a class="reference external" href="http://mirror.webtatic.com/yum/el6/latest.rpm">http://mirror.webtatic.com/yum/el6/latest.rpm</a></blockquote>
+<p>CentOs 7.X</p>
+<blockquote>
+<p>rpm -Uvh <a class="reference external" href="https://mirror.webtatic.com/yum/el7/epel-release.rpm">https://mirror.webtatic.com/yum/el7/epel-release.rpm</a></p>
+<p>rpm -Uvh <a class="reference external" href="https://mirror.webtatic.com/yum/el7/webtatic-release.rpm">https://mirror.webtatic.com/yum/el7/webtatic-release.rpm</a></p>
+</blockquote>
+<p>如果想删除上面安装的包，重新安装</p>
+<p>rpm -qa | grep webstatic</p>
+<p>rpm -e  上面搜索到的包即可</p>
+<p>3.运行yum install</p>
+<p>yum install php56w.x86_64 php56w-cli.x86_64 php56w-common.x86_64 php56w-gd.x86_64 php56w-ldap.x86_64 php56w-mbstring.x86_64 php56w-mcrypt.x86_64 php56w-mysql.x86_64 php56w-pdo.x86_64</p>
+<p>注：如果想用其他版本。把所有56改成其他的</p>
+<p>4.安装php-fpm</p>
+<p>yum install php56w-fpm (其他版本对应改掉56)</p>
+<p>[<a class="reference external" href="mailto:root&#64;zhishu">root&#64;zhishu</a> /]# whereis php  （查看安装路径）</p>
+<p>php: /usr/bin/php /usr/lib64/php /etc/php.d /etc/php.ini /usr/share/php /usr/share/man/man1/php.1.gz</p>
+<p>5.安装</p>
+<p>yum install php56w-bcmath</p>
+<p>5.安装mongodb扩展</p>
+<p>先执行命令php -m 查看是否已有</p>
+<p>mkdir /usr/local/php-mongodb</p>
+<p>cd usr/local/php-mongodb/</p>
+<p>wget <a class="reference external" href="http://pecl.php.net/get/mongo-1.6.12.tgz">http://pecl.php.net/get/mongo-1.6.12.tgz</a></p>
+<p>tar xvzf mongo-1.6.12.tgz</p>
+<p>cd mongo-1.6.12</p>
+<p>phpize（如果没有php-devel会报错The php-devel package is required for use of this command.  安装php-devel  ：yum install php56w-devel）</p>
+<p>./configure --with-php-config=/usr/bin/php-config</p>
+<p>make &amp;&amp; make install</p>
+<p>在php.ini文件中添加extension=mongo.so</p>
+<p>extension=mongo.so</p>
+<p>重启php-fpm或服务器</p>
+<p>systemctl restart php-fpm</p>
+<p>修改配置</p>
+<p>vim /etc/php-fpm.d/www.conf</p>
+<p>svn</p>
+<p><a class="reference external" href="https://tecadmin.net/install-svn-1-9-on-centos/">https://tecadmin.net/install-svn-1-9-on-centos/</a></p>
+<p>vim /etc/yum.repos.d/wandisco-svn.repo
+[WandiscoSVN]
+name=Wandisco SVN Repo
+baseurl=http://opensource.wandisco.com/centos/$releasever/svn-1.10/RPMS/$basearch/
+enabled=1
+gpgcheck=0
+yum -y install subversion</p>
+<p>安装Java</p>
+<p>下载安装包（也可以使用其他下载文件方式，拷过来的solr里如果已经有了就不用下载），因为认证问题，不能直接wget, 打开此页面 ，勾上Accept License Agreement，然后点击jdk-8u161-linux-x64.rpm,在下载页面获取文件下载地址，比如我本次的是http://download.oracle.com/otn-pub/java/jdk/8u161-b12/2f38c3b165be4555a1fa6e98c45e0808/jdk-8u161-linux-x64.rpm?AuthParam=1519538436_f233fa0ab4a9cba466bec47d360db37a，然后在/down目录下wget此地址。然后再重命名文件
+mv jdk-8u161-linux-x64.rpm?AuthParam=1519538436_f233fa0ab4a9cba466bec47d360db37a jdk-8u161-linux-x64.rpm
+安装
+rpm -ivh jdk-8u161-linux-x64.rpm
+配置系统环境变量，在/etc/profile里追加
+JAVA_HOME=/usr/java/jdk1.8.0_161
+JRE_HOME=$JAVA_HOME/jre
+CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib
+PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$PATH
+export PATH JAVA_HOME CLASSPATH
+生效配置，并检验结果
+source /etc/profile
+java -version
+nodejs (8.x)</p>
+<p><a class="reference external" href="https://nodejs.org/en/download/package-manager/#enterprise-linux-and-fedora">https://nodejs.org/en/download/package-manager/#enterprise-linux-and-fedora</a></p>
+<p>curl --silent --location <a class="reference external" href="https://rpm.nodesource.com/setup_8.x">https://rpm.nodesource.com/setup_8.x</a> | sudo bash -
+sudo yum -y install nodejs
+git (2.x)</p>
+<p>通过IUS安装git 最新版</p>
+<p>1.安装ius repository</p>
+<p><a class="reference external" href="https://ius.io/GettingStarted/">https://ius.io/GettingStarted/</a></p>
+<p>yum install <a class="reference external" href="https://centos7.iuscommunity.org/ius-release.rpm">https://centos7.iuscommunity.org/ius-release.rpm</a></p>
+<p>2.安装yum-plugin-replace</p>
+<p><a class="reference external" href="https://ius.io/Usage/#installing-ius-packages">https://ius.io/Usage/#installing-ius-packages</a></p>
+<p>yum install yum-plugin-replace</p>
+<p>3.安装git2u 替换老的git</p>
+<p>yum replace git --replace-with git2u</p>
+<p>openvpn(2.4.x)</p>
+<p><a class="reference external" href="http://git.dev.backustech.com/apps/wiki/wikis/ubuntu16-%E5%AE%89%E8%A3%85-openvpn-2.4">http://git.dev.backustech.com/apps/wiki/wikis/ubuntu16-%E5%AE%89%E8%A3%85-openvpn-2.4</a></p>
+<p>yum install openvpn</p>
+<p>加高效云盘：</p>
+<p>1.在阿里云创建云盘，然后挂载云盘</p>
+<p>2.登录服务器执行fdisk -l 可以看到刚刚买的硬盘</p>
+<p>3.对这块硬盘进行分区 fdisk /dev/vdb（/dev/vdb可能不一样）</p>
+<p>4.然后执行fdisk -l 可以看到看到新的分区</p>
+<p>5.格式化新分区（使用ext3扩展文件系统）</p>
+<p>mkfs.ext3 /dev/vdb1</p>
+<p>6.创建挂载目录mkdir data</p>
+<p>7.挂载分区到目录</p>
+<p>mount /dev/vdb1 /data</p>
+<p>8.设置开机自动挂载 vim /etc/fstab</p>
+<p>在文件最后加入/dev/vdb1        /data                   ext3  defaults    0 0</p>
+<p>9.然后重启reboot（线上不要随便重启服务器，考虑实际情况可不可以重启）</p>
+<p>10.用df就可以看到了</p>
+<p>安装crontab</p>
+<p>yum -y install vixie-cron</p>

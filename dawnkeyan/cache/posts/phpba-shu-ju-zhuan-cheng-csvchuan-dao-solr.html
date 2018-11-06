@@ -1,0 +1,50 @@
+<pre class="literal-block">
+$field = ['Peter','Griffin','Oslo','Norway','id'];
+$data = [
+                  ['Peter'=&gt;43,'Griffin'=&gt;4,'Oslo'=&gt;32,'Norway'=&gt;23,'id'=&gt;1],//主键值必须有，比如这id等于1
+                  ['Peter'=&gt;43,'Griffin'=&gt;5,'Oslo'=&gt;32,'Norway'=&gt;23,'id'=&gt;12],
+                  ['Peter'=&gt;43,'Oslo'=&gt;32,'Norway'=&gt;23,'id'=&gt;51],
+                  ['Peter'=&gt;43,'Griffin'=&gt;6,'Oslo'=&gt;32,'Norway'=&gt;23,'id'=&gt;31],
+              ];
+$core = 'test_update';
+$csv_result = [$field];
+
+      //处理数据，给不存在的值赋空值，不然CSV行列不对应
+      foreach ($field as $files_value){
+          foreach ($data as $data_key=&gt;$data_value){
+              $csv_result[$data_key+1][$files_value] = $data_value[$files_value];
+          }
+      }
+
+
+      $file_name = time().$core.rand().'.csv';
+
+      $file = fopen($file_name,&quot;w&quot;) or exit(&quot;Unable to open file!&quot;);;
+
+      foreach ($csv_result as $line)
+      {
+          $line = implode(',',$line);
+          fputcsv($file,split(',',$line));
+      }
+      fclose($file);
+
+      //获取当前的路径
+      exec('pwd',$address);
+
+      //上传到solr
+      exec('curl http://127.0.0.1:8984/solr/'.$core.'/update?commit=true --data-binary &#64;'.$address[0].'/'.$file_name.' -H \'Content-type:text/csv; charset=utf-8\'',$result);
+      //删除生成的文件
+      unlink($file_name);
+      $result = implode('',$result);
+
+      //上传成功
+      if(strpos($result,'&lt;int name=&quot;status&quot;&gt;0&lt;/int&gt;')){
+          return ['status'=&gt;true];
+      }
+      else{//上传失败
+          //存日志到mongo
+          $MongoModel = new MongoModel('集合', '', 'DB_MONGO');
+          $MongoModel-&gt;add(['core'=&gt;$core,'msg'=&gt;$result,'field'=&gt;$field,'data'=&gt;$data]);
+          return ['status'=&gt;false,'msg'=&gt;$result];
+      }在这里书写你的文章。
+</pre>
