@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>晚起的虫子 (关于文章 falcon)</title><link>https://dawnkeyan.github.io</link><description></description><atom:link href="https://dawnkeyan.github.io/categories/falcon.xml" rel="self" type="application/rss+xml"></atom:link><language>zh_cn</language><copyright>Contents © 2020 &lt;a href="mailto:dawnkeyan@126.com"&gt;dawnkeyan&lt;/a&gt; </copyright><lastBuildDate>Sat, 29 Feb 2020 01:35:53 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>安装python框架falcon</title><link>https://dawnkeyan.github.io/posts/falcon/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;docker run  -v $PWD/myapp:/usr/src/myapp  -it --rm -p 8000:8000 -w /usr/src/myapp python:3.5 bash
+安装python和pip&lt;/p&gt;
+&lt;p&gt;$ pip install falcon&lt;/p&gt;
+&lt;p&gt;$ mkdir look
+$ cd look&lt;/p&gt;
+&lt;p&gt;$touch app.py
+import falcon
+api = application = falcon.API()&lt;/p&gt;
+&lt;p&gt;$ pip install gunicorn&lt;/p&gt;
+&lt;p&gt;$ gunicorn -b 0.0.0.0:8000 app（默认是127.0.0.1:8000，这样的话只有主机可以访问）&lt;/p&gt;
+&lt;p&gt;$ curl localhost:8000 -v&lt;/p&gt;
+&lt;p&gt;$ pip install --upgrade httpie&lt;/p&gt;
+&lt;p&gt;$ http localhoost:8000&lt;/p&gt;
+&lt;p&gt;pip install msgpack-python&lt;/p&gt;
+&lt;p&gt;$ http GET localhost:8000/images&lt;/p&gt;&lt;/div&gt;</description><category>falcon</category><guid>https://dawnkeyan.github.io/posts/falcon/</guid><pubDate>Thu, 29 Nov 2018 05:50:07 GMT</pubDate></item></channel></rss>

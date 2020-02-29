@@ -1,0 +1,15 @@
+<p>docker run  -v $PWD/myapp:/usr/src/myapp  -it --rm -p 8000:8000 -w /usr/src/myapp python:3.5 bash
+安装python和pip</p>
+<p>$ pip install falcon</p>
+<p>$ mkdir look
+$ cd look</p>
+<p>$touch app.py
+import falcon
+api = application = falcon.API()</p>
+<p>$ pip install gunicorn</p>
+<p>$ gunicorn -b 0.0.0.0:8000 app（默认是127.0.0.1:8000，这样的话只有主机可以访问）</p>
+<p>$ curl localhost:8000 -v</p>
+<p>$ pip install --upgrade httpie</p>
+<p>$ http localhoost:8000</p>
+<p>pip install msgpack-python</p>
+<p>$ http GET localhost:8000/images</p>
