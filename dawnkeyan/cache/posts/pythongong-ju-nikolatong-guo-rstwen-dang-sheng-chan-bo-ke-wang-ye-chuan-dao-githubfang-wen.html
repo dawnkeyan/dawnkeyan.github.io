@@ -1,0 +1,25 @@
+<p>由于mac会有python版本乱套问题，所以直接在python3 docker里安装部署</p>
+<dl class="docutils">
+<dt>安装nikola</dt>
+<dd>pip install &quot;git+https://github.com/getnikola/nikola#egg=Nikola[extras]&quot;</dd>
+<dt>包</dt>
+<dd>git clone <a class="reference external" href="https://github.com/getnikola/nikola">https://github.com/getnikola/nikola</a></dd>
+</dl>
+<p>cd nikola</p>
+<p>pip install -e &quot;.[extras]&quot;</p>
+<dl class="docutils">
+<dt>初始化项目</dt>
+<dd>nikola init --demo &lt;directory_name&gt;.</dd>
+<dt>生成文章</dt>
+<dd>nikola new_post -e.</dd>
+</dl>
+<p>然后编辑文章</p>
+<dl class="docutils">
+<dt>构建</dt>
+<dd>nikola build</dd>
+<dt>启动服务浏览器访问</dt>
+<dd>nikola serve --browser</dd>
+</dl>
+<p>可以根据喜好编辑conf.py</p>
+<p>然后在github建个项目 git名称.github.io</p>
+<p>clone到本地把Nikola项目拷在这 执行nikola build的目录的父目录，再把output里的全部目录拷到git项目的根目录</p>

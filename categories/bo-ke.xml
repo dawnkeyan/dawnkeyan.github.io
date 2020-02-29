@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>晚起的虫子 (关于文章 博客)</title><link>https://dawnkeyan.github.io</link><description></description><atom:link rel="self" type="application/rss+xml" href="https://dawnkeyan.github.io/categories/bo-ke.xml"></atom:link><language>zh_cn</language><copyright>Contents © 2020 &lt;a href="mailto:dawnkeyan@126.com"&gt;dawnkeyan&lt;/a&gt; </copyright><lastBuildDate>Sat, 29 Feb 2020 01:57:28 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>python工具nikola通过rst文档生产博客网页传到github访问</title><link>https://dawnkeyan.github.io/posts/pythongong-ju-nikolatong-guo-rstwen-dang-sheng-chan-bo-ke-wang-ye-chuan-dao-githubfang-wen/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;由于mac会有python版本乱套问题，所以直接在python3 docker里安装部署&lt;/p&gt;
+&lt;dl class="docutils"&gt;
+&lt;dt&gt;安装nikola&lt;/dt&gt;
+&lt;dd&gt;pip install "git+https://github.com/getnikola/nikola#egg=Nikola[extras]"&lt;/dd&gt;
+&lt;dt&gt;包&lt;/dt&gt;
+&lt;dd&gt;git clone &lt;a class="reference external" href="https://github.com/getnikola/nikola"&gt;https://github.com/getnikola/nikola&lt;/a&gt;&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;p&gt;cd nikola&lt;/p&gt;
+&lt;p&gt;pip install -e ".[extras]"&lt;/p&gt;
+&lt;dl class="docutils"&gt;
+&lt;dt&gt;初始化项目&lt;/dt&gt;
+&lt;dd&gt;nikola init --demo &amp;lt;directory_name&amp;gt;.&lt;/dd&gt;
+&lt;dt&gt;生成文章&lt;/dt&gt;
+&lt;dd&gt;nikola new_post -e.&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;p&gt;然后编辑文章&lt;/p&gt;
+&lt;dl class="docutils"&gt;
+&lt;dt&gt;构建&lt;/dt&gt;
+&lt;dd&gt;nikola build&lt;/dd&gt;
+&lt;dt&gt;启动服务浏览器访问&lt;/dt&gt;
+&lt;dd&gt;nikola serve --browser&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;p&gt;可以根据喜好编辑conf.py&lt;/p&gt;
+&lt;p&gt;然后在github建个项目 git名称.github.io&lt;/p&gt;
+&lt;p&gt;clone到本地把Nikola项目拷在这 执行nikola build的目录的父目录，再把output里的全部目录拷到git项目的根目录&lt;/p&gt;&lt;/div&gt;</description><category>博客</category><guid>https://dawnkeyan.github.io/posts/pythongong-ju-nikolatong-guo-rstwen-dang-sheng-chan-bo-ke-wang-ye-chuan-dao-githubfang-wen/</guid><pubDate>Sat, 29 Feb 2020 01:44:05 GMT</pubDate></item></channel></rss>
