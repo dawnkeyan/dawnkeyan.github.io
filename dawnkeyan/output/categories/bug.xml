@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0"><channel><title>晚起的虫子 (关于文章 bug)</title><link>https://dawnkeyan.github.io</link><description></description><atom:link type="application/rss+xml" href="https://dawnkeyan.github.io/categories/bug.xml" rel="self"></atom:link><language>zh_cn</language><copyright>Contents © 2020 &lt;a href="mailto:dawnkeyan@126.com"&gt;dawnkeyan&lt;/a&gt; </copyright><lastBuildDate>Sat, 29 Feb 2020 09:55:43 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>PHP strtotime 加减一个月bug解决</title><link>https://dawnkeyan.github.io/posts/php-strtotime-jia-jian-yi-ge-yue-bugjie-jue/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;strtotime('-1 month',strtotime('2011-3-31'));
+当31好的时候减一个月的时候，就是前一个月的31号，但是有些月份没有31号，就会往后下一个月移，就乱了&lt;/p&gt;
+&lt;p&gt;old日期可以减一个月或者加一个月的第一天，然后再把old的日期的天拼到新日期，在和新日期的最后一天比较，如果小于拼接的，就取最后一天，否则就取拼接的&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+if (!function_exists('calculate_month')) {
+   /**
+    * 对月进行加减
+    * @param int $date 时间戳
+    * @param string $algorithm 比如 +1 month 或者-1 month
+    * @return string
+    */
+   function calculate_month(int $date, string $algorithm): string
+   {
+       $day = date('d', $date);
+       $newDateFirst = date('Y-m', strtotime('first day of ' . $algorithm, $date));
+       $newDate = $newDateFirst . '-' . $day;
+       $newDateLast = date('Y-m-d', strtotime('last day of ' . $algorithm, $date));
+       return $newDateLast &amp;lt; $newDate ? $newDateLast : $newDate;
+
+   }
+}
+&lt;/pre&gt;&lt;/div&gt;</description><category>bug</category><guid>https://dawnkeyan.github.io/posts/php-strtotime-jia-jian-yi-ge-yue-bugjie-jue/</guid><pubDate>Sat, 29 Feb 2020 08:34:55 GMT</pubDate></item></channel></rss>

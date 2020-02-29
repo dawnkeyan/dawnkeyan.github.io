@@ -22,6 +22,10 @@
   <lastmod>2020-02-29T01:57:00Z</lastmod>
  </sitemap>
  <sitemap>
+  <loc>https://dawnkeyan.github.io/categories/bug.xml</loc>
+  <lastmod>2020-02-29T09:55:00Z</lastmod>
+ </sitemap>
+ <sitemap>
   <loc>https://dawnkeyan.github.io/categories/cat_git.xml</loc>
   <lastmod>2020-02-29T01:19:00Z</lastmod>
  </sitemap>
@@ -43,7 +47,7 @@
  </sitemap>
  <sitemap>
   <loc>https://dawnkeyan.github.io/categories/cat_php.xml</loc>
-  <lastmod>2020-02-29T01:19:00Z</lastmod>
+  <lastmod>2020-02-29T10:00:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://dawnkeyan.github.io/categories/cat_python.xml</loc>
@@ -90,6 +94,10 @@
   <lastmod>2020-02-29T01:19:00Z</lastmod>
  </sitemap>
  <sitemap>
+  <loc>https://dawnkeyan.github.io/categories/php-bug.xml</loc>
+  <lastmod>2020-02-29T10:00:00Z</lastmod>
+ </sitemap>
+ <sitemap>
   <loc>https://dawnkeyan.github.io/categories/php-fpm.xml</loc>
   <lastmod>2020-02-29T01:19:00Z</lastmod>
  </sitemap>
@@ -127,18 +135,18 @@
  </sitemap>
  <sitemap>
   <loc>https://dawnkeyan.github.io/galleries/demo/rss.xml</loc>
-  <lastmod>2020-02-29T01:57:00Z</lastmod>
+  <lastmod>2020-02-29T10:00:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://dawnkeyan.github.io/galleries/rss.xml</loc>
-  <lastmod>2020-02-29T01:57:00Z</lastmod>
+  <lastmod>2020-02-29T10:00:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://dawnkeyan.github.io/rss.xml</loc>
-  <lastmod>2020-02-29T01:57:00Z</lastmod>
+  <lastmod>2020-02-29T10:00:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://dawnkeyan.github.io/sitemap.xml</loc>
-  <lastmod>2020-02-29T01:57:00Z</lastmod>
+  <lastmod>2020-02-29T10:00:00Z</lastmod>
  </sitemap>
 </sitemapindex>
