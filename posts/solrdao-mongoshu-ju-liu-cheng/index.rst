@@ -1,7 +1,7 @@
 .. title: solr导mongo数据流程
 .. slug: solrdao-mongoshu-ju-liu-cheng
 .. date: 2018-11-05 15:01:05 UTC+08:00
-.. tags: solr,mongo,搜索
+.. tags: solr
 .. category: 搜索
 .. link: 
 .. description: 

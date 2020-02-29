@@ -1,5 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel><title>晚起的虫子 (关于文章 php)</title><link>https://dawnkeyan.github.io</link><description></description><atom:link rel="self" type="application/rss+xml" href="https://dawnkeyan.github.io/categories/cat_php.xml"></atom:link><language>zh_cn</language><copyright>Contents © 2020 &lt;a href="mailto:dawnkeyan@126.com"&gt;dawnkeyan&lt;/a&gt; </copyright><lastBuildDate>Sat, 29 Feb 2020 10:00:56 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>PHP strtotime 加减一个月bug解决</title><link>https://dawnkeyan.github.io/posts/php-strtotime-jia-jian-yi-ge-yue-bugjie-jue/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;strtotime('-1 month',strtotime('2011-3-31'));
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>晚起的虫子 (关于文章 php)</title><link>https://dawnkeyan.github.io</link><description></description><atom:link href="https://dawnkeyan.github.io/categories/cat_php.xml" rel="self" type="application/rss+xml"></atom:link><language>zh_cn</language><copyright>Contents © 2020 &lt;a href="mailto:dawnkeyan@126.com"&gt;dawnkeyan&lt;/a&gt; </copyright><lastBuildDate>Sat, 29 Feb 2020 11:44:30 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>php有些加法和乘法会变无限循环小数</title><link>https://dawnkeyan.github.io/posts/phpyou-xie-jia-fa-he-cheng-fa-hui-bian-wu-xian-xun-huan-xiao-shu/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;因为系统的二进制在存储某些数据的时候，二进制可能是无限的，所以就导致加减法和乘法会变无限循环小数的问题&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+//实验在php 7.2下进行
+var_dump(0.58 * 100);//这种情况不会有问题
+var_dump(json_encode(['a' =&amp;gt; 0.58 * 100]));
+
+float(58)
+string(23) "{"a":57.99999999999999}"
+&lt;/pre&gt;
+&lt;p&gt;解决办法是使用更高精度的函数&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+var_dump(json_encode(['a' =&amp;gt; bcmul(0.58, 100)]));
+string(10) "{"a":"58"}"
+&lt;/pre&gt;
+&lt;p&gt;bcadd — 将两个高精度数字相加&lt;/p&gt;
+&lt;p&gt;bccomp — 比较两个高精度数字，返回-1, 0, 1&lt;/p&gt;
+&lt;p&gt;bcdiv — 将两个高精度数字相除&lt;/p&gt;
+&lt;p&gt;bcmod — 求高精度数字余数&lt;/p&gt;
+&lt;p&gt;bcmul — 将两个高精度数字相乘&lt;/p&gt;
+&lt;p&gt;bcpow — 求高精度数字乘方&lt;/p&gt;
+&lt;p&gt;bcpowmod — 求高精度数字乘方求模，数论里非常常用&lt;/p&gt;
+&lt;p&gt;bcscale — 配置默认小数点位数，相当于就是Linux bc中的”scale=”&lt;/p&gt;
+&lt;p&gt;bcsqrt — 求高精度数字平方根&lt;/p&gt;
+&lt;p&gt;bcsub — 将两个高精度数字相减&lt;/p&gt;&lt;/div&gt;</description><category>php_bug</category><guid>https://dawnkeyan.github.io/posts/phpyou-xie-jia-fa-he-cheng-fa-hui-bian-wu-xian-xun-huan-xiao-shu/</guid><pubDate>Sat, 29 Feb 2020 11:31:52 GMT</pubDate></item><item><title>PHP strtotime 加减一个月bug解决</title><link>https://dawnkeyan.github.io/posts/php-strtotime-jia-jian-yi-ge-yue-bugjie-jue/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;strtotime('-1 month',strtotime('2011-3-31'));
 当31好的时候减一个月的时候，就是前一个月的31号，但是有些月份没有31号，就会往后下一个月移，就乱了&lt;/p&gt;
 &lt;p&gt;old日期可以减一个月或者加一个月的第一天，然后再把old的日期的天拼到新日期，在和新日期的最后一天比较，如果小于拼接的，就取最后一天，否则就取拼接的&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
@@ -29,7 +52,7 @@ var_dump(calculate_month(strtotime('2020-08-15'),'+1 month'));
 string(10) "2017-02-28"
 string(10) "2017-09-30"
 string(10) "2017-09-15"
-&lt;/pre&gt;&lt;/div&gt;</description><category>php bug</category><guid>https://dawnkeyan.github.io/posts/php-strtotime-jia-jian-yi-ge-yue-bugjie-jue/</guid><pubDate>Sat, 29 Feb 2020 08:34:55 GMT</pubDate></item><item><title>php处理大文件</title><link>https://dawnkeyan.github.io/posts/phpchu-li-da-wen-jian/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;普通的处理文件是要全部吧文件内容读入内存，但是有内存和时间限制，可以修改php.ini,但是还和电脑的内存大小有关系；&lt;/p&gt;
+&lt;/pre&gt;&lt;/div&gt;</description><category>php_bug</category><guid>https://dawnkeyan.github.io/posts/php-strtotime-jia-jian-yi-ge-yue-bugjie-jue/</guid><pubDate>Sat, 29 Feb 2020 08:34:55 GMT</pubDate></item><item><title>php处理大文件</title><link>https://dawnkeyan.github.io/posts/phpchu-li-da-wen-jian/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;普通的处理文件是要全部吧文件内容读入内存，但是有内存和时间限制，可以修改php.ini,但是还和电脑的内存大小有关系；&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
 &amp;lt;?php
    ini_set('memory_limit', '-1');
@@ -104,7 +127,7 @@ grep 'Baiduspider' access.log |wc -l
    $line = `tail -n 1 $file`;
    echo $line;
 ?&amp;gt;
-&lt;/pre&gt;&lt;/div&gt;</description><category>php</category><guid>https://dawnkeyan.github.io/posts/phpchu-li-da-wen-jian/</guid><pubDate>Sun, 04 Nov 2018 08:12:59 GMT</pubDate></item><item><title>rand和mt_rand</title><link>https://dawnkeyan.github.io/posts/randhe-mt_rand/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;p&gt;rand默认使用libc生成器，具有一些不确定和未知的弹性而慢；而mt_rand使用Mersener Twister算法生成随机数，速度比rand快4倍。&lt;/p&gt;</description><category>php</category><guid>https://dawnkeyan.github.io/posts/randhe-mt_rand/</guid><pubDate>Sun, 04 Nov 2018 07:18:52 GMT</pubDate></item><item><title>php实现经典算法</title><link>https://dawnkeyan.github.io/posts/phpshi-xian-jing-dian-suan-fa/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;冒泡:&lt;/p&gt;
+&lt;/pre&gt;&lt;/div&gt;</description><category>大文件读取</category><guid>https://dawnkeyan.github.io/posts/phpchu-li-da-wen-jian/</guid><pubDate>Sun, 04 Nov 2018 08:12:59 GMT</pubDate></item><item><title>rand和mt_rand</title><link>https://dawnkeyan.github.io/posts/randhe-mt_rand/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;p&gt;rand默认使用libc生成器，具有一些不确定和未知的弹性而慢；而mt_rand使用Mersener Twister算法生成随机数，速度比rand快4倍。&lt;/p&gt;</description><category>随机</category><guid>https://dawnkeyan.github.io/posts/randhe-mt_rand/</guid><pubDate>Sun, 04 Nov 2018 07:18:52 GMT</pubDate></item><item><title>php实现经典算法</title><link>https://dawnkeyan.github.io/posts/phpshi-xian-jing-dian-suan-fa/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;冒泡:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
 function bub_sort($array){
       $n = count($array);
@@ -381,7 +404,7 @@ function qhb($num,$money){
       }
 
       qhb(5,5);
-&lt;/pre&gt;&lt;/div&gt;</description><category>php</category><category>算法</category><guid>https://dawnkeyan.github.io/posts/phpshi-xian-jing-dian-suan-fa/</guid><pubDate>Fri, 26 Oct 2018 02:29:53 GMT</pubDate></item><item><title>php-fpm</title><link>https://dawnkeyan.github.io/posts/php-fpm/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;cgi 公共网关接口 是http服务器和其他机器上的程序进行通信的接口，起程序运行在网络服务器上&lt;/p&gt;
+&lt;/pre&gt;&lt;/div&gt;</description><category>算法</category><guid>https://dawnkeyan.github.io/posts/phpshi-xian-jing-dian-suan-fa/</guid><pubDate>Fri, 26 Oct 2018 02:29:53 GMT</pubDate></item><item><title>php-fpm</title><link>https://dawnkeyan.github.io/posts/php-fpm/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;cgi 公共网关接口 是http服务器和其他机器上的程序进行通信的接口，起程序运行在网络服务器上&lt;/p&gt;
 &lt;p&gt;fastcgi是常驻行的cgi，只要被激活一次，后面就不要每次都去fork一次，把cgi解释器保持在内存获得较高的效率，还支持分布式，可以放在网站服务器以外的主机上执行并且接受来自其他网站服务器的请求&lt;/p&gt;
 &lt;p&gt;cgi和fastcgi都独立与语言&lt;/p&gt;
 &lt;p&gt;php-fpm是FastCGI进程管理器&lt;/p&gt;
@@ -422,4 +445,4 @@ ondemand - 进程在有需求时才产生（当请求时，与 dynamic 相反，
 &lt;p&gt;这个是用来处理因为PHP执行时间超长而报502错误的解决。&lt;/p&gt;
 &lt;p&gt;这个时长配置可以在php.ini（max_execution_time）或php-fpm.conf中配置均可，为了不影响全局配置，可在php-fpm.conf中实现。&lt;/p&gt;
 &lt;p&gt;PHP-FPM设置的脚本最大执行时间已经够长了，但执行耗时PHP脚本时，发现Nginx报错变为504错误。这是因为我们修改的只是PHP的配置，Nginx中也有关于与上游服务器通信超时时间的配置factcgi_connect/read/send_timeout。&lt;/p&gt;
-&lt;p&gt;查看php进程数 ps aux | grep -c php-fpm&lt;/p&gt;&lt;/div&gt;</description><category>php</category><category>php-fpm</category><guid>https://dawnkeyan.github.io/posts/php-fpm/</guid><pubDate>Thu, 25 Oct 2018 07:29:46 GMT</pubDate></item></channel></rss>
+&lt;p&gt;查看php进程数 ps aux | grep -c php-fpm&lt;/p&gt;&lt;/div&gt;</description><category>php-fpm</category><guid>https://dawnkeyan.github.io/posts/php-fpm/</guid><pubDate>Thu, 25 Oct 2018 07:29:46 GMT</pubDate></item></channel></rss>

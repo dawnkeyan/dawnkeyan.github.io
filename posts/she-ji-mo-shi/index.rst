@@ -1,8 +1,8 @@
 .. title: 设计模式
 .. slug: she-ji-mo-shi
 .. date: 2018-10-30 09:13:45 UTC+08:00
-.. tags: php,设计模式
-.. category:设计模式
+.. tags: 设计模式
+.. category:php
 .. link: 
 .. description: 
 .. type: text

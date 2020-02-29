@@ -1,7 +1,7 @@
 .. title: php实现经典算法
 .. slug: phpshi-xian-jing-dian-suan-fa
 .. date: 2018-10-26 10:29:53 UTC+08:00
-.. tags: php,算法
+.. tags: 算法
 .. category: php
 .. link: 
 .. description: 

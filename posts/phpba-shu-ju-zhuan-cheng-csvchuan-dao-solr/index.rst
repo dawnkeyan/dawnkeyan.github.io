@@ -1,7 +1,7 @@
 .. title: php把数据转成csv传到solr
 .. slug: phpba-shu-ju-zhuan-cheng-csvchuan-dao-solr
 .. date: 2018-11-05 15:10:03 UTC+08:00
-.. tags: php,solr,搜索
+.. tags: solr
 .. category: 搜索
 .. link: 
 .. description: 

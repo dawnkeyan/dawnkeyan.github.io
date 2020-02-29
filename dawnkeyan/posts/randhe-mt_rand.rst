@@ -1,7 +1,7 @@
 .. title: rand和mt_rand
 .. slug: randhe-mt_rand
 .. date: 2018-11-04 15:18:52 UTC+08:00
-.. tags: php
+.. tags: 随机
 .. category: php
 .. link: 
 .. description: 

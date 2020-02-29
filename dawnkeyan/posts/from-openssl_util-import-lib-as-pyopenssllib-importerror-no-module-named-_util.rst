@@ -1,7 +1,7 @@
 .. title: from OpenSSL._util import lib as pyOpenSSLlib ImportError: No module named _util
 .. slug: from-openssl_util-import-lib-as-pyopenssllib-importerror-no-module-named-_util
 .. date: 2018-10-25 09:45:33 UTC+08:00
-.. tags: python,scrapy,爬虫
+.. tags: 爬虫
 .. category: python
 .. link: 
 .. description: 

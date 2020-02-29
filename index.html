@@ -11,7 +11,7 @@
 <link rel="alternate" type="application/rss+xml" title="RSS" hreflang="zh_cn" href="rss.xml">
 <link rel="canonical" href="https://dawnkeyan.github.io/">
 <link rel="next" href="index-1.html" type="text/html">
-<!--[if lt IE 9]><script src="assets/js/html5.js"></script><![endif]--><link rel="prefetch" href="posts/php-strtotime-jia-jian-yi-ge-yue-bugjie-jue/" type="text/html">
+<!--[if lt IE 9]><script src="assets/js/html5.js"></script><![endif]--><link rel="prefetch" href="posts/phpyou-xie-jia-fa-he-cheng-fa-hui-bian-wu-xian-xun-huan-xiao-shu/" type="text/html">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">跳到主内容</a>
@@ -67,7 +67,45 @@
 
     
 <div class="postindex">
-    <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/php-strtotime-jia-jian-yi-ge-yue-bugjie-jue/" class="u-url">PHP strtotime 加减一个月bug解决</a></h1>
+    <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/phpyou-xie-jia-fa-he-cheng-fa-hui-bian-wu-xian-xun-huan-xiao-shu/" class="u-url">php有些加法和乘法会变无限循环小数</a></h1>
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                dawnkeyan
+            </span></p>
+            <p class="dateline">
+            <a href="posts/phpyou-xie-jia-fa-he-cheng-fa-hui-bian-wu-xian-xun-huan-xiao-shu/" rel="bookmark">
+            <time class="published dt-published" datetime="2020-02-29T19:31:52+08:00" itemprop="datePublished" title="2020-02-29 19:31">2020-02-29 19:31</time></a>
+            </p>
+        </div>
+    </header><div class="e-content entry-content">
+    <div>
+<p>因为系统的二进制在存储某些数据的时候，二进制可能是无限的，所以就导致加减法和乘法会变无限循环小数的问题</p>
+<pre class="literal-block">
+//实验在php 7.2下进行
+var_dump(0.58 * 100);//这种情况不会有问题
+var_dump(json_encode(['a' =&gt; 0.58 * 100]));
+
+float(58)
+string(23) "{"a":57.99999999999999}"
+</pre>
+<p>解决办法是使用更高精度的函数</p>
+<pre class="literal-block">
+var_dump(json_encode(['a' =&gt; bcmul(0.58, 100)]));
+string(10) "{"a":"58"}"
+</pre>
+<p>bcadd — 将两个高精度数字相加</p>
+<p>bccomp — 比较两个高精度数字，返回-1, 0, 1</p>
+<p>bcdiv — 将两个高精度数字相除</p>
+<p>bcmod — 求高精度数字余数</p>
+<p>bcmul — 将两个高精度数字相乘</p>
+<p>bcpow — 求高精度数字乘方</p>
+<p>bcpowmod — 求高精度数字乘方求模，数论里非常常用</p>
+<p>bcscale — 配置默认小数点位数，相当于就是Linux bc中的”scale=”</p>
+<p>bcsqrt — 求高精度数字平方根</p>
+<p>bcsub — 将两个高精度数字相减</p>
+</div>
+    </div>
+    </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/php-strtotime-jia-jian-yi-ge-yue-bugjie-jue/" class="u-url">PHP strtotime 加减一个月bug解决</a></h1>
         <div class="metadata">
             <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
                 dawnkeyan
@@ -260,7 +298,7 @@ $csv_result = [$field];
       }在这里书写你的文章。
 </pre>
     </div>
-    </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/centosda-jian-phphuan-jing/" class="u-url">centos搭建PHP环境</a></h1>
+    </article><article class="h-entry post-tex" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/centosda-jian-phphuan-jing/" class="u-url">centos搭建PHP环境</a></h1>
         <div class="metadata">
             <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
                 dawnkeyan
@@ -272,9 +310,6 @@ $csv_result = [$field];
         </div>
     </header><div class="e-content entry-content">
     <div>
-<p>版权归作者所有，任何形式转载请联系作者。
-作者：清晓（来自豆瓣）
-来源：<a class="reference external" href="https://www.douban.com/note/683279363/">https://www.douban.com/note/683279363/</a></p>
 <p>操作系统: CentOS 7.4 64位</p>
 <p>创建组和账号</p>
 <p>groupadd 组名
@@ -754,35 +789,6 @@ reBuildIndexParams=/dataimport?command=full-import&amp;clean=true&amp;commit=tru
 reBuildIndexBeginTime=09:00:00
 </pre>
 <p>10.重启solr</p>
-</div>
-    </div>
-    </article><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/gitcao-zuo/" class="u-url">git操作</a></h1>
-        <div class="metadata">
-            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
-                dawnkeyan
-            </span></p>
-            <p class="dateline">
-            <a href="posts/gitcao-zuo/" rel="bookmark">
-            <time class="published dt-published" datetime="2018-11-05T14:30:35+08:00" itemprop="datePublished" title="2018-11-05 14:30">2018-11-05 14:30</time></a>
-            </p>
-        </div>
-    </header><div class="e-content entry-content">
-    <div>
-<p>复制</p>
-<p>git checkout master</p>
-<p>git pull</p>
-<p>git checkout -b 新分支名</p>
-<p>git push origin 新分支名</p>
-<dl class="docutils">
-<dt>删除分支</dt>
-<dd>git push origin --delete 20180829</dd>
-<dt>push后回退</dt>
-<dd>
-<p class="first">git revert 版本号
-git push origin 分支名</p>
-<p class="last">合并某分支到当前分支：git merge &lt;name&gt; 在这里书写你的文章。</p>
-</dd>
-</dl>
 </div>
     </div>
     </article>

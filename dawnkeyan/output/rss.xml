@@ -1,5 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel><title>晚起的虫子</title><link>https://dawnkeyan.github.io</link><description>工作中的点点滴滴</description><atom:link rel="self" type="application/rss+xml" href="https://dawnkeyan.github.io/rss.xml"></atom:link><language>zh_cn</language><copyright>Contents © 2020 &lt;a href="mailto:dawnkeyan@126.com"&gt;dawnkeyan&lt;/a&gt; </copyright><lastBuildDate>Sat, 29 Feb 2020 10:00:56 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>PHP strtotime 加减一个月bug解决</title><link>https://dawnkeyan.github.io/posts/php-strtotime-jia-jian-yi-ge-yue-bugjie-jue/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;strtotime('-1 month',strtotime('2011-3-31'));
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>晚起的虫子</title><link>https://dawnkeyan.github.io</link><description>工作中的点点滴滴</description><atom:link href="https://dawnkeyan.github.io/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>zh_cn</language><copyright>Contents © 2020 &lt;a href="mailto:dawnkeyan@126.com"&gt;dawnkeyan&lt;/a&gt; </copyright><lastBuildDate>Sat, 29 Feb 2020 11:44:30 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>php有些加法和乘法会变无限循环小数</title><link>https://dawnkeyan.github.io/posts/phpyou-xie-jia-fa-he-cheng-fa-hui-bian-wu-xian-xun-huan-xiao-shu/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;因为系统的二进制在存储某些数据的时候，二进制可能是无限的，所以就导致加减法和乘法会变无限循环小数的问题&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+//实验在php 7.2下进行
+var_dump(0.58 * 100);//这种情况不会有问题
+var_dump(json_encode(['a' =&amp;gt; 0.58 * 100]));
+
+float(58)
+string(23) "{"a":57.99999999999999}"
+&lt;/pre&gt;
+&lt;p&gt;解决办法是使用更高精度的函数&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+var_dump(json_encode(['a' =&amp;gt; bcmul(0.58, 100)]));
+string(10) "{"a":"58"}"
+&lt;/pre&gt;
+&lt;p&gt;bcadd — 将两个高精度数字相加&lt;/p&gt;
+&lt;p&gt;bccomp — 比较两个高精度数字，返回-1, 0, 1&lt;/p&gt;
+&lt;p&gt;bcdiv — 将两个高精度数字相除&lt;/p&gt;
+&lt;p&gt;bcmod — 求高精度数字余数&lt;/p&gt;
+&lt;p&gt;bcmul — 将两个高精度数字相乘&lt;/p&gt;
+&lt;p&gt;bcpow — 求高精度数字乘方&lt;/p&gt;
+&lt;p&gt;bcpowmod — 求高精度数字乘方求模，数论里非常常用&lt;/p&gt;
+&lt;p&gt;bcscale — 配置默认小数点位数，相当于就是Linux bc中的”scale=”&lt;/p&gt;
+&lt;p&gt;bcsqrt — 求高精度数字平方根&lt;/p&gt;
+&lt;p&gt;bcsub — 将两个高精度数字相减&lt;/p&gt;&lt;/div&gt;</description><category>php_bug</category><guid>https://dawnkeyan.github.io/posts/phpyou-xie-jia-fa-he-cheng-fa-hui-bian-wu-xian-xun-huan-xiao-shu/</guid><pubDate>Sat, 29 Feb 2020 11:31:52 GMT</pubDate></item><item><title>PHP strtotime 加减一个月bug解决</title><link>https://dawnkeyan.github.io/posts/php-strtotime-jia-jian-yi-ge-yue-bugjie-jue/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;strtotime('-1 month',strtotime('2011-3-31'));
 当31好的时候减一个月的时候，就是前一个月的31号，但是有些月份没有31号，就会往后下一个月移，就乱了&lt;/p&gt;
 &lt;p&gt;old日期可以减一个月或者加一个月的第一天，然后再把old的日期的天拼到新日期，在和新日期的最后一天比较，如果小于拼接的，就取最后一天，否则就取拼接的&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
@@ -29,7 +52,7 @@ var_dump(calculate_month(strtotime('2020-08-15'),'+1 month'));
 string(10) "2017-02-28"
 string(10) "2017-09-30"
 string(10) "2017-09-15"
-&lt;/pre&gt;&lt;/div&gt;</description><category>php bug</category><guid>https://dawnkeyan.github.io/posts/php-strtotime-jia-jian-yi-ge-yue-bugjie-jue/</guid><pubDate>Sat, 29 Feb 2020 08:34:55 GMT</pubDate></item><item><title>python工具nikola通过rst文档生产博客网页传到github访问</title><link>https://dawnkeyan.github.io/posts/pythongong-ju-nikolatong-guo-rstwen-dang-sheng-chan-bo-ke-wang-ye-chuan-dao-githubfang-wen/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;由于mac会有python版本乱套问题，所以直接在python3 docker里安装部署&lt;/p&gt;
+&lt;/pre&gt;&lt;/div&gt;</description><category>php_bug</category><guid>https://dawnkeyan.github.io/posts/php-strtotime-jia-jian-yi-ge-yue-bugjie-jue/</guid><pubDate>Sat, 29 Feb 2020 08:34:55 GMT</pubDate></item><item><title>python工具nikola通过rst文档生产博客网页传到github访问</title><link>https://dawnkeyan.github.io/posts/pythongong-ju-nikolatong-guo-rstwen-dang-sheng-chan-bo-ke-wang-ye-chuan-dao-githubfang-wen/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;由于mac会有python版本乱套问题，所以直接在python3 docker里安装部署&lt;/p&gt;
 &lt;dl class="docutils"&gt;
 &lt;dt&gt;安装nikola&lt;/dt&gt;
 &lt;dd&gt;pip install "git+https://github.com/getnikola/nikola#egg=Nikola[extras]"&lt;/dd&gt;
@@ -69,7 +92,7 @@ api = application = falcon.API()&lt;/p&gt;
 &lt;p&gt;$ pip install --upgrade httpie&lt;/p&gt;
 &lt;p&gt;$ http localhoost:8000&lt;/p&gt;
 &lt;p&gt;pip install msgpack-python&lt;/p&gt;
-&lt;p&gt;$ http GET localhost:8000/images&lt;/p&gt;&lt;/div&gt;</description><category>falcon</category><guid>https://dawnkeyan.github.io/posts/falcon/</guid><pubDate>Thu, 29 Nov 2018 05:50:07 GMT</pubDate></item><item><title>php把数据转成csv传到solr</title><link>https://dawnkeyan.github.io/posts/phpba-shu-ju-zhuan-cheng-csvchuan-dao-solr/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;pre class="literal-block"&gt;
+&lt;p&gt;$ http GET localhost:8000/images&lt;/p&gt;&lt;/div&gt;</description><category>python框架</category><guid>https://dawnkeyan.github.io/posts/falcon/</guid><pubDate>Thu, 29 Nov 2018 05:50:07 GMT</pubDate></item><item><title>php把数据转成csv传到solr</title><link>https://dawnkeyan.github.io/posts/phpba-shu-ju-zhuan-cheng-csvchuan-dao-solr/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;pre class="literal-block"&gt;
 $field = ['Peter','Griffin','Oslo','Norway','id'];
 $data = [
                   ['Peter'=&amp;gt;43,'Griffin'=&amp;gt;4,'Oslo'=&amp;gt;32,'Norway'=&amp;gt;23,'id'=&amp;gt;1],//主键值必须有，比如这id等于1
@@ -118,10 +141,7 @@ $csv_result = [$field];
           $MongoModel-&amp;gt;add(['core'=&amp;gt;$core,'msg'=&amp;gt;$result,'field'=&amp;gt;$field,'data'=&amp;gt;$data]);
           return ['status'=&amp;gt;false,'msg'=&amp;gt;$result];
       }在这里书写你的文章。
-&lt;/pre&gt;</description><category>php</category><category>solr</category><category>搜索</category><guid>https://dawnkeyan.github.io/posts/phpba-shu-ju-zhuan-cheng-csvchuan-dao-solr/</guid><pubDate>Mon, 05 Nov 2018 07:10:03 GMT</pubDate></item><item><title>centos搭建PHP环境</title><link>https://dawnkeyan.github.io/posts/centosda-jian-phphuan-jing/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;版权归作者所有，任何形式转载请联系作者。
-作者：清晓（来自豆瓣）
-来源：&lt;a class="reference external" href="https://www.douban.com/note/683279363/"&gt;https://www.douban.com/note/683279363/&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;操作系统: CentOS 7.4 64位&lt;/p&gt;
+&lt;/pre&gt;</description><category>solr</category><guid>https://dawnkeyan.github.io/posts/phpba-shu-ju-zhuan-cheng-csvchuan-dao-solr/</guid><pubDate>Mon, 05 Nov 2018 07:10:03 GMT</pubDate></item><item><title>centos搭建PHP环境</title><link>https://dawnkeyan.github.io/posts/centosda-jian-phphuan-jing/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;操作系统: CentOS 7.4 64位&lt;/p&gt;
 &lt;p&gt;创建组和账号&lt;/p&gt;
 &lt;p&gt;groupadd 组名
 useradd -g 组名-s /bin/bash 账号
@@ -296,7 +316,7 @@ git (2.x)&lt;/p&gt;
 &lt;p&gt;9.然后重启reboot（线上不要随便重启服务器，考虑实际情况可不可以重启）&lt;/p&gt;
 &lt;p&gt;10.用df就可以看到了&lt;/p&gt;
 &lt;p&gt;安装crontab&lt;/p&gt;
-&lt;p&gt;yum -y install vixie-cron&lt;/p&gt;&lt;/div&gt;</description><category>centos</category><category>php</category><guid>https://dawnkeyan.github.io/posts/centosda-jian-phphuan-jing/</guid><pubDate>Mon, 05 Nov 2018 07:07:02 GMT</pubDate></item><item><title>solr删除数据</title><link>https://dawnkeyan.github.io/posts/solrshan-chu-shu-ju/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;方法一 在solr页面选择对应的core，然后点击Document然后Document Type选择XML,然后在Document(s)框内填)&lt;/p&gt;
+&lt;p&gt;yum -y install vixie-cron&lt;/p&gt;&lt;/div&gt;</description><category>lnmp</category><guid>https://dawnkeyan.github.io/posts/centosda-jian-phphuan-jing/</guid><pubDate>Mon, 05 Nov 2018 07:07:02 GMT</pubDate></item><item><title>solr删除数据</title><link>https://dawnkeyan.github.io/posts/solrshan-chu-shu-ju/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;方法一 在solr页面选择对应的core，然后点击Document然后Document Type选择XML,然后在Document(s)框内填)&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
 &amp;lt;delete&amp;gt;&amp;lt;query&amp;gt;*:*&amp;lt;/query&amp;gt;&amp;lt;/delete&amp;gt; #*:*可以改成其他条件
 &amp;lt;commit/&amp;gt;
@@ -309,13 +329,13 @@ git (2.x)&lt;/p&gt;
   &amp;lt;/delete&amp;gt;
   &amp;lt;commit&amp;gt;&amp;lt;/commit&amp;gt;
 &amp;lt;/add&amp;gt;
-&lt;/pre&gt;&lt;/div&gt;</description><category>solr</category><category>搜索</category><guid>https://dawnkeyan.github.io/posts/solrshan-chu-shu-ju/</guid><pubDate>Mon, 05 Nov 2018 07:03:22 GMT</pubDate></item><item><title>solr导mongo数据流程</title><link>https://dawnkeyan.github.io/posts/solrdao-mongoshu-ju-liu-cheng/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;1.进入/home/solr/solr-6.6.2（solr安装路径）创建core，比如创建lab_cloud_periodical bin/solr create -c core名 -p 端口号 -force（root用户需要加）&lt;/p&gt;
+&lt;/pre&gt;&lt;/div&gt;</description><category>solr</category><guid>https://dawnkeyan.github.io/posts/solrshan-chu-shu-ju/</guid><pubDate>Mon, 05 Nov 2018 07:03:22 GMT</pubDate></item><item><title>solr导mongo数据流程</title><link>https://dawnkeyan.github.io/posts/solrdao-mongoshu-ju-liu-cheng/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;1.进入/home/solr/solr-6.6.2（solr安装路径）创建core，比如创建lab_cloud_periodical bin/solr create -c core名 -p 端口号 -force（root用户需要加）&lt;/p&gt;
 &lt;p&gt;2.导出mongodb csv 比如导出lab，-f是需要放在solr的且此集合有的字段 mongoexport --username 用户名 --password 密码 --type=csv -f _id,title -d 数据库 -c 集合 -o /home/文件名.csv&lt;/p&gt;
 &lt;p&gt;3.把数据传到solrcurl &lt;a class="reference external" href="http://ip"&gt;http://ip&lt;/a&gt;:端口号/solr/core/update?commit=true --data-binary @/home/文件名.csv -H 'Content-type:text/csv; charset=utf-8'&lt;/p&gt;
 &lt;p&gt;问题： 可能执行着会报错，那是solr会给字段定义类型，但你的某些值有不是那个类型，比如给你定义了int,然后你传的值是字符串。解决办法就是去把int改成string，位置在vim /home/solr/solr-6.6.2/server/solr/lab（写core名）/conf/managed-schema,比如这的tid(有些是默认给你设置了时间，但你传入的不是时间格式)，这是我遇到的问题，有些配置想改都可以改的。然后重新导入数据，还有就是主键可以重新设置，修改&amp;lt;uniqueKey&amp;gt;id&amp;lt;/uniqueKey&amp;gt;&lt;/p&gt;
 &lt;p&gt;4.如果需要删除数据参考：&lt;a class="reference external" href="http://blog.csdn.net/lbf5210/article/details/51207043"&gt;http://blog.csdn.net/lbf5210/article/details/51207043&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;5.查询，页面参数解释：&lt;a class="reference external" href="http://blog.csdn.net/zhufenglonglove/article/details/51518846"&gt;http://blog.csdn.net/zhufenglonglove/article/details/51518846&lt;/a&gt; 浏览器进入http://ip:端口号/solr&lt;/p&gt;
-&lt;p&gt;6.目前能弄的mongo实时更新是一个core记录整个库，一个集合一个core不知道咋弄。&lt;/p&gt;&lt;/div&gt;</description><category>mongo</category><category>solr</category><category>搜索</category><guid>https://dawnkeyan.github.io/posts/solrdao-mongoshu-ju-liu-cheng/</guid><pubDate>Mon, 05 Nov 2018 07:01:05 GMT</pubDate></item><item><title>centos 安装solr</title><link>https://dawnkeyan.github.io/posts/centos-an-zhuang-solr/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;1.安装jdk&lt;/p&gt;
+&lt;p&gt;6.目前能弄的mongo实时更新是一个core记录整个库，一个集合一个core不知道咋弄。&lt;/p&gt;&lt;/div&gt;</description><category>solr</category><guid>https://dawnkeyan.github.io/posts/solrdao-mongoshu-ju-liu-cheng/</guid><pubDate>Mon, 05 Nov 2018 07:01:05 GMT</pubDate></item><item><title>centos 安装solr</title><link>https://dawnkeyan.github.io/posts/centos-an-zhuang-solr/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;1.安装jdk&lt;/p&gt;
 &lt;p&gt;下载安装包（也可以使用其他下载文件方式），因为认证问题，不能直接wget, 打开此页面 ，在Java SE Development Kit 8u161勾上Accept License Agreement，然后点击jdk-8u161-linux-x64.rpm,在下载页面获取文件下载地址，比如我本次的是http://download.oracle.com/otn-pub/java/jdk/8u161-b12/2f38c3b165be4555a1fa6e98c45e0808/jdk-8u161-linux-x64.rpm?AuthParam=1519538436_f233fa0ab4a9cba466bec47d360db37a，然后在/down目录下wget此地址。然后再重命名文件
 mv jdk-8u161-linux-x64.rpm?AuthParam=1519538436_f233fa0ab4a9cba466bec47d360db37a jdk-8u161-linux-x64.rpm&lt;/p&gt;
 &lt;p&gt;安装
@@ -552,17 +572,4 @@ reBuildIndexParams=/dataimport?command=full-import&amp;amp;clean=true&amp;amp;co
 #  两种格式：2012-04-11 03:10:00 或者  03:10:00，后一种会自动补全日期部分为服务启动时的日期
 reBuildIndexBeginTime=09:00:00
 &lt;/pre&gt;
-&lt;p&gt;10.重启solr&lt;/p&gt;&lt;/div&gt;</description><category>solr</category><category>搜索</category><guid>https://dawnkeyan.github.io/posts/centos-an-zhuang-solr/</guid><pubDate>Mon, 05 Nov 2018 06:45:40 GMT</pubDate></item><item><title>git操作</title><link>https://dawnkeyan.github.io/posts/gitcao-zuo/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;复制&lt;/p&gt;
-&lt;p&gt;git checkout master&lt;/p&gt;
-&lt;p&gt;git pull&lt;/p&gt;
-&lt;p&gt;git checkout -b 新分支名&lt;/p&gt;
-&lt;p&gt;git push origin 新分支名&lt;/p&gt;
-&lt;dl class="docutils"&gt;
-&lt;dt&gt;删除分支&lt;/dt&gt;
-&lt;dd&gt;git push origin --delete 20180829&lt;/dd&gt;
-&lt;dt&gt;push后回退&lt;/dt&gt;
-&lt;dd&gt;&lt;p class="first"&gt;git revert 版本号
-git push origin 分支名&lt;/p&gt;
-&lt;p class="last"&gt;合并某分支到当前分支：git merge &amp;lt;name&amp;gt; 在这里书写你的文章。&lt;/p&gt;
-&lt;/dd&gt;
-&lt;/dl&gt;&lt;/div&gt;</description><category>git</category><guid>https://dawnkeyan.github.io/posts/gitcao-zuo/</guid><pubDate>Mon, 05 Nov 2018 06:30:35 GMT</pubDate></item></channel></rss>
+&lt;p&gt;10.重启solr&lt;/p&gt;&lt;/div&gt;</description><category>solr</category><guid>https://dawnkeyan.github.io/posts/centos-an-zhuang-solr/</guid><pubDate>Mon, 05 Nov 2018 06:45:40 GMT</pubDate></item></channel></rss>

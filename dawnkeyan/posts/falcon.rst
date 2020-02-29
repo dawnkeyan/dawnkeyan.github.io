@@ -1,7 +1,7 @@
 .. title: 安装python框架falcon
 .. slug: falcon
 .. date: 2018-11-29 13:50:07 UTC+08:00
-.. tags: falcon
+.. tags: python框架
 .. category: python
 .. link: 
 .. description: 

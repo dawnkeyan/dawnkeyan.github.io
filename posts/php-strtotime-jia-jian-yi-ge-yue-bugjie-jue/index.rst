@@ -1,7 +1,7 @@
 .. title: PHP strtotime 加减一个月bug解决
 .. slug: php-strtotime-jia-jian-yi-ge-yue-bugjie-jue
 .. date: 2020-02-29 16:34:55 UTC+08:00
-.. tags: php bug
+.. tags: php_bug
 .. category: php
 .. link: 
 .. description: 

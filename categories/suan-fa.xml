@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>晚起的虫子 (关于文章 算法)</title><link>https://dawnkeyan.github.io</link><description></description><atom:link rel="self" href="https://dawnkeyan.github.io/categories/suan-fa.xml" type="application/rss+xml"></atom:link><language>zh_cn</language><copyright>Contents © 2020 &lt;a href="mailto:dawnkeyan@126.com"&gt;dawnkeyan&lt;/a&gt; </copyright><lastBuildDate>Sat, 29 Feb 2020 01:19:39 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>php实现经典算法</title><link>https://dawnkeyan.github.io/posts/phpshi-xian-jing-dian-suan-fa/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;冒泡:&lt;/p&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>晚起的虫子 (关于文章 算法)</title><link>https://dawnkeyan.github.io</link><description></description><atom:link href="https://dawnkeyan.github.io/categories/suan-fa.xml" rel="self" type="application/rss+xml"></atom:link><language>zh_cn</language><copyright>Contents © 2020 &lt;a href="mailto:dawnkeyan@126.com"&gt;dawnkeyan&lt;/a&gt; </copyright><lastBuildDate>Sat, 29 Feb 2020 11:44:30 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>php实现经典算法</title><link>https://dawnkeyan.github.io/posts/phpshi-xian-jing-dian-suan-fa/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;冒泡:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
 function bub_sort($array){
       $n = count($array);
@@ -276,4 +276,4 @@ function qhb($num,$money){
       }
 
       qhb(5,5);
-&lt;/pre&gt;&lt;/div&gt;</description><category>php</category><category>算法</category><guid>https://dawnkeyan.github.io/posts/phpshi-xian-jing-dian-suan-fa/</guid><pubDate>Fri, 26 Oct 2018 02:29:53 GMT</pubDate></item></channel></rss>
+&lt;/pre&gt;&lt;/div&gt;</description><category>算法</category><guid>https://dawnkeyan.github.io/posts/phpshi-xian-jing-dian-suan-fa/</guid><pubDate>Fri, 26 Oct 2018 02:29:53 GMT</pubDate></item></channel></rss>

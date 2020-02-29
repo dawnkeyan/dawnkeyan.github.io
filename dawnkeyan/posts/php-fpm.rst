@@ -1,7 +1,7 @@
 .. title: php-fpm
 .. slug: php-fpm
 .. date: 2018-10-25 15:29:46 UTC+08:00
-.. tags: php,php-fpm
+.. tags: php-fpm
 .. category: php
 .. link: 
 .. description: 

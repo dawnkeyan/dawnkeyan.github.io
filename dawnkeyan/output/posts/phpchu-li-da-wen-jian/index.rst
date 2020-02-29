@@ -1,7 +1,7 @@
 .. title: php处理大文件
 .. slug: phpchu-li-da-wen-jian
 .. date: 2018-11-04 16:12:59 UTC+08:00
-.. tags: php
+.. tags: 大文件读取
 .. category: php
 .. link:
 .. description: 

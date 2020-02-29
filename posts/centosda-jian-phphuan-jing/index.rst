@@ -1,15 +1,11 @@
 .. title: centos搭建PHP环境
 .. slug: centosda-jian-phphuan-jing
 .. date: 2018-11-05 15:07:02 UTC+08:00
-.. tags: centos,php
+.. tags: lnmp
 .. category: linux
 .. link: 
 .. description: 
-.. type: text
-
-版权归作者所有，任何形式转载请联系作者。
-作者：清晓（来自豆瓣）
-来源：https://www.douban.com/note/683279363/
+.. type: tex
 
 操作系统: CentOS 7.4 64位
 

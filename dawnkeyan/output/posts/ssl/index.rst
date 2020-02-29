@@ -1,7 +1,7 @@
 .. title: ssl
 .. slug: ssl
 .. date: 2018-11-04 20:48:32 UTC+08:00
-.. tags: ssl,http
+.. tags: ssl
 .. category: http
 .. link: 
 .. description: 

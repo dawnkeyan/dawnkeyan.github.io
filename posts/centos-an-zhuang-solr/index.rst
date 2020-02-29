@@ -1,7 +1,7 @@
 .. title: centos 安装solr
 .. slug: centos-an-zhuang-solr
 .. date: 2018-11-05 14:45:40 UTC+08:00
-.. tags: 搜索,solr
+.. tags: solr
 .. category: 搜索
 .. link: 
 .. description: 

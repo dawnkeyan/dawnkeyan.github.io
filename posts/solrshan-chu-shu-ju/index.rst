@@ -1,7 +1,7 @@
 .. title: solr删除数据
 .. slug: solrshan-chu-shu-ju
 .. date: 2018-11-05 15:03:22 UTC+08:00
-.. tags: solr,搜索
+.. tags: solr
 .. category: 搜索
 .. link: 
 .. description: 
