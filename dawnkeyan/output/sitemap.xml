@@ -7,7 +7,7 @@
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <url>
   <loc>https://dawnkeyan.github.io/</loc>
-  <lastmod>2018-11-05T07:13:00Z</lastmod>
+  <lastmod>2020-02-29T01:57:00Z</lastmod>
  </url>
  <url>
   <loc>https://dawnkeyan.github.io/2012/</loc>
@@ -18,8 +18,12 @@
   <lastmod>2018-11-03T03:35:00Z</lastmod>
  </url>
  <url>
+  <loc>https://dawnkeyan.github.io/2020/</loc>
+  <lastmod>2020-02-29T01:57:00Z</lastmod>
+ </url>
+ <url>
   <loc>https://dawnkeyan.github.io/archive.html</loc>
-  <lastmod>2020-02-29T01:37:00Z</lastmod>
+  <lastmod>2020-02-29T01:57:00Z</lastmod>
  </url>
  <url>
   <loc>https://dawnkeyan.github.io/authors/</loc>
@@ -35,11 +39,15 @@
  </url>
  <url>
   <loc>https://dawnkeyan.github.io/categories/</loc>
-  <lastmod>2020-02-29T01:35:00Z</lastmod>
+  <lastmod>2020-02-29T01:57:00Z</lastmod>
  </url>
  <url>
   <loc>https://dawnkeyan.github.io/categories/blog/</loc>
   <lastmod>2018-11-03T03:35:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://dawnkeyan.github.io/categories/bo-ke/</loc>
+  <lastmod>2020-02-29T01:57:00Z</lastmod>
  </url>
  <url>
   <loc>https://dawnkeyan.github.io/categories/cat_git/</loc>
@@ -155,7 +163,7 @@
  </url>
  <url>
   <loc>https://dawnkeyan.github.io/index-1.html</loc>
-  <lastmod>2020-02-29T01:37:00Z</lastmod>
+  <lastmod>2020-02-29T01:57:00Z</lastmod>
  </url>
  <url>
   <loc>https://dawnkeyan.github.io/listings/</loc>
@@ -163,7 +171,7 @@
  </url>
  <url>
   <loc>https://dawnkeyan.github.io/listings/hello.py.html</loc>
-  <lastmod>2020-02-29T01:37:00Z</lastmod>
+  <lastmod>2020-02-29T01:57:00Z</lastmod>
  </url>
  <url>
   <loc>https://dawnkeyan.github.io/pages/about-nikola/</loc>
@@ -260,6 +268,10 @@
  <url>
   <loc>https://dawnkeyan.github.io/posts/phpshi-xian-jing-dian-suan-fa/</loc>
   <lastmod>2018-11-03T03:35:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://dawnkeyan.github.io/posts/pythongong-ju-nikolatong-guo-rstwen-dang-sheng-chan-bo-ke-wang-ye-chuan-dao-githubfang-wen/</loc>
+  <lastmod>2020-02-29T01:57:00Z</lastmod>
  </url>
  <url>
   <loc>https://dawnkeyan.github.io/posts/randhe-mt_rand/</loc>
