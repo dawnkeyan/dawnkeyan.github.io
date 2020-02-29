@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>晚起的虫子 (关于文章 python)</title><link>https://dawnkeyan.github.io</link><description></description><atom:link href="https://dawnkeyan.github.io/categories/cat_python.xml" rel="self" type="application/rss+xml"></atom:link><language>zh_cn</language><copyright>Contents © 2018 &lt;a href="mailto:dawnkeyan@126.com"&gt;dawnkeyan&lt;/a&gt; </copyright><lastBuildDate>Fri, 26 Oct 2018 03:32:26 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>from OpenSSL._util import lib as pyOpenSSLlib ImportError: No module named _util</title><link>https://dawnkeyan.github.io/posts/from-openssl_util-import-lib-as-pyopenssllib-importerror-no-module-named-_util/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;ul class="simple"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>晚起的虫子 (关于文章 python)</title><link>https://dawnkeyan.github.io</link><description></description><atom:link href="https://dawnkeyan.github.io/categories/cat_python.xml" rel="self" type="application/rss+xml"></atom:link><language>zh_cn</language><copyright>Contents © 2020 &lt;a href="mailto:dawnkeyan@126.com"&gt;dawnkeyan&lt;/a&gt; </copyright><lastBuildDate>Sat, 29 Feb 2020 01:35:53 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>mac安装impyla thriftpy失败</title><link>https://dawnkeyan.github.io/posts/macan-zhuang-impyla-thriftpyshi-bai/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;Command "/usr/local/opt/python/bin/python3.7 -u -c "import setuptools, tokenize;__file__='/private/tmp/pip-install-ocg0pik5/thriftpy/setup.py';f=getattr(tokenize, 'open', open)(__file__);code=f.read().replace('rn', 'n');f.close();exec(compile(code, __file__, 'exec'))" install --record /private/tmp/pip-record-2agxxtar/install-record.txt --single-version-externally-managed --compile" failed with error code 1 in /private/tmp/pip-install-ocg0pik5/thriftpy/&lt;/p&gt;
+&lt;p&gt;mac python Failed building wheel for thriftpy&lt;/p&gt;
+&lt;p&gt;解决办法：pip3 install cython thriftpy&lt;/p&gt;&lt;/div&gt;</description><category>大数据</category><guid>https://dawnkeyan.github.io/posts/macan-zhuang-impyla-thriftpyshi-bai/</guid><pubDate>Thu, 29 Nov 2018 10:45:28 GMT</pubDate></item><item><title>安装python框架falcon</title><link>https://dawnkeyan.github.io/posts/falcon/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;docker run  -v $PWD/myapp:/usr/src/myapp  -it --rm -p 8000:8000 -w /usr/src/myapp python:3.5 bash
+安装python和pip&lt;/p&gt;
+&lt;p&gt;$ pip install falcon&lt;/p&gt;
+&lt;p&gt;$ mkdir look
+$ cd look&lt;/p&gt;
+&lt;p&gt;$touch app.py
+import falcon
+api = application = falcon.API()&lt;/p&gt;
+&lt;p&gt;$ pip install gunicorn&lt;/p&gt;
+&lt;p&gt;$ gunicorn -b 0.0.0.0:8000 app（默认是127.0.0.1:8000，这样的话只有主机可以访问）&lt;/p&gt;
+&lt;p&gt;$ curl localhost:8000 -v&lt;/p&gt;
+&lt;p&gt;$ pip install --upgrade httpie&lt;/p&gt;
+&lt;p&gt;$ http localhoost:8000&lt;/p&gt;
+&lt;p&gt;pip install msgpack-python&lt;/p&gt;
+&lt;p&gt;$ http GET localhost:8000/images&lt;/p&gt;&lt;/div&gt;</description><category>falcon</category><guid>https://dawnkeyan.github.io/posts/falcon/</guid><pubDate>Thu, 29 Nov 2018 05:50:07 GMT</pubDate></item><item><title>from OpenSSL._util import lib as pyOpenSSLlib ImportError: No module named _util</title><link>https://dawnkeyan.github.io/posts/from-openssl_util-import-lib-as-pyopenssllib-importerror-no-module-named-_util/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;ul class="simple"&gt;
 &lt;li&gt;mac 报错   from OpenSSL._util import lib as pyOpenSSLlib ImportError: No module named _util&lt;/li&gt;
 &lt;li&gt;该安装的都安装了，估计是版本的问题&lt;/li&gt;
 &lt;li&gt;因为系统python默认是2.7，所以安装3，而且默认改成3&lt;/li&gt;

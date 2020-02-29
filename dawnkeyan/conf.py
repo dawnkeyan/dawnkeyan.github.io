@@ -23,7 +23,7 @@ BLOG_TITLE = "晚起的虫子"  # (translatable)
 SITE_URL = "https://dawnkeyan.github.io"
 # This is the URL where Nikola's output will be deployed.
 # If not set, defaults to SITE_URL
-# BASE_URL = "https/"
+#BASE_URL = "https/"
 BLOG_EMAIL = "dawnkeyan@126.com"
 BLOG_DESCRIPTION = "工作中的点点滴滴"  # (translatable)
 

@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>晚起的虫子</title><link>https://dawnkeyan.github.io</link><description>工作中的点点滴滴</description><atom:link href="https://dawnkeyan.github.io/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>zh_cn</language><copyright>Contents © 2018 &lt;a href="mailto:dawnkeyan@126.com"&gt;dawnkeyan&lt;/a&gt; </copyright><lastBuildDate>Mon, 05 Nov 2018 07:15:12 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>php把数据转成csv传到solr</title><link>https://dawnkeyan.github.io/posts/phpba-shu-ju-zhuan-cheng-csvchuan-dao-solr/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;pre class="literal-block"&gt;
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>晚起的虫子</title><link>https://dawnkeyan.github.io</link><description>工作中的点点滴滴</description><atom:link href="https://dawnkeyan.github.io/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>zh_cn</language><copyright>Contents © 2020 &lt;a href="mailto:dawnkeyan@126.com"&gt;dawnkeyan&lt;/a&gt; </copyright><lastBuildDate>Sat, 29 Feb 2020 01:35:53 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>mac安装impyla thriftpy失败</title><link>https://dawnkeyan.github.io/posts/macan-zhuang-impyla-thriftpyshi-bai/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;Command "/usr/local/opt/python/bin/python3.7 -u -c "import setuptools, tokenize;__file__='/private/tmp/pip-install-ocg0pik5/thriftpy/setup.py';f=getattr(tokenize, 'open', open)(__file__);code=f.read().replace('rn', 'n');f.close();exec(compile(code, __file__, 'exec'))" install --record /private/tmp/pip-record-2agxxtar/install-record.txt --single-version-externally-managed --compile" failed with error code 1 in /private/tmp/pip-install-ocg0pik5/thriftpy/&lt;/p&gt;
+&lt;p&gt;mac python Failed building wheel for thriftpy&lt;/p&gt;
+&lt;p&gt;解决办法：pip3 install cython thriftpy&lt;/p&gt;&lt;/div&gt;</description><category>大数据</category><guid>https://dawnkeyan.github.io/posts/macan-zhuang-impyla-thriftpyshi-bai/</guid><pubDate>Thu, 29 Nov 2018 10:45:28 GMT</pubDate></item><item><title>安装python框架falcon</title><link>https://dawnkeyan.github.io/posts/falcon/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;docker run  -v $PWD/myapp:/usr/src/myapp  -it --rm -p 8000:8000 -w /usr/src/myapp python:3.5 bash
+安装python和pip&lt;/p&gt;
+&lt;p&gt;$ pip install falcon&lt;/p&gt;
+&lt;p&gt;$ mkdir look
+$ cd look&lt;/p&gt;
+&lt;p&gt;$touch app.py
+import falcon
+api = application = falcon.API()&lt;/p&gt;
+&lt;p&gt;$ pip install gunicorn&lt;/p&gt;
+&lt;p&gt;$ gunicorn -b 0.0.0.0:8000 app（默认是127.0.0.1:8000，这样的话只有主机可以访问）&lt;/p&gt;
+&lt;p&gt;$ curl localhost:8000 -v&lt;/p&gt;
+&lt;p&gt;$ pip install --upgrade httpie&lt;/p&gt;
+&lt;p&gt;$ http localhoost:8000&lt;/p&gt;
+&lt;p&gt;pip install msgpack-python&lt;/p&gt;
+&lt;p&gt;$ http GET localhost:8000/images&lt;/p&gt;&lt;/div&gt;</description><category>falcon</category><guid>https://dawnkeyan.github.io/posts/falcon/</guid><pubDate>Thu, 29 Nov 2018 05:50:07 GMT</pubDate></item><item><title>php把数据转成csv传到solr</title><link>https://dawnkeyan.github.io/posts/phpba-shu-ju-zhuan-cheng-csvchuan-dao-solr/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;pre class="literal-block"&gt;
 $field = ['Peter','Griffin','Oslo','Norway','id'];
 $data = [
                   ['Peter'=&amp;gt;43,'Griffin'=&amp;gt;4,'Oslo'=&amp;gt;32,'Norway'=&amp;gt;23,'id'=&amp;gt;1],//主键值必须有，比如这id等于1
@@ -573,216 +589,4 @@ grep 'Baiduspider' access.log |wc -l
    $line = `tail -n 1 $file`;
    echo $line;
 ?&amp;gt;
-&lt;/pre&gt;&lt;/div&gt;</description><category>php</category><guid>https://dawnkeyan.github.io/posts/phpchu-li-da-wen-jian/</guid><pubDate>Sun, 04 Nov 2018 08:12:59 GMT</pubDate></item><item><title>rand和mt_rand</title><link>https://dawnkeyan.github.io/posts/randhe-mt_rand/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;p&gt;rand默认使用libc生成器，具有一些不确定和未知的弹性而慢；而mt_rand使用Mersener Twister算法生成随机数，速度比rand快4倍。&lt;/p&gt;</description><category>php</category><guid>https://dawnkeyan.github.io/posts/randhe-mt_rand/</guid><pubDate>Sun, 04 Nov 2018 07:18:52 GMT</pubDate></item><item><title>设计模式</title><link>https://dawnkeyan.github.io/posts/she-ji-mo-shi/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;div class="section" id="id1"&gt;
-&lt;h2&gt;创建型&lt;/h2&gt;
-&lt;ul class="simple"&gt;
-&lt;li&gt;简单工厂模式&lt;/li&gt;
-&lt;/ul&gt;
-&lt;dl class="docutils"&gt;
-&lt;dt&gt;优点：&lt;/dt&gt;
-&lt;dd&gt;操作者不用管具体实例化哪个对象，工厂类通过参数去决定实例化对象；降低耦合&lt;/dd&gt;
-&lt;dt&gt;缺点：&lt;/dt&gt;
-&lt;dd&gt;编译期间就定好了有哪些类，如果有新需求，需要修改工厂类&lt;/dd&gt;
-&lt;/dl&gt;
-&lt;div class="figure"&gt;
-&lt;img alt="uml图" src="https://img3.doubanio.com/view/note/l/public/p55239996.jpg"&gt;
-&lt;/div&gt;
-&lt;pre class="literal-block"&gt;
-&amp;lt;?php
-/**
-* Created by PhpStorm.
-* User: wky
-* Date: 2018/10/30
-* Time: 10:16
-*/
-namespace Simple\Factory;
-
-/**
-* Class ArchitectureFactory 工厂类
-* @package Simple\Factory
-*/
-class ArchitectureFactory{
-
-   protected $typeList;
-
-   public function __construct()
-   {
-       //需要实例化的对象的数组
-       $this-&amp;gt;typeList = [
-           'officeBuilding'=&amp;gt;__NAMESPACE__.'\OfficeBuilding',//造写字楼
-           'school'=&amp;gt;__NAMESPACE__.'\School',//造学校
-       ];
-   }
-
-   public function getExample($type){
-       if(!isset($this-&amp;gt;typeList[$type])){
-           //todo 提示类不存在
-       }
-       return new $this-&amp;gt;typeList[$type]();
-   }
-}
-&lt;/pre&gt;
-&lt;p&gt;ArchitectureInterFace&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-&amp;lt;?php
-/**
-* Created by PhpStorm.
-* User: wky
-* Date: 2018/10/30
-* Time: 10:16
-*/
-namespace Simple\Factory;
-
-/**
-* Interface ArchitectureInterFace 造写字楼和学校需要的设计图
-* @package Simple\Factory
-*/
-interface ArchitectureInterFace{
-
-   public function designChart();
-}
-&lt;/pre&gt;
-&lt;p&gt;OfficeBuilding&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-&amp;lt;?php
-/**
-* Created by PhpStorm.
-* User: wky
-* Date: 2018/10/30
-* Time: 10:16
-*/
-namespace Simple\Factory;
-
-/**
-* Class OfficeBuilding 造写字楼
-* @package Simple\Factory
-*/
-class OfficeBuilding implements ArchitectureInterFace{
-
-   public function designChart(){
-       return '造写字楼的图纸';
-   }
-}
-&lt;/pre&gt;
-&lt;p&gt;School&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-&amp;lt;?php
-/**
-* Created by PhpStorm.
-* User: wky
-* Date: 2018/10/30
-* Time: 10:22
-*/
-namespace Simple\Factory;
-
-/**
-* Class School 造学校
-* @package Simple\Factory
-*/
-class School implements ArchitectureInterFace{
-
-   public function designChart(){
-       return '造学校的图纸';
-   }
-}
-&lt;/pre&gt;
-&lt;p&gt;Test&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-&amp;lt;?php
-/**
-* Created by PhpStorm.
-* User: wky
-* Date: 2018/10/30
-* Time: 10:24
-*/
-namespace Simple\Factory;
-
-/**
-* Class Test
-* @package Simple\Factory
-*/
-class Test{
-
-   public function test(){
-       $architecture = ['officeBuilding', 'school'];
-       $factory = new ArchitectureFactory();
-       foreach ($architecture as $type){
-           $factory-&amp;gt;getExample($type);
-       }
-   }
-}
-&lt;/pre&gt;
-&lt;ul class="simple"&gt;
-&lt;li&gt;工厂方法模式&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;和简单工厂方法模式的区别是工厂方法实例化在子类&lt;/p&gt;
-&lt;ul class="simple"&gt;
-&lt;li&gt;抽象工厂模式&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;和工厂方法模式的区别是抽象工厂一个产品一个实现类，有新需求不用改原来的代码&lt;/p&gt;
-&lt;ul class="simple"&gt;
-&lt;li&gt;静态工厂模式&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;和简单工厂的区别是静态工厂是在工厂类中的静态方法实例化对象&lt;/p&gt;
-&lt;ul class="simple"&gt;
-&lt;li&gt;建造者模式&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;和抽象工厂的区别就是，建造者模式构建对象由导演类构建，而抽象工厂由工厂类构造；建造者模式更适用于复杂的对象的构建&lt;/p&gt;
-&lt;ul class="simple"&gt;
-&lt;li&gt;多例模式&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;需要多个对象，比如各种数据库的链接&lt;/p&gt;
-&lt;ul class="simple"&gt;
-&lt;li&gt;单例模式&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;保证整个生命周期只有一个实例对象。比如一种数据库链接、锁定文件等等&lt;/p&gt;
-&lt;ul class="simple"&gt;
-&lt;li&gt;对象池模式&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;对象用完归还对象池类，而不是销毁，适用于实例化代价比较大的前景，因为对象放着也是需要消耗内存的&lt;/p&gt;
-&lt;ul class="simple"&gt;
-&lt;li&gt;原型模式&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;通过类的克隆方法创建对象，而不是new,但是类的克隆方法是私有的就无法克隆了；使用场景是需要的类不是最初的类，而是运行中某一种状态下的类&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="section" id="id2"&gt;
-&lt;h2&gt;结构型&lt;/h2&gt;
-&lt;ul class="simple"&gt;
-&lt;li&gt;适配器模式&lt;/li&gt;
-&lt;li&gt;桥梁模式&lt;/li&gt;
-&lt;li&gt;组合模式&lt;/li&gt;
-&lt;li&gt;数据映射模式&lt;/li&gt;
-&lt;li&gt;装饰模式&lt;/li&gt;
-&lt;li&gt;依赖注入模式&lt;/li&gt;
-&lt;li&gt;门面模式&lt;/li&gt;
-&lt;li&gt;流接口模式&lt;/li&gt;
-&lt;li&gt;代理模式&lt;/li&gt;
-&lt;li&gt;注册模式&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;div class="section" id="id3"&gt;
-&lt;h2&gt;行为型&lt;/h2&gt;
-&lt;ul class="simple"&gt;
-&lt;li&gt;责任链模式&lt;/li&gt;
-&lt;li&gt;命令行模式&lt;/li&gt;
-&lt;li&gt;迭代器模式&lt;/li&gt;
-&lt;li&gt;中介者模式&lt;/li&gt;
-&lt;li&gt;备忘录模式&lt;/li&gt;
-&lt;li&gt;空对象模式&lt;/li&gt;
-&lt;li&gt;观察者模式&lt;/li&gt;
-&lt;li&gt;规格模式&lt;/li&gt;
-&lt;li&gt;状态模式&lt;/li&gt;
-&lt;li&gt;策略模式&lt;/li&gt;
-&lt;li&gt;模板方法模式&lt;/li&gt;
-&lt;li&gt;访问者模式&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;div class="section" id="id4"&gt;
-&lt;h2&gt;其他&lt;/h2&gt;
-&lt;ul class="simple"&gt;
-&lt;li&gt;委托模式&lt;/li&gt;
-&lt;li&gt;服务定位模式&lt;/li&gt;
-&lt;li&gt;资源模式&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;参考地址：&lt;a class="reference external" href="https://laravelacademy.org/post/2465.html"&gt;https://laravelacademy.org/post/2465.html&lt;/a&gt;&lt;/p&gt;
-&lt;/div&gt;&lt;/div&gt;</description><category>php</category><category>设计模式</category><guid>https://dawnkeyan.github.io/posts/she-ji-mo-shi/</guid><pubDate>Tue, 30 Oct 2018 01:13:45 GMT</pubDate></item></channel></rss>
+&lt;/pre&gt;&lt;/div&gt;</description><category>php</category><guid>https://dawnkeyan.github.io/posts/phpchu-li-da-wen-jian/</guid><pubDate>Sun, 04 Nov 2018 08:12:59 GMT</pubDate></item></channel></rss>
