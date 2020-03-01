@@ -1,5 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>晚起的虫子</title><link>https://dawnkeyan.github.io</link><description>工作中的点点滴滴</description><atom:link href="https://dawnkeyan.github.io/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>zh_cn</language><copyright>Contents © 2020 &lt;a href="mailto:dawnkeyan@126.com"&gt;dawnkeyan&lt;/a&gt; </copyright><lastBuildDate>Sat, 29 Feb 2020 11:44:30 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>php有些加法和乘法会变无限循环小数</title><link>https://dawnkeyan.github.io/posts/phpyou-xie-jia-fa-he-cheng-fa-hui-bian-wu-xian-xun-huan-xiao-shu/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;因为系统的二进制在存储某些数据的时候，二进制可能是无限的，所以就导致加减法和乘法会变无限循环小数的问题&lt;/p&gt;
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0"><channel><title>晚起的虫子</title><link>https://dawnkeyan.github.io</link><description>工作中的点点滴滴</description><atom:link rel="self" type="application/rss+xml" href="https://dawnkeyan.github.io/rss.xml"></atom:link><language>zh_cn</language><copyright>Contents © 2020 &lt;a href="mailto:dawnkeyan@126.com"&gt;dawnkeyan&lt;/a&gt; </copyright><lastBuildDate>Sun, 01 Mar 2020 05:31:02 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>php-fpm和easyswoole性能简单对比</title><link>https://dawnkeyan.github.io/posts/php-fpmhe-easyswoolexing-neng-jian-dan-dui-bi/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;条件说明 自己用的mac开发电脑，电脑还装了很多软件并在运行，但是swoole和php-fpm都在这运行，所以是公平的&lt;/p&gt;
+&lt;p&gt;swoole使用easyswoole框架&lt;/p&gt;
+&lt;p&gt;php-fpm 使用laravel框架&lt;/p&gt;
+&lt;p&gt;php-fpm配置:
+max_requests=204800
+max_children=100000
+start_servers=100
+max_spare_servers=1000
+min_spare_servers100&lt;/p&gt;
+&lt;p&gt;nginx配置：
+worker_processes =4
+worker_connections=100000&lt;/p&gt;
+&lt;p&gt;使用Mac自带的ab工工具，请求数10000，并发100&lt;/p&gt;
+&lt;p&gt;php-fpm结果&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+wukeyan$ ab -n 15000 -c 100  http://auction.com/api/site/auction/getBeatIng
+This is ApacheBench, Version 2.3 &amp;lt;$Revision: 1826891 $&amp;gt;
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking auction.com (be patient)
+Completed 1500 requests
+Completed 3000 requests
+Completed 4500 requests
+Completed 6000 requests
+Completed 7500 requests
+Completed 9000 requests
+Completed 10500 requests
+Completed 12000 requests
+Completed 13500 requests
+Completed 15000 requests
+Finished 15000 requests
+
+
+Server Software:        nginx/1.17.3
+Server Hostname:        auction.com
+Server Port:            80
+
+Document Path:          /api/site/auction/getBeatIng
+Document Length:        72 bytes
+
+Concurrency Level:      100
+Time taken for tests:   199.363 seconds
+Complete requests:      15000
+Failed requests:        0
+Total transferred:      4485000 bytes
+HTML transferred:       1080000 bytes
+Requests per second:    75.24 [#/sec] (mean)
+Time per request:       1329.084 [ms] (mean)
+Time per request:       13.291 [ms] (mean, across all concurrent requests)
+Transfer rate:          21.97 [Kbytes/sec] received
+
+Connection Times (ms)
+             min  mean[+/-sd] median   max
+Connect:        0    0   0.4      0      28
+Processing:    98 1327 109.4   1333    1745
+Waiting:       95 1327 109.5   1333    1745
+Total:         98 1327 109.4   1334    1745
+
+Percentage of the requests served within a certain time (ms)
+ 50%   1334
+ 66%   1375
+ 75%   1399
+ 80%   1415
+ 90%   1460
+ 95%   1493
+ 98%   1529
+ 99%   1558
+100%   1745 (longest request)
+&lt;/pre&gt;
+&lt;p&gt;cpu情况&lt;/p&gt;
+&lt;img alt="https://dawnkeyan.github.io/images/php-fpm_spu.jpeg" src="https://dawnkeyan.github.io/images/php-fpm_spu.jpeg"&gt;
+&lt;p&gt;swoole结果&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+wukeyan$ ab -n 15000 -c 100  http://127.0.0.1:9502/common/test
+This is ApacheBench, Version 2.3 &amp;lt;$Revision: 1826891 $&amp;gt;
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking 127.0.0.1 (be patient)
+Completed 1500 requests
+Completed 3000 requests
+Completed 4500 requests
+Completed 6000 requests
+Completed 7500 requests
+Completed 9000 requests
+Completed 10500 requests
+Completed 12000 requests
+Completed 13500 requests
+Completed 15000 requests
+Finished 15000 requests
+
+
+Server Software:        EasySwoole
+Server Hostname:        127.0.0.1
+Server Port:            9502
+
+Document Path:          /common/test
+Document Length:        14 bytes
+
+Concurrency Level:      100
+Time taken for tests:   1.029 seconds
+Complete requests:      15000
+Failed requests:        0
+Total transferred:      2310000 bytes
+HTML transferred:       210000 bytes
+Requests per second:    14571.86 [#/sec] (mean)
+Time per request:       6.863 [ms] (mean)
+Time per request:       0.069 [ms] (mean, across all concurrent requests)
+Transfer rate:          2191.47 [Kbytes/sec] received
+
+Connection Times (ms)
+             min  mean[+/-sd] median   max
+Connect:        0    3   0.5      3       6
+Processing:     1    3   0.5      3       6
+Waiting:        0    3   0.5      3       6
+Total:          4    7   0.9      6      11
+WARNING: The median and mean for the total time are not within a normal deviation
+       These results are probably not that reliable.
+
+Percentage of the requests served within a certain time (ms)
+ 50%      6
+ 66%      7
+ 75%      7
+ 80%      8
+ 90%      8
+ 95%      9
+ 98%      9
+ 99%     10
+100%     11 (longest request)
+&lt;/pre&gt;
+&lt;p&gt;cpu情况&lt;/p&gt;
+&lt;img alt="https://dawnkeyan.github.io/images/swoole_spu.png" src="https://dawnkeyan.github.io/images/swoole_spu.png"&gt;
+&lt;p&gt;swoole100%都是11毫秒内完成，每秒可服务14571个请求，cpu使用接近100%&lt;/p&gt;
+&lt;p&gt;php-fpm 都是在1秒以上完成的，每秒可服务75个请求，cpu使用平时是10%左右，压测的时候%17左右&lt;/p&gt;&lt;/div&gt;</description><category>laravel</category><category>swoole</category><guid>https://dawnkeyan.github.io/posts/php-fpmhe-easyswoolexing-neng-jian-dan-dui-bi/</guid><pubDate>Sun, 01 Mar 2020 04:41:18 GMT</pubDate></item><item><title>php有些加法和乘法会变无限循环小数</title><link>https://dawnkeyan.github.io/posts/phpyou-xie-jia-fa-he-cheng-fa-hui-bian-wu-xian-xun-huan-xiao-shu/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;因为系统的二进制在存储某些数据的时候，二进制可能是无限的，所以就导致加减法和乘法会变无限循环小数的问题&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
 //实验在php 7.2下进行
 var_dump(0.58 * 100);//这种情况不会有问题
@@ -335,241 +469,4 @@ git (2.x)&lt;/p&gt;
 &lt;p&gt;问题： 可能执行着会报错，那是solr会给字段定义类型，但你的某些值有不是那个类型，比如给你定义了int,然后你传的值是字符串。解决办法就是去把int改成string，位置在vim /home/solr/solr-6.6.2/server/solr/lab（写core名）/conf/managed-schema,比如这的tid(有些是默认给你设置了时间，但你传入的不是时间格式)，这是我遇到的问题，有些配置想改都可以改的。然后重新导入数据，还有就是主键可以重新设置，修改&amp;lt;uniqueKey&amp;gt;id&amp;lt;/uniqueKey&amp;gt;&lt;/p&gt;
 &lt;p&gt;4.如果需要删除数据参考：&lt;a class="reference external" href="http://blog.csdn.net/lbf5210/article/details/51207043"&gt;http://blog.csdn.net/lbf5210/article/details/51207043&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;5.查询，页面参数解释：&lt;a class="reference external" href="http://blog.csdn.net/zhufenglonglove/article/details/51518846"&gt;http://blog.csdn.net/zhufenglonglove/article/details/51518846&lt;/a&gt; 浏览器进入http://ip:端口号/solr&lt;/p&gt;
-&lt;p&gt;6.目前能弄的mongo实时更新是一个core记录整个库，一个集合一个core不知道咋弄。&lt;/p&gt;&lt;/div&gt;</description><category>solr</category><guid>https://dawnkeyan.github.io/posts/solrdao-mongoshu-ju-liu-cheng/</guid><pubDate>Mon, 05 Nov 2018 07:01:05 GMT</pubDate></item><item><title>centos 安装solr</title><link>https://dawnkeyan.github.io/posts/centos-an-zhuang-solr/</link><dc:creator>dawnkeyan</dc:creator><description>&lt;div&gt;&lt;p&gt;1.安装jdk&lt;/p&gt;
-&lt;p&gt;下载安装包（也可以使用其他下载文件方式），因为认证问题，不能直接wget, 打开此页面 ，在Java SE Development Kit 8u161勾上Accept License Agreement，然后点击jdk-8u161-linux-x64.rpm,在下载页面获取文件下载地址，比如我本次的是http://download.oracle.com/otn-pub/java/jdk/8u161-b12/2f38c3b165be4555a1fa6e98c45e0808/jdk-8u161-linux-x64.rpm?AuthParam=1519538436_f233fa0ab4a9cba466bec47d360db37a，然后在/down目录下wget此地址。然后再重命名文件
-mv jdk-8u161-linux-x64.rpm?AuthParam=1519538436_f233fa0ab4a9cba466bec47d360db37a jdk-8u161-linux-x64.rpm&lt;/p&gt;
-&lt;p&gt;安装
-rpm -ivh jdk-8u161-linux-x64.rpm&lt;/p&gt;
-&lt;p&gt;配置系统环境变量，在/etc/profile里追加&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-JAVA_HOME=/usr/java/jdk1.8.0_161
-JRE_HOME=$JAVA_HOME/jre
-CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib
-PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$PATH
-export PATH JAVA_HOME CLASSPATH
-&lt;/pre&gt;
-&lt;p&gt;生效配置，并检验结果&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-source /etc/profile
-java -version
-&lt;/pre&gt;
-&lt;p&gt;2.安装solr&lt;/p&gt;
-&lt;p&gt;安装前检测rng-tools及lsof是否正确安装(安装成功输入命令后显示版本号)&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-rpm -qa |grep rng-tools
-rpm -qa |grep lsof
-&lt;/pre&gt;
-&lt;p&gt;若未安装，设备能够联网的情况下，可使用如下命令安装，否则自行下载安装包安装&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-yum install rng-tools
-yum install lsof
-&lt;/pre&gt;
-&lt;p&gt;配置rng-tools&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-echo 'EXTRAOPTIONS="--rng-device /dev/urandom"' &amp;gt;/etc/sysconfig/rngd
-service rngd start
-chkconfig rngd on
-&lt;/pre&gt;
-&lt;p&gt;在down目录下创建solr,下载solr安装包,下载apache-tomcat安装包（如果找不到页面，则在浏览器打开https://tomcat.apache.org/download-80.cgi查看有的版本号，然后修改版本号），然后使用tar -zxvf命令解压两个文件&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-#下载solr安装包
-wget http://mirror.bit.edu.cn/apache/lucene/solr/6.6.2/solr-6.6.2.tgz
-#下载apache-tomcat安装包（如果找不到页面，则在浏览器打开https://tomcat.apache.org/download-80.cgi查看有的版&amp;gt;本号，然后修改版本号）
-wget http://mirror.bit.edu.cn/apache/tomcat/tomcat-8/v8.0.50/bin/apache-tomcat-8.0.50.tar.gz
-&lt;/pre&gt;
-&lt;p&gt;3.配置solr&lt;/p&gt;
-&lt;p&gt;使用tar -zxvf命令解压刚刚下载的solr安装包和下载apache-tomcat安装包&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-tar -zxvf solr-6.6.2.tgz
-tar -zxvf apache-tomcat-8.0.50.tar.gz
-&lt;/pre&gt;
-&lt;p&gt;在solr-6.6.2目录下拷贝dataimporthandler的jar包&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-cp dist/solr-dataimporthandler-* server/solr-webapp/webapp/WEB-INF/lib/
-&lt;/pre&gt;
-&lt;p&gt;在/down/solr目录下载mysql-connector-java-5.1.45安装包&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-wget https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.45.tar.gz
-&lt;/pre&gt;
-&lt;p&gt;解压mysql-connector-java-5.1.45.tar.gz&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-tar -zxvf mysql-connector-java-5.1.45.tar.gz
-&lt;/pre&gt;
-&lt;p&gt;拷贝mysql-connector-java&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-cp mysql-connector-java-5.1.45/mysql-connector-java-5.1.45-bin.jar solr-6.6.2/server/solr-webapp/webapp/WEB-INF/lib/
-&lt;/pre&gt;
-&lt;p&gt;在/down/solr目录下载ikanalyzer安装包&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-wget https://github.com/zxiaofan/ik-analyzer-solr6/releases/download/6.6.0/ikanalyzer-6.6.0.jar
-&lt;/pre&gt;
-&lt;p&gt;解压ikanalyzer&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-jar -xvf ikanalyzer-6.6.0.jar
-&lt;/pre&gt;
-&lt;p&gt;拷贝ikanalyzer&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-cp ikanalyzer-6.6.* solr-6.6.2/server/solr-webapp/webapp/WEB-INF/lib/
-&lt;/pre&gt;
-&lt;p&gt;在/down/solr目录下载pinyin4j&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-wget https://github.com/zxiaofan/ik-analyzer-solr6/releases/download/6.6.0/pinyin4j_IKconfig.zip
-&lt;/pre&gt;
-&lt;p&gt;复制文件&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-unzip pinyin4j_IKconfig.zip -d pinyin4j
-cp pinyin4j/pinyin*.jar solr-6.6.2/server/solr-webapp/webapp/WEB-INF/lib/
-mkdir solr-6.6.2/server/solr-webapp/webapp/WEB-INF/classes
-cp pinyin4j/ext.dic solr-6.6.2/server/solr-webapp/webapp/WEB-INF/classes/
-cp pinyin4j/IKAnalyzer.cfg.xml solr-6.6.2/server/solr-webapp/webapp/WEB-INF/classes/
-cp pinyin4j/stopword.dic solr-6.6.2/server/solr-webapp/webapp/WEB-INF/classes/
-&lt;/pre&gt;
-&lt;p&gt;修改配置solr-6.6.2/server/solr-webapp/webapp/WEB-INF/classes/IKAnalyzer.cfg.xml加入新的内容&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-&amp;lt;!--词典动态更新时间间隔[首次延时,时间间隔]（格式：正整数，单位：分钟）--&amp;gt;
-&amp;lt;entry key="dic_updateMin"&amp;gt;1,1&amp;lt;/entry&amp;gt;
-
-&amp;lt;!--禁用内置主词典main2012.dic（默认false）--&amp;gt;
-&amp;lt;!--&amp;lt;entry key="dicInner_disable"&amp;gt;true&amp;lt;/entry&amp;gt; --&amp;gt;
-&lt;/pre&gt;
-&lt;p&gt;修改时区，修改solr-6.6.2/bin/solr.in.sh中的SOLR_TIMEZONE="UTC+8"&lt;/p&gt;
-&lt;p&gt;4.创建core并配置&lt;/p&gt;
-&lt;p&gt;进入solr-6.6.2目录，执行创建名称为goods的core,如果无法确定实例端口，加上-p 端口号，如果在root用户下启动solr存在风险，要么换个账号，要么加上 -force&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-bin/solr create -c goods -p 8983 -force
-&lt;/pre&gt;
-&lt;p&gt;修改配置：修改server/solr/goods/conf目录下的solrconfig.xml,data-config.xml,managed-schema的文件，没有就新建&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-#solrconfig.xml添加内容（在&amp;lt;/config&amp;gt;之前）
-&amp;lt;requestHandler name="/dataimport" class="org.apache.solr.handler.dataimport.DataImportHandler"&amp;gt;
-  &amp;lt;lst name="defaults"&amp;gt;
-      &amp;lt;str name="config"&amp;gt;data-config.xml&amp;lt;/str&amp;gt;
-  &amp;lt;/lst&amp;gt;
-&amp;lt;/requestHandler&amp;gt;
-
-#data-config.xml添加内容
-&amp;lt;?xml version="1.0" encoding="UTF-8"?&amp;gt;
-&amp;lt;dataConfig&amp;gt;
-  &amp;lt;dataSource
-      name="dbSource"
-      type="JdbcDataSource"
-      driver="com.mysql.jdbc.Driver"
-      url="jdbc:mysql://数据库地址:端口号/数据库名称"
-      batchSize="-1"
-      user="用户名"
-      password="密码"
-      readOnly="true"
-      autoCommit="true"
-      netTimeoutForStreamingResults="0"
-      /&amp;gt;
-  &amp;lt;document&amp;gt;
-      &amp;lt;entity name="goods" dataSource="dbSource" onError="skip" pk="id" query="select id,address-detail,create_time from lab_model_address"
-          deltaImportQuery="select id,address-detail,create_time from lab_model_address where id = '${dih.delta.id}'"
-          deltaQuery="select id,address-detail,create_time from lab_model_address where create_time &amp;gt; unix_timestamp('${dataimporter.last_index_time}')"&amp;gt;
-          &amp;lt;field column="id" name="id" /&amp;gt;
-          &amp;lt;field column="address-detail" name="address-detail" /&amp;gt;
-          &amp;lt;field column="create_time" name="create_time" /&amp;gt;
-      &amp;lt;/entity&amp;gt;
-  &amp;lt;/document&amp;gt;
-&amp;lt;/dataConfig&amp;gt;
-
-#managed-schema添加内容（在&amp;lt;field name="id" ... /&amp;gt;之后）
-&amp;lt;field name="address-detail" type="text_ik" indexed="true" stored="true"/&amp;gt;
-  &amp;lt;fieldType name="text_pinyin" class="solr.TextField" positionIncrementGap="0"&amp;gt;
-      &amp;lt;analyzer type="index"&amp;gt;
-          &amp;lt;tokenizer class="org.wltea.analyzer.lucene.IKTokenizerFactory"/&amp;gt;
-          &amp;lt;filter class="solr.SynonymGraphFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true" /&amp;gt;
-          &amp;lt;filter class="com.shentong.search.analyzers.PinyinTransformTokenFilterFactory" minTermLenght="2" /&amp;gt;
-          &amp;lt;filter class="com.shentong.search.analyzers.PinyinNGramTokenFilterFactory" minGram="1" maxGram="20" /&amp;gt;
-      &amp;lt;/analyzer&amp;gt;
-      &amp;lt;analyzer type="query"&amp;gt;
-          &amp;lt;tokenizer class="org.wltea.analyzer.lucene.IKTokenizerFactory"/&amp;gt;
-          &amp;lt;filter class="solr.SynonymGraphFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true" /&amp;gt;
-          &amp;lt;filter class="solr.LowerCaseFilterFactory" /&amp;gt;
-      &amp;lt;/analyzer&amp;gt;
-  &amp;lt;/fieldType&amp;gt;
-  &amp;lt;fieldType name="text_ik" class="solr.TextField"&amp;gt;
-      &amp;lt;analyzer type="index" useSmart="false" isMaxWordLength="false" &amp;gt;
-          &amp;lt;tokenizer class="org.wltea.analyzer.lucene.IKTokenizerFactory"/&amp;gt;
-          &amp;lt;filter class="solr.SynonymGraphFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/&amp;gt;
-      &amp;lt;/analyzer&amp;gt;
-      &amp;lt;analyzer type="query" useSmart="true" isMaxWordLength="true" &amp;gt;
-          &amp;lt;tokenizer class="org.wltea.analyzer.lucene.IKTokenizerFactory"/&amp;gt;
-          &amp;lt;filter class="solr.SynonymGraphFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/&amp;gt;
-      &amp;lt;/analyzer&amp;gt;
-  &amp;lt;/fieldType&amp;gt;
-  &amp;lt;field name="title_ik" type="text_ik" indexed="true" required="true" stored="true"/&amp;gt;
-  &amp;lt;copyField source="address-detail" dest="title_ik"/&amp;gt;
-  &amp;lt;field name="create_time" type="int" indexed="true" stored="true"/&amp;gt;
-  &amp;lt;field name="pinyin" type="text_pinyin" indexed="true" stored="true"/&amp;gt;
-  &amp;lt;copyField source="address-detail" dest="pinyin"/&amp;gt;
-&lt;/pre&gt;
-&lt;p&gt;5.启动，停止,重启solr&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-bin/solr stop -all
-bin/solr start -force
-bin/solr stop -all; bin/solr start -force
-&lt;/pre&gt;
-&lt;p&gt;6.导入数据&lt;/p&gt;
-&lt;p&gt;浏览器中访问http://IP:8983/, 查看CoreAdmin中是否存在创建的core:goods
-Core Selector选择新建的core（如goods），选择Dataimport，Command选择full-import，Start, Rows选择合理值，点击Excute执行数据导入&lt;/p&gt;
-&lt;p&gt;7.验证数据是否导入:接上一步中选择Query，直接点击Execute Query查看结果&lt;/p&gt;
-&lt;p&gt;8.验证分词是否可用:接上一步中选择Analysis，输入值，类型选择text_ik，查看分词结果（需要分词的数据类型在managed-schema中field的type为text_ik类型。&lt;/p&gt;
-&lt;p&gt;9.添加批处理任务(apache-solr-dataimporthandler-.jar可以在 我的GitHub下载 )&lt;/p&gt;
-&lt;p&gt;将apache-solr-dataimporthandler-.jar放到solr-6.6.2/server/solr-webapp/webapp/WEB-INF/lib/
-在solr-6.6.2/server/solr-webapp/webapp/WEB-INF/web.xml中的&amp;lt;/web-app&amp;gt;之前加入下面代码&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-&amp;lt;listener&amp;gt;
- &amp;lt;listener-class&amp;gt;org.apache.solr.handler.dataimport.scheduler.ApplicationListener&amp;lt;/listener-class&amp;gt;
-&amp;lt;/listener&amp;gt;
-
-在solr-6.6.2/server/solr/conf中新建dataimport.properties，文件夹不存在时新建
-#################################################
-#                                               #
-#       dataimport scheduler properties         #
-#                                               #
-#################################################
-
-#  to sync or not to sync
-#  1 - active; anything else - inactive
-syncEnabled=1
-
-#  which cores to schedule
-#  in a multi-core environment you can decide which cores you want syncronized
-#  leave empty or comment it out if using single-core deployment
-syncCores=goods,goods-test
-
-#  solr server name or IP address
-#  [defaults to localhost if empty]
-server=localhost
-
-#  solr server port
-#  [defaults to 80 if empty]
-port=8983
-
-#  application name/context
-#  [defaults to current ServletContextListener's context (app) name]
-webapp=solr
-
-#  URL params [mandatory]
-#  remainder of URL
-#增量
-params=/dataimport?command=delta-import&amp;amp;clean=false&amp;amp;commit=true&amp;amp;optimize=false&amp;amp;wt=json&amp;amp;indent=true&amp;amp;entity=goods&amp;amp;verbose=false&amp;amp;debug=false
-
-#  schedule interval
-#  number of minutes between two runs
-#  [defaults to 30 if empty]
-interval=20
-
-#  重做索引的时间间隔，单位分钟，默认7200，即1天;
-#  为空,为0,或者注释掉:表示永不重做索引
-reBuildIndexInterval=7200
-
-#  重做索引的参数
-reBuildIndexParams=/dataimport?command=full-import&amp;amp;clean=true&amp;amp;commit=true&amp;amp;optimize=true&amp;amp;wt=json&amp;amp;indent=true&amp;amp;entity=goods&amp;amp;verbose=false&amp;amp;debug=false
-
-#  重做索引时间间隔的计时开始时间，第一次真正执行的时间=reBuildIndexBeginTime+reBuildIndexInterval*60*1000；
-#  两种格式：2012-04-11 03:10:00 或者  03:10:00，后一种会自动补全日期部分为服务启动时的日期
-reBuildIndexBeginTime=09:00:00
-&lt;/pre&gt;
-&lt;p&gt;10.重启solr&lt;/p&gt;&lt;/div&gt;</description><category>solr</category><guid>https://dawnkeyan.github.io/posts/centos-an-zhuang-solr/</guid><pubDate>Mon, 05 Nov 2018 06:45:40 GMT</pubDate></item></channel></rss>
+&lt;p&gt;6.目前能弄的mongo实时更新是一个core记录整个库，一个集合一个core不知道咋弄。&lt;/p&gt;&lt;/div&gt;</description><category>solr</category><guid>https://dawnkeyan.github.io/posts/solrdao-mongoshu-ju-liu-cheng/</guid><pubDate>Mon, 05 Nov 2018 07:01:05 GMT</pubDate></item></channel></rss>

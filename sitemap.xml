@@ -23,7 +23,7 @@
  </url>
  <url>
   <loc>https://dawnkeyan.github.io/archive.html</loc>
-  <lastmod>2020-02-29T11:44:00Z</lastmod>
+  <lastmod>2020-03-01T05:31:00Z</lastmod>
  </url>
  <url>
   <loc>https://dawnkeyan.github.io/authors/</loc>
@@ -39,7 +39,7 @@
  </url>
  <url>
   <loc>https://dawnkeyan.github.io/categories/</loc>
-  <lastmod>2020-02-29T11:44:00Z</lastmod>
+  <lastmod>2020-03-01T05:28:00Z</lastmod>
  </url>
  <url>
   <loc>https://dawnkeyan.github.io/categories/blog/</loc>
@@ -114,6 +114,10 @@
   <lastmod>2018-11-05T07:13:00Z</lastmod>
  </url>
  <url>
+  <loc>https://dawnkeyan.github.io/categories/laravel/</loc>
+  <lastmod>2020-03-01T05:28:00Z</lastmod>
+ </url>
+ <url>
   <loc>https://dawnkeyan.github.io/categories/lnmp/</loc>
   <lastmod>2020-02-29T11:44:00Z</lastmod>
  </url>
@@ -182,6 +186,10 @@
   <lastmod>2020-02-29T11:44:00Z</lastmod>
  </url>
  <url>
+  <loc>https://dawnkeyan.github.io/categories/swoole/</loc>
+  <lastmod>2020-03-01T05:28:00Z</lastmod>
+ </url>
+ <url>
   <loc>https://dawnkeyan.github.io/galleries/</loc>
   <lastmod>2018-11-03T03:35:00Z</lastmod>
  </url>
@@ -191,7 +199,7 @@
  </url>
  <url>
   <loc>https://dawnkeyan.github.io/index-1.html</loc>
-  <lastmod>2020-02-29T11:44:00Z</lastmod>
+  <lastmod>2020-03-01T05:31:00Z</lastmod>
  </url>
  <url>
   <loc>https://dawnkeyan.github.io/listings/</loc>
@@ -199,7 +207,7 @@
  </url>
  <url>
   <loc>https://dawnkeyan.github.io/listings/hello.py.html</loc>
-  <lastmod>2020-02-29T11:44:00Z</lastmod>
+  <lastmod>2020-03-01T05:31:00Z</lastmod>
  </url>
  <url>
   <loc>https://dawnkeyan.github.io/pages/about-nikola/</loc>
@@ -284,6 +292,10 @@
  <url>
   <loc>https://dawnkeyan.github.io/posts/php-fpm/</loc>
   <lastmod>2018-11-03T03:35:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://dawnkeyan.github.io/posts/php-fpmhe-easyswoolexing-neng-jian-dan-dui-bi/</loc>
+  <lastmod>2020-03-01T05:28:00Z</lastmod>
  </url>
  <url>
   <loc>https://dawnkeyan.github.io/posts/php-strtotime-jia-jian-yi-ge-yue-bugjie-jue/</loc>

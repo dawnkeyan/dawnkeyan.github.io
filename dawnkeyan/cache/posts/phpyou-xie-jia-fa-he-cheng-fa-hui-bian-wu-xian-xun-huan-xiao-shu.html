@@ -1,0 +1,24 @@
+<p>因为系统的二进制在存储某些数据的时候，二进制可能是无限的，所以就导致加减法和乘法会变无限循环小数的问题</p>
+<pre class="literal-block">
+//实验在php 7.2下进行
+var_dump(0.58 * 100);//这种情况不会有问题
+var_dump(json_encode(['a' =&gt; 0.58 * 100]));
+
+float(58)
+string(23) &quot;{&quot;a&quot;:57.99999999999999}&quot;
+</pre>
+<p>解决办法是使用更高精度的函数</p>
+<pre class="literal-block">
+var_dump(json_encode(['a' =&gt; bcmul(0.58, 100)]));
+string(10) &quot;{&quot;a&quot;:&quot;58&quot;}&quot;
+</pre>
+<p>bcadd — 将两个高精度数字相加</p>
+<p>bccomp — 比较两个高精度数字，返回-1, 0, 1</p>
+<p>bcdiv — 将两个高精度数字相除</p>
+<p>bcmod — 求高精度数字余数</p>
+<p>bcmul — 将两个高精度数字相乘</p>
+<p>bcpow — 求高精度数字乘方</p>
+<p>bcpowmod — 求高精度数字乘方求模，数论里非常常用</p>
+<p>bcscale — 配置默认小数点位数，相当于就是Linux bc中的”scale=”</p>
+<p>bcsqrt — 求高精度数字平方根</p>
+<p>bcsub — 将两个高精度数字相减</p>
